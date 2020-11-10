@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val solution = LeetCodeSolution()
+//        val solution = CodeForcesSolution()
         solution.execute()
         val anim = "${Random.nextInt(6)}.json"
         animation.setAnimation(anim)
