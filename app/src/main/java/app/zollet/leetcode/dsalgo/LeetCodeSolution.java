@@ -1,6 +1,6 @@
 package app.zollet.leetcode.dsalgo;
 
-public class Solution {
+public class LeetCodeSolution {
 
     public void execute() {
 

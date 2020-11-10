@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val solution = Solution()
+        val solution = LeetCodeSolution()
         solution.execute()
         val anim = "${Random.nextInt(6)}.json"
         animation.setAnimation(anim)
