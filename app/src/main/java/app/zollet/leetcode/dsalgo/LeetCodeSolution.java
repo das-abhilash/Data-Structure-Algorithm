@@ -1,45 +1,49 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        boolean a = validSquare(new int[]{1, 0}, new int[]{-1, 0}, new int[]{0, 1}, new int[]{0, -1});
+        List<List<Integer>> a = permuteUnique(new int[]{1, 1, 2});
     }
 
-    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+    public List<List<Integer>> permuteUnique(int[] nums) {
 
+        List<List<Integer>> answer = new ArrayList<>();
 
-        long a = dist(p1, p2);
-        long b = dist(p1, p3);
-        long c = dist(p1, p4);
+        List<Integer> input = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            input.add(nums[i]);
+        }
 
-        if (a == b && c != 2 * a) return false;
-        if (b == c && a != 2 * b) return false;
-        if (a == c && b != 2 * c) return false;
-        if (a != b && b != c && a != c) return false;
+        solve(answer, input, new ArrayList<Integer>(), input.size());
 
-        a = dist(p2, p1);
-        b = dist(p2, p3);
-        c = dist(p2, p4);
-
-        if (a == b && c != 2 * a) return false;
-        if (b == c && a != 2 * b) return false;
-        if (a == c && b != 2 * c) return false;
-        if (a != b && b != c && a != c) return false;
-
-        a = dist(p3, p2);
-        b = dist(p3, p1);
-        c = dist(p3, p4);
-
-        if (a == b && c != 2 * a) return false;
-        if (b == c && a != 2 * b) return false;
-        if (a == c && b != 2 * c) return false;
-        if (a != b && b != c && a != c) return false;
-        return true;
+        return answer;
     }
 
-    private long dist(int[] p1, int[] p2) {
-        return ((long) (p1[0] - p2[0]) * (p1[0] - p2[0])) + ((long) (p1[1] - p2[1]) * (p1[1] - p2[1]));
+    private void solve(List<List<Integer>> answer, List<Integer> input, List<Integer> list, int size) {
+
+        if (size == 0) {
+            answer.add(new ArrayList<>(list));
+            return;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < input.size(); i++) {
+            if (input.get(i) == -100 || set.contains(input.get(i))) continue;
+            int v = input.get(i);
+            list.add(v);
+            set.add(v);
+            input.set(i, -100);
+            solve(answer, input, list, size - 1);
+            list.remove(list.size() - 1);
+            input.set(i, v);
+        }
     }
+
 
 }
