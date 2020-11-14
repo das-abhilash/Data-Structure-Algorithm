@@ -3,6 +3,7 @@ package app.zollet.leetcode.dsalgo.util;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
 class Node {
     public int val;
     public List<Node> neighbors;
@@ -21,4 +22,4 @@ class Node {
         val = _val;
         neighbors = _neighbors;
     }
-}
+}*/

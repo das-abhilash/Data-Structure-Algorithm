@@ -1,49 +1,42 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+import app.zollet.leetcode.dsalgo.util.TreeNode;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        List<List<Integer>> a = permuteUnique(new int[]{1, 1, 2});
     }
 
-    public List<List<Integer>> permuteUnique(int[] nums) {
+    public TreeNode connect(TreeNode root) {
 
-        List<List<Integer>> answer = new ArrayList<>();
+        if (root == null) return root;
 
-        List<Integer> input = new ArrayList<>();
-        for (int i = 0; i < nums.length; i++) {
-            input.add(nums[i]);
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+            TreeNode last = null;
+            for (int i = 0; i < size - 1; i++) {
+                TreeNode node = queue.poll();
+                if (i != 0) {
+                    last.next = node;
+                }
+                last = node;
+                if(node.left != null)
+                queue.add(node.left);
+                if(node.right != null)
+                queue.add(node.right);
+            }
+            last.next = null;
         }
-
-        solve(answer, input, new ArrayList<Integer>(), input.size());
-
-        return answer;
+        return root;
     }
-
-    private void solve(List<List<Integer>> answer, List<Integer> input, List<Integer> list, int size) {
-
-        if (size == 0) {
-            answer.add(new ArrayList<>(list));
-            return;
-        }
-
-        Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < input.size(); i++) {
-            if (input.get(i) == -100 || set.contains(input.get(i))) continue;
-            int v = input.get(i);
-            list.add(v);
-            set.add(v);
-            input.set(i, -100);
-            solve(answer, input, list, size - 1);
-            list.remove(list.size() - 1);
-            input.set(i, v);
-        }
-    }
-
 
 }

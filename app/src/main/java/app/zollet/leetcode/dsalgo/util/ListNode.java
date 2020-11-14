@@ -10,10 +10,10 @@ package app.zollet.leetcode.dsalgo.util;
     }
 }*/
 
-class ListNode {
-  int val;
-  ListNode next;
-  ListNode prev;
+public class ListNode {
+  public int val;
+  public ListNode next;
+  public ListNode prev;
 
   ListNode() {
   }
