@@ -1,28 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
-    public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
+    class OrderedStream {
 
-        int test = minutesToTest / minutesToDie;
+        String[] a;
+        int pointer;
 
-        int l = 0;
-        int r = buckets;
-
-        while (l < r) {
-            int mid = l + (r - l) / 2;
-
-            if (Math.pow(test + 1, mid) >= buckets) {
-                r = mid;
-            } else {
-                l = mid + 1;
-            }
+        public OrderedStream(int n) {
+            a = new String[n];
+            pointer = 0;
+            Arrays.fill(a, "");
         }
-        return l;
+
+        public List<String> insert(int id, String value) {
+            a[id - 1] = value;
+            if (a[pointer].equals("")) {
+                return Collections.emptyList();
+            }
+
+            List<String> list = new ArrayList<>();
+            while (pointer < a.length && !a[pointer].equals("")) {
+                list.add(a[pointer++]);
+            }
+            return list;
+        }
     }
+
 
 }
