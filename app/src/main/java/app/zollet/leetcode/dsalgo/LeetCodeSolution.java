@@ -1,42 +1,28 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.LinkedList;
-import java.util.Queue;
-
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
-    public TreeNode connect(TreeNode root) {
+    public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
 
-        if (root == null) return root;
+        int test = minutesToTest / minutesToDie;
 
-        Queue<TreeNode> queue = new LinkedList<>();
+        int l = 0;
+        int r = buckets;
 
-        queue.add(root);
+        while (l < r) {
+            int mid = l + (r - l) / 2;
 
-        while (!queue.isEmpty()) {
-
-            int size = queue.size();
-            TreeNode last = null;
-            for (int i = 0; i < size - 1; i++) {
-                TreeNode node = queue.poll();
-                if (i != 0) {
-                    last.next = node;
-                }
-                last = node;
-                if(node.left != null)
-                queue.add(node.left);
-                if(node.right != null)
-                queue.add(node.right);
+            if (Math.pow(test + 1, mid) >= buckets) {
+                r = mid;
+            } else {
+                l = mid + 1;
             }
-            last.next = null;
         }
-        return root;
+        return l;
     }
 
 }
