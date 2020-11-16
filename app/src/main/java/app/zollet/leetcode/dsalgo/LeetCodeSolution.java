@@ -1,33 +1,49 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
     int a = 0;
-    public int distributeCoins(TreeNode root) {
+
+    public int uniquePathsIII(int[][] grid) {
         a = 0;
-        solve(root);
+        int z = 0;
+        int x = -1;
+        int y = -1;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    x = i;
+                    y = j;
+                } else if (grid[i][j] == 0) {
+                    z++;
+                }
+            }
+        }
+        dfs(grid, x, y, z, 0);
         return a;
     }
 
-    private int solve(TreeNode root) {
-        if (root == null) return 0;
+    private void dfs(int[][] grid, int i, int j, int z, int p) {
+        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == -1)
+            return;
+        if (grid[i][j] == 2) {
+            if (z == p -1)
+                a++;
+            return;
+        }
 
-        if (root.left == null && root.right == null) return root.val - 1;
+        int temp = grid[i][j];
+        grid[i][j] = -1;
+        dfs(grid, i + 1, j, z, p + 1);
+        dfs(grid, i - 1, j, z, p + 1);
+        dfs(grid, i, j + 1, z, p + 1);
+        dfs(grid, i, j - 1, z, p + 1);
 
-        int left = solve(root.left);
-        int right = solve(root.right);
-
-        int c = left + right + root.val - 1;
-
-        if (c != 0)
-            a += Math.abs(c);
-        return c;
+        grid[i][j] = temp;
     }
 
 }
