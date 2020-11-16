@@ -4,34 +4,46 @@ package app.zollet.leetcode.dsalgo;
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = longestMountain(new int[]{3, 4, 3, 5, 4, 6, 3, 3, 2, 4, 2});
+        int a = maxTurbulenceSize(new int[]{9, 4, 2, 10, 7, 8, 8, 1, 9});
     }
 
-    public int longestMountain(int[] A) {
+    public int maxTurbulenceSize(int[] arr) {
 
-        int answer = 0;
-        int in = 0;
-        int de = 0;
+        if (arr.length < 2) {
+            return arr.length;
+        }
 
-        for (int i = 1; i < A.length; i++) {
-            if (A[i] > A[i - 1]) {
-                if (de > 0) {
-                    de = 0;
-                    in = 0;
+        int start = 1;
+        for (; start < arr.length; start++) {
+            if (arr[start] != arr[start - 1]) break;
+        }
+        if (start == arr.length) return 1;
+
+
+        boolean isGreater = arr[start] > arr[start - 1];
+        int count = 2;
+        int answer = 2;
+
+        for (int i = 2; i < arr.length; i++) {
+
+            if (arr[i] == arr[i - 1]) {
+                i++;
+                if (i < arr.length) {
+                    i++;
+                    count = 2;
+                    isGreater = arr[i] > arr[i - 1];
                 }
-                if (in == 0) in = 2;
-                else in++;
-            } else if (A[i] < A[i - 1]) {
-                if (de == 0)
-                    de = 2;
-                else
-                    de++;
-                if (in != 0)
-                    answer = Math.max(answer, in + de - 1);
-            } else {
-                in = 0;
-                de = 0;
+                continue;
             }
+            if (arr[i] > arr[i - 1] == !isGreater) {
+                isGreater = !isGreater;
+                count++;
+                answer = Math.max(answer, count);
+            } else {
+                isGreater = arr[i] > arr[i - 1];
+                count = 2;
+            }
+
         }
         return answer;
     }
