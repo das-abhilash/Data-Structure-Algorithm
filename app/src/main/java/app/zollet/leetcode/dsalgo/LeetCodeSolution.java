@@ -1,51 +1,33 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import app.zollet.leetcode.dsalgo.util.TreeNode;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = maxTurbulenceSize(new int[]{9, 4, 2, 10, 7, 8, 8, 1, 9});
     }
 
-    public int maxTurbulenceSize(int[] arr) {
+    int a = 0;
+    public int distributeCoins(TreeNode root) {
+        a = 0;
+        solve(root);
+        return a;
+    }
 
-        if (arr.length < 2) {
-            return arr.length;
-        }
+    private int solve(TreeNode root) {
+        if (root == null) return 0;
 
-        int start = 1;
-        for (; start < arr.length; start++) {
-            if (arr[start] != arr[start - 1]) break;
-        }
-        if (start == arr.length) return 1;
+        if (root.left == null && root.right == null) return root.val - 1;
 
+        int left = solve(root.left);
+        int right = solve(root.right);
 
-        boolean isGreater = arr[start] > arr[start - 1];
-        int count = 2;
-        int answer = 2;
+        int c = left + right + root.val - 1;
 
-        for (int i = 2; i < arr.length; i++) {
-
-            if (arr[i] == arr[i - 1]) {
-                i++;
-                if (i < arr.length) {
-                    i++;
-                    count = 2;
-                    isGreater = arr[i] > arr[i - 1];
-                }
-                continue;
-            }
-            if (arr[i] > arr[i - 1] == !isGreater) {
-                isGreater = !isGreater;
-                count++;
-                answer = Math.max(answer, count);
-            } else {
-                isGreater = arr[i] > arr[i - 1];
-                count = 2;
-            }
-
-        }
-        return answer;
+        if (c != 0)
+            a += Math.abs(c);
+        return c;
     }
 
 }
