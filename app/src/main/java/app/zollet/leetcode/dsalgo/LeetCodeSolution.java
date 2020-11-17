@@ -1,42 +1,34 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
 public class LeetCodeSolution {
 
     public void execute() {
+        int a = mincostTickets(new int[]{1, 4, 6, 7, 8, 20}, new int[]{2, 7, 15});
     }
 
-    class TimeMap {
+    public int mincostTickets(int[] days, int[] costs) {
 
-        Map<String, TreeMap<Integer, String>> map;
+        int[] dp = new int[366];
+        dp[0] = 0;
+        int answer = 0;
+        int d = 0;
+        for (int i = days[d]; i < 366; i++) {
 
-        /**
-         * Initialize your data structure here.
-         */
-        public TimeMap() {
-            map = new HashMap<>();
+            if (i > days[days.length - 1] || days[d] != i) {
+                dp[i] = dp[i - 1];
+                continue;
+            }
+            d++;
+            int one = costs[0] + dp[i - 1];
+            int seven = costs[1] + ((i - 7) < 1 ? 0 : dp[i - 7]);
+            int thirty = costs[2] + ((i - 30) < 1 ? 0 : dp[i - 30]);
+            dp[i] = Math.min(one, Math.min(seven, thirty));
+
+
         }
 
-        public void set(String key, String value, int timestamp) {
-
-            TreeMap<Integer, String> treeMap = map.getOrDefault(key, new TreeMap<>());
-            treeMap.put(timestamp, value);
-            map.put(key, treeMap);
-        }
-
-        public String get(String key, int timestamp) {
-
-            if (!map.containsKey(key)) return "";
-
-            TreeMap<Integer, String> treeMap = map.get(key);
-
-            Map.Entry<Integer, String> e = treeMap.floorEntry(timestamp);
-            return e == null ? "" : e.getValue();
-        }
+        return dp[365];
     }
 
 }
