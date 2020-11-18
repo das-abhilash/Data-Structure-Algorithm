@@ -1,34 +1,42 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = mincostTickets(new int[]{1, 4, 6, 7, 8, 20}, new int[]{2, 7, 15});
     }
 
-    public int mincostTickets(int[] days, int[] costs) {
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length < 2) return intervals;
 
-        int[] dp = new int[366];
-        dp[0] = 0;
-        int answer = 0;
-        int d = 0;
-        for (int i = days[d]; i < 366; i++) {
-
-            if (i > days[days.length - 1] || days[d] != i) {
-                dp[i] = dp[i - 1];
-                continue;
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] t1, int[] t2) {
+                return Integer.compare(t1[0], t2[0]);
             }
-            d++;
-            int one = costs[0] + dp[i - 1];
-            int seven = costs[1] + ((i - 7) < 1 ? 0 : dp[i - 7]);
-            int thirty = costs[2] + ((i - 30) < 1 ? 0 : dp[i - 30]);
-            dp[i] = Math.min(one, Math.min(seven, thirty));
+        });
+        List<int[]> answer = new ArrayList<>();
 
+        int[] inter = intervals[0];
 
+        for (int i = 1; i < intervals.length; i++) {
+            int[] j = intervals[i];
+
+            if (j[0] > inter[1]) {
+                answer.add(inter);
+            } else {
+                inter = new int[]{Math.min(inter[0], j[0]), Math.max(inter[1], j[1])};
+            }
         }
+        answer.add(inter);
 
-        return dp[365];
+
+        return answer.toArray(new int[answer.size()][2]);
     }
 
 }
