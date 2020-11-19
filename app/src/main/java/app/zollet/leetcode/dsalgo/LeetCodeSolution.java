@@ -1,71 +1,48 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-import app.zollet.leetcode.dsalgo.util.TreeNodeUtill;
-
 public class LeetCodeSolution {
 
     public void execute() {
-
-        TreeNode root = TreeNodeUtill.insertLevelOrder(new int[]{1, 2, 3, 4, 5, 6, 7}, new TreeNode(1), 0);
-        List<List<Integer>> a = verticalTraversal(root);
-
+        String s = decodeString("3[a2[c]]");
     }
 
-    class Pair {
-        int first;
-        int second;
+    public String decodeString(String s) {
 
-        public Pair(int first, int second) {
-            this.first = first;
-            this.second = second;
-        }
-    }
+        StringBuilder sb = new StringBuilder();
 
-    public List<List<Integer>> verticalTraversal(TreeNode root) {
-
-        TreeMap<Integer, List<Pair>> map = new TreeMap<>();
-
-        solve(root, 0, 0, map);
-
-        List<List<Integer>> a = new ArrayList<>();
-        for (List<Pair> e : map.values()) {
-            List<Integer> l = new ArrayList<Integer>();
-            Collections.sort(e, new Comparator<Pair>() {
-                @Override
-                public int compare(Pair i1, Pair i2) {
-                    int c = Integer.compare(i1.first, i2.first);
-                    if (c != 0) return c;
-                    else
-                        return Integer.compare(i1.second, i2.second);
+        for (int i = 0; i < s.length(); ) {
+            if (s.charAt(i) >= 'a' && s.charAt(i) <= 'z') {
+                sb.append(s.charAt(i++));
+            } else {
+                StringBuilder a = new StringBuilder();
+                while (s.charAt(i) >= '0' && s.charAt(i) <= '9') {
+                    a.append(s.charAt(i));
+                    i++;
                 }
-            });
-            for (Pair p : e) {
-                l.add(p.second);
+
+                int count = Integer.parseInt(a.toString());
+
+                StringBuilder aa = new StringBuilder();
+                int b = 1;
+                i++;
+                while (b > 0) {
+                    if (s.charAt(i) == '[')
+                        b++;
+                    else if (s.charAt(i) == ']')
+                        b--;
+                    aa.append(s.charAt(i));
+                    i++;
+                }
+                aa.deleteCharAt(aa.length() - 1);
+                String d = decodeString(aa.toString());
+
+                for (int k = 0; k < count; k++) {
+                    sb.append(d);
+                }
             }
-            a.add(l);
         }
-        return a;
+        return sb.toString();
     }
-
-    private void solve(TreeNode root, int x, int y, Map<Integer, List<Pair>> map) {
-        if (root == null) return;
-
-        solve(root.left, x - 1, y + 1, map);
-        solve(root.right, x + 1, y + 1, map);
-
-        List<Pair> list = map.getOrDefault(x, new ArrayList<>());
-        list.add(new Pair(y, root.val));
-        map.put(x, list);
-    }
-
 
 }
