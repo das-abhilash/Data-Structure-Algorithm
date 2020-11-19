@@ -1,48 +1,44 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        String s = decodeString("3[a2[c]]");
+
     }
 
-    public String decodeString(String s) {
 
-        StringBuilder sb = new StringBuilder();
+    public List<Integer> addToArrayForm(int[] A, int K) {
+        int c = 0;
 
-        for (int i = 0; i < s.length(); ) {
-            if (s.charAt(i) >= 'a' && s.charAt(i) <= 'z') {
-                sb.append(s.charAt(i++));
-            } else {
-                StringBuilder a = new StringBuilder();
-                while (s.charAt(i) >= '0' && s.charAt(i) <= '9') {
-                    a.append(s.charAt(i));
-                    i++;
-                }
+        List<Integer> answer = new ArrayList<>();
 
-                int count = Integer.parseInt(a.toString());
-
-                StringBuilder aa = new StringBuilder();
-                int b = 1;
-                i++;
-                while (b > 0) {
-                    if (s.charAt(i) == '[')
-                        b++;
-                    else if (s.charAt(i) == ']')
-                        b--;
-                    aa.append(s.charAt(i));
-                    i++;
-                }
-                aa.deleteCharAt(aa.length() - 1);
-                String d = decodeString(aa.toString());
-
-                for (int k = 0; k < count; k++) {
-                    sb.append(d);
-                }
-            }
+        for (int i = A.length - 1; i >= 0; i--) {
+            int r = K % 10;
+            K = K / 10;
+            int s = A[i] + r + c;
+            answer.add(s % 10);
+            c = s / 10;
         }
-        return sb.toString();
+
+        while (K != 0) {
+            int r = K % 10;
+            K = K / 10;
+            int s = r + c;
+            answer.add(s % 10);
+            c = s / 10;
+        }
+
+        if (c != 0)
+            answer.add(c);
+
+        Collections.reverse(answer);
+
+        return answer;
     }
 
 }
