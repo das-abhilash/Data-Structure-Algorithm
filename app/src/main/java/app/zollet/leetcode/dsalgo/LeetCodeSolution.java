@@ -1,87 +1,60 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import app.zollet.leetcode.dsalgo.util.TreeNode;
+import app.zollet.leetcode.dsalgo.util.TreeNodeUtill;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        boolean a = search(new int[]{2, 5, 6, 0, 0, 1, 2}, 5);
+
+        TreeNode root = TreeNodeUtill.insertLevelOrder(new int[]{1, 2, 3, -1, 4, -1, 5}, new TreeNode(1), 0);
+
+        boolean a = isCousins(root, 5, 4);
     }
 
+    TreeNode NX = null;
+    TreeNode NY = null;
+    int DX = 0;
+    int DY = 0;
 
-    public boolean search(int[] nums, int target) {
+    public boolean isCousins(TreeNode root, int x, int y) {
 
-        int l = 0;
-        int r = nums.length - 1;
+        if (root == null) return false;
 
-        while (l <= r) {
-
-            int mid = l + (r - l) / 2;
-            if (nums[mid] == target) return true;
-            if (nums[l] == target) return true;
-            if (nums[r] == target) return true;
-
-            if (nums[mid] == nums[r]) {
-                l++;
-                continue;
-            }
-
-            if (nums[mid] > nums[r]) {
-                if (target < nums[mid] && target > nums[l]) {
-                    r = mid - 1;
-                } else {
-                    l = mid + 1;
-                }
-            } else {
-                if (target > nums[mid] && target < nums[r]) {
-                    l = mid + 1;
-                } else {
-                    r = mid - 1;
-                }
-            }
-        }
-        return false;
+        findX(root, x, 0);
+        findY(root, y, 0);
+        return NX != NY && DX == DY;
     }
 
-    /*public boolean search(int[] nums, int target) {
-        if (nums.length == 0) return false;
-        int l = 0;
-        int r = nums.length - 1;
-
-        while (l < r) {
-
-            int mid = l + (r - l) / 2;
-
-            if (nums[mid] > nums[r]) {
-                l = mid + 1;
-            } else if (nums[mid] < nums[r]) {
-                r = mid;
-            } else {
-//                l++;
-                r--;
-            }
+    private void findX(TreeNode node, int f, int d) {
+        if (node == null) return;
+        if (node.left != null && node.left.val == f) {
+            NX = node;
+            DX = d+1;
+            return;
+        } else if (node.right != null && node.right.val == f) {
+            NX = node;
+            DX = d+1;
+            return;
         }
-
-        if (target == nums[nums.length - 1]) return true;
-        if (target > nums[nums.length - 1]) {
-            r = l - 1;
-            l = 0;
-        } else {
-            r = nums.length - 1;
-        }
-
-        while (l <= r) {
-            int mid = l + (r - l) / 2;
-
-            if (nums[mid] == target) return true;
-
-            if (nums[mid] > target) {
-                r = mid - 1;
-            } else {
-                l = mid + 1;
-            }
-
-        }
-        return false;
+        findX(node.left, f, d + 1);
+        findX(node.right, f, d + 1);
     }
-*/
+
+    private void findY(TreeNode node, int f, int d) {
+        if (node == null) return;
+        if (node.left != null && node.left.val == f) {
+            NY = node;
+            DY = d+1;
+            return;
+        } else if (node.right != null && node.right.val == f) {
+            NY = node;
+            DY = d+1;
+            return;
+        }
+        findY(node.left, f, d + 1);
+        findY(node.right, f, d + 1);
+    }
+
 }
