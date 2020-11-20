@@ -1,44 +1,87 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class LeetCodeSolution {
 
     public void execute() {
-
+        boolean a = search(new int[]{2, 5, 6, 0, 0, 1, 2}, 5);
     }
 
 
-    public List<Integer> addToArrayForm(int[] A, int K) {
-        int c = 0;
+    public boolean search(int[] nums, int target) {
 
-        List<Integer> answer = new ArrayList<>();
+        int l = 0;
+        int r = nums.length - 1;
 
-        for (int i = A.length - 1; i >= 0; i--) {
-            int r = K % 10;
-            K = K / 10;
-            int s = A[i] + r + c;
-            answer.add(s % 10);
-            c = s / 10;
+        while (l <= r) {
+
+            int mid = l + (r - l) / 2;
+            if (nums[mid] == target) return true;
+            if (nums[l] == target) return true;
+            if (nums[r] == target) return true;
+
+            if (nums[mid] == nums[r]) {
+                l++;
+                continue;
+            }
+
+            if (nums[mid] > nums[r]) {
+                if (target < nums[mid] && target > nums[l]) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            } else {
+                if (target > nums[mid] && target < nums[r]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
         }
-
-        while (K != 0) {
-            int r = K % 10;
-            K = K / 10;
-            int s = r + c;
-            answer.add(s % 10);
-            c = s / 10;
-        }
-
-        if (c != 0)
-            answer.add(c);
-
-        Collections.reverse(answer);
-
-        return answer;
+        return false;
     }
 
+    /*public boolean search(int[] nums, int target) {
+        if (nums.length == 0) return false;
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l < r) {
+
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] > nums[r]) {
+                l = mid + 1;
+            } else if (nums[mid] < nums[r]) {
+                r = mid;
+            } else {
+//                l++;
+                r--;
+            }
+        }
+
+        if (target == nums[nums.length - 1]) return true;
+        if (target > nums[nums.length - 1]) {
+            r = l - 1;
+            l = 0;
+        } else {
+            r = nums.length - 1;
+        }
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] == target) return true;
+
+            if (nums[mid] > target) {
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+
+        }
+        return false;
+    }
+*/
 }
