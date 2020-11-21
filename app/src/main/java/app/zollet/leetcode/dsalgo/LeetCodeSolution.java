@@ -1,60 +1,60 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-import app.zollet.leetcode.dsalgo.util.TreeNodeUtill;
+import java.util.Arrays;
 
 public class LeetCodeSolution {
 
     public void execute() {
 
-        TreeNode root = TreeNodeUtill.insertLevelOrder(new int[]{1, 2, 3, -1, 4, -1, 5}, new TreeNode(1), 0);
-
-        boolean a = isCousins(root, 5, 4);
+        int a = atMostNGivenDigitSet(new String[]{"1", "3", "7", "8"}, 873);
     }
 
-    TreeNode NX = null;
-    TreeNode NY = null;
-    int DX = 0;
-    int DY = 0;
+    public int atMostNGivenDigitSet(String[] digits, int n) {
 
-    public boolean isCousins(TreeNode root, int x, int y) {
+        Arrays.sort(digits);
 
-        if (root == null) return false;
+        long a = 0;
+        int K = n;
 
-        findX(root, x, 0);
-        findY(root, y, 0);
-        return NX != NY && DX == DY;
-    }
-
-    private void findX(TreeNode node, int f, int d) {
-        if (node == null) return;
-        if (node.left != null && node.left.val == f) {
-            NX = node;
-            DX = d+1;
-            return;
-        } else if (node.right != null && node.right.val == f) {
-            NX = node;
-            DX = d+1;
-            return;
+        int d = 0;
+        while (K != 0) {
+            K = K / 10;
+            d++;
         }
-        findX(node.left, f, d + 1);
-        findX(node.right, f, d + 1);
-    }
 
-    private void findY(TreeNode node, int f, int d) {
-        if (node == null) return;
-        if (node.left != null && node.left.val == f) {
-            NY = node;
-            DY = d+1;
-            return;
-        } else if (node.right != null && node.right.val == f) {
-            NY = node;
-            DY = d+1;
-            return;
+        for (int i = 0; i < d - 1; i++) {
+            a += Math.pow(digits.length, i + 1);
         }
-        findY(node.left, f, d + 1);
-        findY(node.right, f, d + 1);
+
+        a += solve(n, digits, d);
+
+        return (int) a;
     }
 
+    private int solve(int n, String[] digits, int d) {
+        long a = 0;
+        if (d == 1) {
+            for (String digit : digits) {
+                if (Integer.parseInt(digit) > n)
+                    break;
+                else
+                    a++;
+            }
+            return (int) a;
+        }
+        int l = (int) (n / Math.pow(10, d - 1));
+
+        for (String digit : digits) {
+            if (Integer.parseInt(digit) < l) {
+                a += Math.pow(digits.length, d - 1);
+            } else if (Integer.parseInt(digit) == l) {
+                int aa = (int) (n % Math.pow(10, d - 1));
+                a += solve(aa, digits, d - 1);
+            } else {
+                break;
+            }
+        }
+        return (int) a;
+    }
 }
