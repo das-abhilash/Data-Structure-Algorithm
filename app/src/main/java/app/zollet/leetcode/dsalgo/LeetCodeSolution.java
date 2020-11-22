@@ -1,35 +1,46 @@
 package app.zollet.leetcode.dsalgo;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class LeetCodeSolution {
     public void execute() {
-        String a = getSmallestString(5,31);
+        int a = minimumEffort(new int[][]{
+                {3, 3},
+                {1, 6},
+                {1, 10},
+                {1, 2},
+                {4, 7},
+                {2, 4}
+        });
     }
 
-    public String getSmallestString(int n, int k) {
+    public int minimumEffort(int[][] tasks) {
+        if (tasks.length == 0) return 0;
+        Arrays.sort(tasks, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                return Integer.compare( (a[1] - a[0]) , (b[1] - b[0]))*-1;
+            }
+        });
+        int a = solve(tasks);
+        return a;
+    }
+    private int solve(int[][] tasks) {
+        int a = tasks[0][1];
+        int l = a - tasks[0][0];
 
-        int[] a = new int[n];
-        Arrays.fill(a, 1);
+        for (int i = 1; i < tasks.length; i++) {
+            int[] t = tasks[i];
 
-        k = k - n;
-
-        for (int i = a.length - 1; i >= 0; i--) {
-            if (k < 26) {
-                a[i] = k +1;
-                break;
+            if (t[1] > l) {
+                a += (t[1] - l);
+                l = t[1] - t[0];
             } else {
-                a[i] = 26;
-                k = k + 1 - 26;
+                l = l - t[0];
             }
         }
-
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < a.length; i++) {
-            sb.append((char) (a[i] + 'a' -1));
-        }
-        return sb.toString();
+        return a;
     }
 
 }
