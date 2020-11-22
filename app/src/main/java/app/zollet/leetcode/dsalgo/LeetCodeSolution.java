@@ -1,46 +1,33 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LeetCodeSolution {
     public void execute() {
-        int a = minimumEffort(new int[][]{
-                {3, 3},
-                {1, 6},
-                {1, 10},
-                {1, 2},
-                {4, 7},
-                {2, 4}
-        });
+
     }
 
-    public int minimumEffort(int[][] tasks) {
-        if (tasks.length == 0) return 0;
-        Arrays.sort(tasks, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] a, int[] b) {
-                return Integer.compare( (a[1] - a[0]) , (b[1] - b[0]))*-1;
-            }
-        });
-        int a = solve(tasks);
-        return a;
-    }
-    private int solve(int[][] tasks) {
-        int a = tasks[0][1];
-        int l = a - tasks[0][0];
 
-        for (int i = 1; i < tasks.length; i++) {
-            int[] t = tasks[i];
+    public int uniqueMorseRepresentations(String[] words) {
 
-            if (t[1] > l) {
-                a += (t[1] - l);
-                l = t[1] - t[0];
-            } else {
-                l = l - t[0];
-            }
+        String[] m = new String[]{".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
+
+        Set<String> set = new HashSet<>();
+
+        for (int i = 0; i < words.length; i++) {
+            set.add(code(words[i], m));
         }
-        return a;
+        return set.size();
+    }
+
+    private String code(String words, String[] m) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < words.length(); i++) {
+            sb.append(sb.charAt(i) - 'a');
+        }
+        return sb.toString();
     }
 
 }
