@@ -1,22 +1,35 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.Arrays;
+
 public class LeetCodeSolution {
     public void execute() {
+        String a = getSmallestString(5,31);
     }
 
-    public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
+    public String getSmallestString(int n, int k) {
+
+        int[] a = new int[n];
+        Arrays.fill(a, 1);
+
+        k = k - n;
+
+        for (int i = a.length - 1; i >= 0; i--) {
+            if (k < 26) {
+                a[i] = k +1;
+                break;
+            } else {
+                a[i] = 26;
+                k = k + 1 - 26;
+            }
+        }
 
         StringBuilder sb = new StringBuilder();
-        for (String s : word1) {
-            sb.append(s);
-        }
 
-        StringBuilder sb1 = new StringBuilder();
-        for (String s : word2) {
-            sb1.append(s);
+        for (int i = 0; i < a.length; i++) {
+            sb.append((char) (a[i] + 'a' -1));
         }
-
-        return sb.toString().equals(sb1.toString());
+        return sb.toString();
     }
 
 }
