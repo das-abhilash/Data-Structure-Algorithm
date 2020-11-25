@@ -1,77 +1,32 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.Arrays;
 
 public class LeetCodeSolution {
+
     public void execute() {
-        int a = calculate("4/3+2");
+        int a = findJudge(1,new int[][]{});
     }
 
-    public int calculate(String s) {
+    public int findJudge(int N, int[][] trust) {
+        int[] c = new int[N];
+        Arrays.fill(c, 0);
+        for (int[] ints : trust) {
+            c[ints[1] - 1]++;
+            c[ints[0] - 1]--;
+        }
 
-        String in = s.replaceAll(" ", "");
-        Stack<Character> sign = new Stack<>();
-        Stack<Integer> val = new Stack<>();
+        int a = -1;
 
-        Set<Character> cc = new HashSet<Character>();
-        cc.add('+');
-        cc.add('-');
-        cc.add('*');
-        cc.add('/');
-
-        for (int i = 0; i < in.length(); i++) {
-            if (cc.contains(in.charAt(i))) {
-                if (in.charAt(i) == '*') {
-                    int v = 0;
-                    i++;
-                    while (i < in.length() && !cc.contains(in.charAt(i))) {
-                        v = (v * 10 + Integer.parseInt(String.valueOf(in.charAt(i))));
-                        i++;
-                    }
-                    int jj = val.pop() * v;
-                    val.push(jj);
-                    if (i != in.length())
-                        i--;
-                } else if (in.charAt(i) == '/') {
-                    int v = 0;
-                    i++;
-                    while (i < in.length() && !cc.contains(in.charAt(i))) {
-                        v = (v * 10 + Integer.parseInt(String.valueOf(in.charAt(i))));
-                        i++;
-                    }
-
-                    int jj = val.pop() / v;
-                    val.push(jj);
-                    if (i != in.length())
-                        i--;
-                } else {
-                    sign.push(in.charAt(i));
-                }
-            } else {
-
-                int v = 0;
-                while (i < in.length() && !cc.contains(in.charAt(i))) {
-                    v = (v * 10 + Integer.parseInt(String.valueOf(in.charAt(i))));
-                    i++;
-                }
-                val.push(v);
-                if (i != in.length())
-                    i--;
+        for (int i = 0; i < N; i++) {
+            if (c[i] == N - 1) {
+                if (a == -1)
+                    a = i;
+                else
+                    return -1;
             }
         }
-
-        int aa = 0;
-        int mm = 0;
-        while (val.size() > 1) {
-            int v = val.pop();
-            int si = sign.pop();
-            if (si == '+')
-                aa += v;
-            else
-                mm += v;
-        }
-        return val.pop() + aa - mm;
+        return a == -1 ? -1 : a + 1;
     }
+
 }
