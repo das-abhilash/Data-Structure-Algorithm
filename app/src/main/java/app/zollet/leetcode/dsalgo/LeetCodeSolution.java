@@ -1,32 +1,62 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.Arrays;
-
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = findJudge(1,new int[][]{});
     }
 
-    public int findJudge(int N, int[][] trust) {
-        int[] c = new int[N];
-        Arrays.fill(c, 0);
-        for (int[] ints : trust) {
-            c[ints[1] - 1]++;
-            c[ints[0] - 1]--;
-        }
+    public int numRookCaptures(char[][] board) {
 
-        int a = -1;
-
-        for (int i = 0; i < N; i++) {
-            if (c[i] == N - 1) {
-                if (a == -1)
-                    a = i;
-                else
-                    return -1;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 'R') {
+                    return find(board, i, j);
+                }
             }
         }
-        return a == -1 ? -1 : a + 1;
+        return 0;
+    }
+
+    private int find(char[][] board, int i, int j) {
+        int a = 0;
+
+        for (int k = i - 1; k >= 0; k--) {
+            if (board[k][j] == 'p') {
+                a++;
+                break;
+            } else if (board[k][j] == 'B') {
+                break;
+            }
+        }
+
+        for (int k = i + 1; k <8; k++) {
+            if (board[k][j] == 'p') {
+                a++;
+                break;
+            } else if (board[k][j] == 'B') {
+                break;
+            }
+        }
+
+        for (int k = j - 1; k >= 0; k--) {
+            if (board[i][k] == 'p') {
+                a++;
+                break;
+            } else if (board[i][k] == 'B') {
+                break;
+            }
+        }
+
+        for (int k = i + 1; k < 8; k++) {
+            if (board[i][k] == 'p') {
+                a++;
+                break;
+            } else if (board[i][k] == 'B') {
+                break;
+            }
+        }
+
+        return a;
     }
 
 }
