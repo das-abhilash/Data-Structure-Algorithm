@@ -1,100 +1,53 @@
 package app.zollet.leetcode.dsalgo;
 
-import androidx.annotation.Nullable;
-
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int[] a = gridIllumination(5, new int[][]{
-                {0, 0}, {4, 4}
-        }, new int[][]{
-                {1, 1}, {1, 0}
-        });
+        boolean b = canPartition(new int[]{1, 2, 3, 4, 5});
     }
 
-    class Pair {
-        int first;
-        int second;
-
-        public Pair(int first, int second) {
-            this.first = first;
-            this.second = second;
+    public boolean canPartition(int[] nums) {
+        if (nums.length == 0) return false;
+        Map<Integer, Integer> map = new HashMap<>();
+        Map<String, Boolean> dp = new HashMap<>();
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
         }
 
-        @Override
-        public boolean equals(@Nullable Object obj) {
-            if (!(obj instanceof Pair)) return false;
-            return ((Pair) obj).first == this.first && ((Pair) obj).second == this.second;
-        }
+        return solve(map, dp, 0, sum);
     }
 
-    public int[] gridIllumination(int N, int[][] lamps, int[][] queries) {
-
-        if (N == 0) return new int[]{};
-
-        Set<String> set = new HashSet<>();
-
-        for (int i = 0; i < lamps.length; i++) {
-            set.add(lamps[i][0] + "_" + lamps[i][1]);
+    private boolean solve(Map<Integer, Integer> map, Map<String, Boolean> dp, int till, int sum) {
+        if (sum == till) return true;
+        if (sum < till) return false;
+        if (dp.containsKey(till + "-" + sum)) {
+            return dp.get(till + "-" + sum);
         }
 
-        int[] a = new int[queries.length];
+        Set<Integer> keys = map.keySet();
 
-        for (int i = 0; i < queries.length; i++) {
-
-            int[] q = queries[i];
-            for (String l : set) {
-                String[] ss = l.split("_");
-                int first = Integer.parseInt(ss[0]);
-                int second = Integer.parseInt(ss[1]);
-                if (first == q[0]) {
-                    a[i] = 1;
-                    break;
-                } else if (second == q[1]) {
-                    a[i] = 1;
-                    break;
-                } else if (Math.abs(first - q[0]) == Math.abs(second - q[1])) {
-                    a[i] = 1;
-                    break;
-                }
+        for (int k : keys) {
+            if (map.get(k) <= 0) continue;
+            sum = sum - k;
+            till = till + k;
+            map.put(k, map.get(k) - 1);
+            if (solve(map, dp, till, sum)) {
+                dp.put(till + "-" + sum, true);
+                return true;
             }
-
-            set.remove(q[0] + "_" + q[1]);
-            if (q[0] + 1 < N) {
-                set.remove(q[0] + 1 + "_" + q[1]);
-
-            }
-
-            if (q[1] + 1 < N) {
-                set.remove(q[0] + "_" + (q[1] + 1));
-            }
-
-            if (q[0] - 1 >= 0) {
-                set.remove(q[0] - 1 + "_" + q[1]);
-            }
-
-            if (q[1] - 1 < N) {
-                set.remove(q[0] + "_" + (q[1] - 1));
-            }
-
-            if (q[0] + 1 < N && q[1] + 1 < N)
-                set.remove(q[0] + 1 + "_" + (q[1] + 1));
-
-            if (q[0] - 1 >= 0 && q[1] - 1 >= 0)
-                set.remove(q[0] - 1 + "_" + (q[1] - 1));
-
-            if (q[0] + 1 < N && q[1] - 1 >= 0)
-                set.remove(q[0] + 1 + "_" + (q[1] - 1));
-
-            if (q[0] - 1 >= 0 && q[1] + 1 < N)
-                set.remove(q[0] - 1 + "_" + (q[1] + 1));
-
+            dp.put(till + "-" + sum, false);
+            map.put(k, map.getOrDefault(k, 0) + 1);
+            sum = sum + k;
+            till = till - k;
         }
-
-        return a;
+        return false;
     }
+
 
 }
