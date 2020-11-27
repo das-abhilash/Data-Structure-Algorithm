@@ -1,64 +1,100 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.Arrays;
+import androidx.annotation.Nullable;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = longestSubstring("aaabb", 3);
+        int[] a = gridIllumination(5, new int[][]{
+                {0, 0}, {4, 4}
+        }, new int[][]{
+                {1, 1}, {1, 0}
+        });
     }
 
-    public int longestSubstring(String s, int k) {
-        if (k > s.length()) return 0;
-        if (s.length() == 0) return 0;
-        if (k == 0 || k == 1) return s.length();
+    class Pair {
+        int first;
+        int second;
 
-        int[] c = new int[26];
-        Arrays.fill(c, 0);
-
-        for (int i = 0; i < s.length(); i++) {
-            c[s.charAt(i) - 'a']++;
-
-        }
-        int max = 0;
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < 26; i++) {
-            max = Math.max(max, c[i]);
-            if (c[i] != 0)
-                min = Math.min(min, c[i]);
+        public Pair(int first, int second) {
+            this.first = first;
+            this.second = second;
         }
 
-        if (max < k) return 0;
-        if (min >= k) return s.length();
-        if (k == s.length() && max == k) return s.length();
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (!(obj instanceof Pair)) return false;
+            return ((Pair) obj).first == this.first && ((Pair) obj).second == this.second;
+        }
+    }
 
-        int a = 0;
+    public int[] gridIllumination(int N, int[][] lamps, int[][] queries) {
 
-        int l = -1;
-        for (int i = 0; i < s.length(); i++) {
-            if (c[s.charAt(i) - 'a'] < k) {
-                a = Math.max(a, longestSubstring(s.substring(l + 1, i), k));
-                l = i;
+        if (N == 0) return new int[]{};
+
+        Set<String> set = new HashSet<>();
+
+        for (int i = 0; i < lamps.length; i++) {
+            set.add(lamps[i][0] + "_" + lamps[i][1]);
+        }
+
+        int[] a = new int[queries.length];
+
+        for (int i = 0; i < queries.length; i++) {
+
+            int[] q = queries[i];
+            for (String l : set) {
+                String[] ss = l.split("_");
+                int first = Integer.parseInt(ss[0]);
+                int second = Integer.parseInt(ss[1]);
+                if (first == q[0]) {
+                    a[i] = 1;
+                    break;
+                } else if (second == q[1]) {
+                    a[i] = 1;
+                    break;
+                } else if (Math.abs(first - q[0]) == Math.abs(second - q[1])) {
+                    a[i] = 1;
+                    break;
+                }
             }
+
+            set.remove(q[0] + "_" + q[1]);
+            if (q[0] + 1 < N) {
+                set.remove(q[0] + 1 + "_" + q[1]);
+
+            }
+
+            if (q[1] + 1 < N) {
+                set.remove(q[0] + "_" + (q[1] + 1));
+            }
+
+            if (q[0] - 1 >= 0) {
+                set.remove(q[0] - 1 + "_" + q[1]);
+            }
+
+            if (q[1] - 1 < N) {
+                set.remove(q[0] + "_" + (q[1] - 1));
+            }
+
+            if (q[0] + 1 < N && q[1] + 1 < N)
+                set.remove(q[0] + 1 + "_" + (q[1] + 1));
+
+            if (q[0] - 1 >= 0 && q[1] - 1 >= 0)
+                set.remove(q[0] - 1 + "_" + (q[1] - 1));
+
+            if (q[0] + 1 < N && q[1] - 1 >= 0)
+                set.remove(q[0] + 1 + "_" + (q[1] - 1));
+
+            if (q[0] - 1 >= 0 && q[1] + 1 < N)
+                set.remove(q[0] - 1 + "_" + (q[1] + 1));
+
         }
 
-        if (l < s.length())
-            a = Math.max(a, longestSubstring(s.substring(l + 1), k));
         return a;
-    }
-
-    private int find(String s, int k) {
-        if (s.length() == 0) return 0;
-
-        int[] c = new int[26];
-        for (int i = 0; i < s.length(); i++) {
-            c[s.charAt(i) - 'a']++;
-        }
-
-        for (int i = 0; i < 26; i++) {
-            if (c[i] > 0 && c[i] < k) return 0;
-        }
-        return s.length();
     }
 
 }
