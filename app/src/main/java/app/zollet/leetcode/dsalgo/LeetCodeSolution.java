@@ -45,7 +45,7 @@ public class LeetCodeSolution {
         }
 
         public void pushBack(int val) {
-            list.add(list.size() / 2, val);
+            list.add(list.size(), val);
         }
 
         public int popFront() {
