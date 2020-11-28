@@ -1,33 +1,37 @@
 package app.zollet.leetcode.dsalgo;
 
+import app.zollet.leetcode.dsalgo.util.ListNode;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = maxRepeating("aaa", "a");
     }
 
-    public int maxRepeating(String sequence, String word) {
-        if (word.length() > sequence.length()) return 0;
-        if (sequence.length() == 0 || word.length() == 0) return 0;
-        if (sequence.equals(word)) return 1;
+    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
 
-        int t = 1;
-
-        int a = 0;
-
-        StringBuilder sb = new StringBuilder(sequence);
-        for (int i = 0; i <= sequence.length() - word.length(); i++) {
-            if (sb.substring(i, i+word.length()).equals(word)) {
-                int l = 1;
-                int j = i + word.length();
-                while (j + word.length() <= sequence.length() && sb.toString().substring(j, j + word.length()).equals(word)) {
-                    l++;
-                    j = j + word.length();
-                }
-                a = Math.max(a, l);
-            }
+        int index = 0;
+        ListNode cur = list1;
+        while (index + 1 != a) {
+            cur = cur.next;
+            index++;
         }
-        return a;
+
+        ListNode tmp = cur.next;
+        cur.next = list2;
+        ListNode cur2 = list2;
+
+        while (cur2.next != null) {
+            cur2 = cur2.next;
+        }
+
+
+        while (index+1 != b) {
+            tmp = tmp.next;
+            index++;
+        }
+        ListNode tmpp = tmp.next;
+        cur2.next = tmpp;
+        return list1;
     }
 
 }
