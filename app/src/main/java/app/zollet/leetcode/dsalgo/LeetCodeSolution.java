@@ -1,37 +1,79 @@
 package app.zollet.leetcode.dsalgo;
 
-import app.zollet.leetcode.dsalgo.util.ListNode;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LeetCodeSolution {
 
     public void execute() {
+
+        FrontMiddleBackQueue q = new FrontMiddleBackQueue();
+        q.pushFront(1);
+        q.pushFront(2);
+        q.pushFront(3);
+        q.pushFront(4);
+        /*q.popFront();
+        q.popMiddle();
+        q.popMiddle();
+        q.popBack();
+        q.popFront();*/
+        q.popBack();
+        q.popBack();
+        q.popBack();
+        q.popBack();
+
     }
 
-    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+    class FrontMiddleBackQueue {
 
-        int index = 0;
-        ListNode cur = list1;
-        while (index + 1 != a) {
-            cur = cur.next;
-            index++;
+        List<Integer> list;
+
+        public FrontMiddleBackQueue() {
+            list = new ArrayList<>();
         }
 
-        ListNode tmp = cur.next;
-        cur.next = list2;
-        ListNode cur2 = list2;
+        public void pushFront(int val) {
+            list.add(0, val);
 
-        while (cur2.next != null) {
-            cur2 = cur2.next;
         }
 
-
-        while (index+1 != b) {
-            tmp = tmp.next;
-            index++;
+        public void pushMiddle(int val) {
+            if (list.size() % 2 == 0)
+                list.add((list.size() + 1) / 2, val);
+            else
+                list.add(list.size() / 2, val);
         }
-        ListNode tmpp = tmp.next;
-        cur2.next = tmpp;
-        return list1;
+
+        public void pushBack(int val) {
+            list.add(list.size() / 2, val);
+        }
+
+        public int popFront() {
+            if (list.size() == 0) return -1;
+            int a = list.get(0);
+            list.remove(0);
+            return a;
+        }
+
+        public int popMiddle() {
+            if (list.size() == 0) return -1;
+            int a;
+            if (list.size() % 2 == 0) {
+                a = list.get((list.size() - 1) / 2);
+                list.remove((list.size() - 1) / 2);
+            } else {
+                a = list.get(list.size() / 2);
+                list.remove((list.size()) / 2);
+            }
+            return a;
+        }
+
+        public int popBack() {
+            if (list.size() == 0) return -1;
+            int a = list.get(list.size() - 1);
+            list.remove(list.size() - 1);
+            return a;
+        }
     }
 
 }
