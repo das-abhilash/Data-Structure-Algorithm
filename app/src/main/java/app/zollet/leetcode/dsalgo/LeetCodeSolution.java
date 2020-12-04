@@ -10,47 +10,14 @@ public class LeetCodeSolution {
     public void execute() {
     }
 
-    List<Integer> list = new ArrayList<>();
-
-    public TreeNode increasingBST(TreeNode root) {
-        list = new ArrayList<>();
-        solve(root);
-
-        if (list.size() == 0) return null;
-        TreeNode treeNode = new TreeNode(list.get(0));
-
-        TreeNode cur = treeNode;
-        for (int i = 1; i < list.size(); i++) {
-            cur.right = new TreeNode(list.get(i));
-            cur = cur.right;
-
+    public int kthFactor(int n, int k) {
+        int c=0;
+        for(int i = 1;i<= n;i++ ){
+            if(n%i == 0)
+                c++;
+            if(c == k) return i;
         }
-        return treeNode;
+        return -1;
     }
-
-    private void solve(TreeNode root) {
-        if (root == null) return;
-        solve(root.left);
-        list.add(root.val);
-        solve(root.right);
-    }
-
-    /*private TreeNode solve(TreeNode node) {
-        if (node == null) return null;
-
-        TreeNode left = solve(node.left);
-        if (left == null) {
-            if (node.right == null) {
-                return node;
-            }
-            return node.right;
-        } else if (node.right == null) {
-            left.right = node;
-            return node;
-        } else {
-            left.right = node;
-            return node.right;
-        }
-    }*/
 
 }
