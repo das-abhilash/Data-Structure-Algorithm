@@ -1,23 +1,25 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
-    public int kthFactor(int n, int k) {
-        int c=0;
-        for(int i = 1;i<= n;i++ ){
-            if(n%i == 0)
-                c++;
-            if(c == k) return i;
+    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+
+        if (n == 0) return true;
+
+        for (int i = 0; i < flowerbed.length; i++) {
+            if (flowerbed[i] == 1) continue;
+            boolean p = (i == 0) || flowerbed[i - 1] == 0;
+            boolean a = (i == flowerbed.length - 1) || flowerbed[i + 1] == 0;
+            if (p && a) {
+                n--;
+                flowerbed[i] = 1;
+            }
+            if (n == 0) return true;
         }
-        return -1;
+        return n == 0;
     }
 
 }
