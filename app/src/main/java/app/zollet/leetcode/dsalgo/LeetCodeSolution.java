@@ -5,21 +5,23 @@ public class LeetCodeSolution {
     public void execute() {
     }
 
-    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+    public String interpret(String command) {
+        StringBuilder s = new StringBuilder();
 
-        if (n == 0) return true;
-
-        for (int i = 0; i < flowerbed.length; i++) {
-            if (flowerbed[i] == 1) continue;
-            boolean p = (i == 0) || flowerbed[i - 1] == 0;
-            boolean a = (i == flowerbed.length - 1) || flowerbed[i + 1] == 0;
-            if (p && a) {
-                n--;
-                flowerbed[i] = 1;
+        for (int i = 0; i < command.length(); i++) {
+            if (command.charAt(i) == 'G')
+                s.append(command.charAt(i));
+            else {
+                if (command.charAt(i + 1) == ')') {
+                    s.append('o');
+                    i++;
+                } else {
+                    s.append("al");
+                    i += 3;
+                }
             }
-            if (n == 0) return true;
         }
-        return n == 0;
+        return s.toString();
     }
 
 }
