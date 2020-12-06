@@ -1,27 +1,29 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LeetCodeSolution {
 
     public void execute() {
+        int a = maxOperations(new int[]{1, 2, 3, 4}, 5);
     }
 
-    public String interpret(String command) {
-        StringBuilder s = new StringBuilder();
+    public int maxOperations(int[] nums, int k) {
 
-        for (int i = 0; i < command.length(); i++) {
-            if (command.charAt(i) == 'G')
-                s.append(command.charAt(i));
-            else {
-                if (command.charAt(i + 1) == ')') {
-                    s.append('o');
-                    i++;
-                } else {
-                    s.append("al");
-                    i += 3;
-                }
+        Map<Integer, Integer> set = new HashMap<>();
+        int a = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            int v = nums[i];
+            if (set.containsKey(v) && set.get(v) > 0) {
+                a++;
+                set.put(v, set.get(v) - 1);
+            } else {
+                set.put(k-v, set.getOrDefault(k-v, 0) + 1);
             }
         }
-        return s.toString();
+        return a;
     }
 
 }
