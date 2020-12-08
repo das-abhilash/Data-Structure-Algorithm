@@ -1,56 +1,26 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.Arrays;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        int[][] g = generateMatrix(3);
+        int a = numPairsDivisibleBy60(new int[]{30, 20, 150, 100, 40});
     }
 
-    public int[][] generateMatrix(int n) {
-        int[][] grid = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                grid[i][j] = -1;
+    public int numPairsDivisibleBy60(int[] time) {
+
+        int[] dp = new int[61];
+        Arrays.fill(dp, 0);
+        int a = 0;
+        for (int t : time) {
+            int r = t % 60;
+            if (dp[r == 0 ? 60 : 60 - r] != 0) {
+                a += dp[r == 0 ? 60 : 60 - r];
             }
+            dp[r == 0 ? 60 :r]++;
         }
-
-        solveLR(grid, 0, 0, 1, n);
-        return grid;
+        return a;
     }
 
-    private void solveLR(int[][] grid, int x, int y, int v, int n) {
-        if (x < 0 || y < 0 || x >= n || y >= n || grid[x][y] != -1) return;
-
-        for (; y < n && grid[x][y] == -1; y++) {
-            grid[x][y] = v++;
-        }
-        solveTB(grid, x+1, y-1, v, n);
-    }
-
-    private void solveTB(int[][] grid, int x, int y, int v, int n) {
-        if (x < 0 || y < 0 || x >= n || y >= n || grid[x][y] != -1) return;
-
-        for (; x < n && grid[x][y] == -1; x++) {
-            grid[x][y] = v++;
-        }
-        solveRL(grid, x-1, y-1, v, n);
-    }
-
-    private void solveRL(int[][] grid, int x, int y, int v, int n) {
-        if (x < 0 || y < 0 || x >= n || y >= n || grid[x][y] != -1) return;
-
-        for (; y >= 0 && grid[x][y] == -1; y--) {
-            grid[x][y] = v++;
-        }
-        solveBT(grid, x-1, y+1, v, n);
-    }
-
-    private void solveBT(int[][] grid, int x, int y, int v, int n) {
-        if (x < 0 || y < 0 || x >= n || y >= n || grid[x][y] != -1) return;
-
-        for (; x >= 0 && grid[x][y] == -1; x--) {
-            grid[x][y] = v++;
-        }
-        solveLR(grid, x+1, y+1, v, n);
-    }
 }
