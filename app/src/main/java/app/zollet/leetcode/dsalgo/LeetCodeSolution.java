@@ -1,15 +1,31 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = bitwiseComplement(10);
+        int h = numDupDigitsAtMostN(8765);
     }
 
-    public int bitwiseComplement(int N) {
-        if (N == 0) return 1;
-        int l = (int) (Math.log(N) / Math.log(2)) + 1;
-        return N ^ ((int) Math.pow(2,l) -1);
-    }
+    public int numDupDigitsAtMostN(int N) {
+        if (N < 11) return 0;
+        int a = 1;
+        for (int i = 12; i <= N; i++) {
 
+            Set<Character> set = new HashSet<>();
+            String l = String.valueOf(i);
+
+            for (int j = 0; j < l.length(); j++) {
+                if (set.contains(l.charAt(j))) {
+                    a++;
+                    break;
+                } else
+                    set.add(l.charAt(j));
+            }
+        }
+        return a;
+    }
 }
