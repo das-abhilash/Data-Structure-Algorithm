@@ -34,14 +34,14 @@ public class LeetCodeSolution {
             y--;
             x++;
             t++;
-            if (l >= r && t >= b) break;
+            if (l >= r || t >= b) break;
             for (; x < b; x++) {
                 a.add(matrix[x][y]);
             }
             y--;
             x--;
             r--;
-            if (l >= r && t >= b) break;
+            if (l >= r || t >= b) break;
 
             for (; y >= l; y--) {
                 a.add(matrix[x][y]);
@@ -50,7 +50,7 @@ public class LeetCodeSolution {
             x--;
             b--;
 
-            if (l >= r && t >= b) break;
+            if (l >= r || t >= b) break;
 
             for (; x >= t; x--) {
                 a.add(matrix[x][y]);
@@ -58,7 +58,7 @@ public class LeetCodeSolution {
             x++;
             y++;
             l++;
-            if (l >= r && t >= b) break;
+            if (l >= r || t >= b) break;
 
         }
 
