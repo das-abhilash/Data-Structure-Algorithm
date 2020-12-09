@@ -3,38 +3,66 @@ package app.zollet.leetcode.dsalgo;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-
 public class LeetCodeSolution {
 
     public void execute() {
+        List<Integer> a = spiralOrder(new int[][]{
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12}
+        });
     }
 
-    class BSTIterator {
+    public List<Integer> spiralOrder(int[][] matrix) {
 
-        List<Integer> list;
-        int p = 0;
 
-        public BSTIterator(TreeNode root) {
-            list = new ArrayList<>();
-            bst(root);
-            p = 0;
+        List<Integer> a = new ArrayList<>();
+        int l = 0;
+        int r = matrix[0].length;
+        int t = 0;
+        int b = matrix.length;
+
+
+        int x = 0;
+        int y = 0;
+        while (true) {
+
+            int sdf = 0;
+            for (; y < r; y++) {
+                a.add(matrix[x][y]);
+            }
+            y--;
+            x++;
+            t++;
+            if (l >= r && t >= b) break;
+            for (; x < b; x++) {
+                a.add(matrix[x][y]);
+            }
+            y--;
+            x--;
+            r--;
+            if (l >= r && t >= b) break;
+
+            for (; y >= l; y--) {
+                a.add(matrix[x][y]);
+            }
+            y++;
+            x--;
+            b--;
+
+            if (l >= r && t >= b) break;
+
+            for (; x >= t; x--) {
+                a.add(matrix[x][y]);
+            }
+            x++;
+            y++;
+            l++;
+            if (l >= r && t >= b) break;
+
         }
 
-        private void bst(TreeNode root) {
-            if (root == null) return;
-            bst(root.left);
-            list.add(root.val);
-            bst(root.right);
-        }
-
-        public int next() {
-            return list.get(p++);
-        }
-
-        public boolean hasNext() {
-            return p < list.size() - 1;
-        }
+        return a;
     }
 
 }
