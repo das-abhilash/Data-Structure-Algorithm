@@ -1,31 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
+import app.zollet.leetcode.dsalgo.util.TreeNode;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int h = numDupDigitsAtMostN(8765);
     }
 
-    public int numDupDigitsAtMostN(int N) {
-        if (N < 11) return 0;
-        int a = 1;
-        for (int i = 12; i <= N; i++) {
+    class BSTIterator {
 
-            Set<Character> set = new HashSet<>();
-            String l = String.valueOf(i);
+        List<Integer> list;
+        int p = 0;
 
-            for (int j = 0; j < l.length(); j++) {
-                if (set.contains(l.charAt(j))) {
-                    a++;
-                    break;
-                } else
-                    set.add(l.charAt(j));
-            }
+        public BSTIterator(TreeNode root) {
+            list = new ArrayList<>();
+            bst(root);
+            p = 0;
         }
-        return a;
+
+        private void bst(TreeNode root) {
+            if (root == null) return;
+            bst(root.left);
+            list.add(root.val);
+            bst(root.right);
+        }
+
+        public int next() {
+            return list.get(p++);
+        }
+
+        public boolean hasNext() {
+            return p < list.size() - 1;
+        }
     }
+
 }
