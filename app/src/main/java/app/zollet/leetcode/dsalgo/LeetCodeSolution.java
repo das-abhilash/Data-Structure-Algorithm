@@ -1,30 +1,34 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class LeetCodeSolution {
 
     public void execute() {
 
     }
 
-    public boolean validMountainArray(int[] arr) {
-        if (arr.length < 3) return false;
+    public int removeDuplicates(int[] nums) {
 
-        int i = 1;
-
-        for (; i < arr.length; i++) {
-            if (arr[i] == arr[i - 1]) {
-                return false;
-            } else if (arr[i] < arr[i - 1])
-                break;
+        Map<Integer, Integer> set = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            set.put(nums[i], set.getOrDefault(nums[i], 0) + 1);
         }
-        if (i == 1 || i == arr.length) return false;
 
-        for (; i < arr.length; i++) {
-            if (arr[i] >= arr[i - 1]) {
-                return false;
-            }
+        List<Integer> list = new ArrayList<>(set.keySet());
+        Collections.sort(list);
+        int index = 0;
+        for (int i = 0; i < list.size(); i++) {
+            int c = set.get(list.get(i));
+            nums[index++] = list.get(i);
+            if (c > 1)
+                nums[index++] = list.get(i);
         }
-        return true;
+        return index;
     }
 
 }
