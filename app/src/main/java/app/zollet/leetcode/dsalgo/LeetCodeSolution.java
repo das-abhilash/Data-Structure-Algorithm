@@ -3,32 +3,38 @@ package app.zollet.leetcode.dsalgo;
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = countConsistentStrings("ab", new String[]{"ad", "bd", "aaab", "baa", "badab" });
+        int[] a = getSumAbsoluteDifferences(new int[]{2, 3, 5});
     }
 
-    public int countConsistentStrings(String allowed, String[] words) {
+    public int[] getSumAbsoluteDifferences(int[] nums) {
 
-        int[] a = new int[26];
 
-        for (char c : allowed.toCharArray()) {
-            a[c - 'a']++;
+        int[] left = new int[nums.length];
+        int[] right = new int[nums.length];
+
+        left[0] = nums[0];
+        right[nums.length - 1] = nums[nums.length - 1];
+
+        for (int i = 1; i < nums.length; i++) {
+            left[i] = left[i - 1] + nums[i];
+            right[nums.length - 1 - i] = right[nums.length - i] + nums[nums.length - 1 - i];
         }
 
-        int an = 0;
-        for (String word : words) {
-            int i = 0;
-            for (; i < 26; i++) {
-                char c = (char) (i + 'a');
-                CharSequence cc = String.valueOf(c);
-                if (a[i] > 0) continue;
-                if (a[i] <= 0 && !word.contains(cc)) {
-                } else {
-                    break;
-                }
+        int[] a = new int[nums.length];
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i == 0) {
+                a[i] = right[1] - (nums[i] * (nums.length - 1));
+            } else if (i == nums.length - 1) {
+                a[i] = (nums[i] * (nums.length - 1)) - left[nums.length - 2];
+            } else {
+                int r = right[i + 1] - nums[i] * (nums.length - i - 1);
+                int l = nums[i] * (i) - left[i - 1];
+                a[i] = r + l;
             }
-            if (i == 25) an++;
+
         }
-        return an;
+        return a;
     }
 
 }
