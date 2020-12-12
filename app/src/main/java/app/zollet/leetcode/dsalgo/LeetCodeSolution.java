@@ -1,34 +1,34 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class LeetCodeSolution {
 
     public void execute() {
-
+        int a = countConsistentStrings("ab", new String[]{"ad", "bd", "aaab", "baa", "badab" });
     }
 
-    public int removeDuplicates(int[] nums) {
+    public int countConsistentStrings(String allowed, String[] words) {
 
-        Map<Integer, Integer> set = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            set.put(nums[i], set.getOrDefault(nums[i], 0) + 1);
+        int[] a = new int[26];
+
+        for (char c : allowed.toCharArray()) {
+            a[c - 'a']++;
         }
 
-        List<Integer> list = new ArrayList<>(set.keySet());
-        Collections.sort(list);
-        int index = 0;
-        for (int i = 0; i < list.size(); i++) {
-            int c = set.get(list.get(i));
-            nums[index++] = list.get(i);
-            if (c > 1)
-                nums[index++] = list.get(i);
+        int an = 0;
+        for (String word : words) {
+            int i = 0;
+            for (; i < 26; i++) {
+                char c = (char) (i + 'a');
+                CharSequence cc = String.valueOf(c);
+                if (a[i] > 0) continue;
+                if (a[i] <= 0 && !word.contains(cc)) {
+                } else {
+                    break;
+                }
+            }
+            if (i == 25) an++;
         }
-        return index;
+        return an;
     }
 
 }
