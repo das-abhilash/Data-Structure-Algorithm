@@ -1,8 +1,6 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import app.zollet.leetcode.dsalgo.util.TreeNode;
 
 public class LeetCodeSolution {
 
@@ -10,12 +8,22 @@ public class LeetCodeSolution {
 
     }
 
-    public int[] sortedSquares(int[] nums) {
-        for(int i = 0;i<nums.length;i++){
-            nums[i] = nums[i] * nums[i];
+    public boolean validate(TreeNode root, Integer low, Integer high) {
+        // Empty trees are valid BSTs.
+        if (root == null) {
+            return true;
         }
-        Arrays.sort(nums);
-        return nums;
+        // The current node's value must be between low and high.
+        if ((low != null && root.val <= low) || (high != null && root.val >= high)) {
+            return false;
+        }
+        // The left and right subtree must also be valid.
+        return validate(root.right, root.val, high) && validate(root.left, low, root.val);
     }
+
+    public boolean isValidBST(TreeNode root) {
+        return validate(root, null, null);
+    }
+
 
 }
