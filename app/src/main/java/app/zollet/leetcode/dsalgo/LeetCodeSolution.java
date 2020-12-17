@@ -1,6 +1,7 @@
 package app.zollet.leetcode.dsalgo;
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeetCodeSolution {
 
@@ -8,22 +9,33 @@ public class LeetCodeSolution {
 
     }
 
-    public boolean validate(TreeNode root, Integer low, Integer high) {
-        // Empty trees are valid BSTs.
-        if (root == null) {
-            return true;
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+
+
+        Map<Integer, Integer> a = new HashMap<>();
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < B.length; j++) {
+                int s = A[i] + B[j];
+                a.put(s, a.getOrDefault(s, 0) + 1);
+            }
         }
-        // The current node's value must be between low and high.
-        if ((low != null && root.val <= low) || (high != null && root.val >= high)) {
-            return false;
+
+        Map<Integer, Integer> b = new HashMap<>();
+        for (int i = 0; i < C.length; i++) {
+            for (int j = 0; j < D.length; j++) {
+                int s = C[i] + D[j];
+                b.put(s, b.getOrDefault(s, 0) + 1);
+            }
         }
-        // The left and right subtree must also be valid.
-        return validate(root.right, root.val, high) && validate(root.left, low, root.val);
+
+        int an = 0;
+
+        for (int k : a.keySet()) {
+
+            if (b.containsKey(-k)) {
+                an += (a.get(k) * b.get(-k));
+            }
+        }
+        return an;
     }
-
-    public boolean isValidBST(TreeNode root) {
-        return validate(root, null, null);
-    }
-
-
 }
