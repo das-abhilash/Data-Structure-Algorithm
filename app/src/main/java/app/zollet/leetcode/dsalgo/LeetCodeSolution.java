@@ -1,41 +1,27 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class LeetCodeSolution {
 
     public void execute() {
 
     }
 
-    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+    public String reformatNumber(String number) {
+        String ph = number.replace(" ", "").replace("-", "");
+        int length = ph.length();
 
-
-        Map<Integer, Integer> a = new HashMap<>();
-        for (int i = 0; i < A.length; i++) {
-            for (int j = 0; j < B.length; j++) {
-                int s = A[i] + B[j];
-                a.put(s, a.getOrDefault(s, 0) + 1);
+        boolean should = length % 3 == 1;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (; i < length; i++) {
+            if (i!= 0 &&i % 3 == 0 && i < length - 1) {
+                sb.append("-");
             }
-        }
-
-        Map<Integer, Integer> b = new HashMap<>();
-        for (int i = 0; i < C.length; i++) {
-            for (int j = 0; j < D.length; j++) {
-                int s = C[i] + D[j];
-                b.put(s, b.getOrDefault(s, 0) + 1);
+            if (should && i == length - 2) {
+                 sb.append("-");
             }
+            sb.append(ph.charAt(i));
         }
-
-        int an = 0;
-
-        for (int k : a.keySet()) {
-
-            if (b.containsKey(-k)) {
-                an += (a.get(k) * b.get(-k));
-            }
-        }
-        return an;
+        return sb.toString();
     }
 }
