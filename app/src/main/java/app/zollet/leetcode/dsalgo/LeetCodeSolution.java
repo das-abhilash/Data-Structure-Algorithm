@@ -3,25 +3,29 @@ package app.zollet.leetcode.dsalgo;
 public class LeetCodeSolution {
 
     public void execute() {
-
+        String a = decodeAtIndex("a2b3c4d5e6f7g8h9", 10);
     }
 
-    public String reformatNumber(String number) {
-        String ph = number.replace(" ", "").replace("-", "");
-        int length = ph.length();
-
-        boolean should = length % 3 == 1;
+    public String decodeAtIndex(String s, int K) {
         StringBuilder sb = new StringBuilder();
-        int i = 0;
-        for (; i < length; i++) {
-            if (i!= 0 &&i % 3 == 0 && i < length - 1) {
-                sb.append("-");
+
+        int j = 0;
+        for (int i = 0; j < K; i++) {
+            if (Character.isAlphabetic(s.charAt(i))) {
+                sb.append(s.charAt(i));
+                j++;
+            } else {
+                int c = s.charAt(i) - '0';
+                String ss = sb.toString();
+                if (j >= K) break;
+                while (c > 1) {
+                    sb.append(ss);
+                    c--;
+                    j += ss.length();
+                }
             }
-            if (should && i == length - 2) {
-                 sb.append("-");
-            }
-            sb.append(ph.charAt(i));
         }
-        return sb.toString();
+        return String.valueOf(sb.charAt(K - 1));
     }
+
 }
