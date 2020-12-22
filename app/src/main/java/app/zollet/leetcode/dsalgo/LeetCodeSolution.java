@@ -1,31 +1,34 @@
 package app.zollet.leetcode.dsalgo;
 
+import app.zollet.leetcode.dsalgo.util.TreeNode;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        String a = decodeAtIndex("a2b3c4d5e6f7g8h9", 10);
+
     }
 
-    public String decodeAtIndex(String s, int K) {
-        StringBuilder sb = new StringBuilder();
+    class Pair {
+        boolean first;
+        int second;
 
-        int j = 0;
-        for (int i = 0; j < K; i++) {
-            if (Character.isAlphabetic(s.charAt(i))) {
-                sb.append(s.charAt(i));
-                j++;
-            } else {
-                int c = s.charAt(i) - '0';
-                String ss = sb.toString();
-                if (j >= K) break;
-                while (c > 1) {
-                    sb.append(ss);
-                    c--;
-                    j += ss.length();
-                }
-            }
+        public Pair(boolean first, int second) {
+            this.first = first;
+            this.second = second;
         }
-        return String.valueOf(sb.charAt(K - 1));
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        return solve(root).first;
+    }
+
+    private Pair solve(TreeNode root) {
+        if (root == null) return new Pair(true, 1);
+
+        Pair l = solve(root.left);
+        Pair r = solve(root.right);
+
+        return new Pair(l.first && r.first && Math.abs(l.second - r.second) <= 1, Math.max(l.second, r.second) + 1);
     }
 
 }
