@@ -1,34 +1,43 @@
 package app.zollet.leetcode.dsalgo;
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
+import java.util.Arrays;
 
 public class LeetCodeSolution {
 
     public void execute() {
-
+        int a = nextGreaterElement(12443322);
     }
 
-    class Pair {
-        boolean first;
-        int second;
+    public int nextGreaterElement(int n) {
 
-        public Pair(boolean first, int second) {
-            this.first = first;
-            this.second = second;
+        StringBuilder s = new StringBuilder(String.valueOf(n));
+
+        for (int i = s.length() - 2; i >= 0; i--) {
+
+            if ((s.charAt(i) - '0') < (s.charAt(i + 1) - '0')) {
+                char c = s.charAt(i + 1);
+
+                char cc = s.charAt(i);
+                int idx = i + 1;
+                for (int j = i + 1; j < s.length(); j++) {
+                    if (s.charAt(j) > cc && s.charAt(j) < c) {
+                        c = s.charAt(j);
+                        idx = j;
+                    }
+                }
+                s.setCharAt(i, c);
+                s.setCharAt(idx, cc);
+
+                if (Long.parseLong(s.toString()) > Integer.MAX_VALUE) return -1;
+                else {
+                    char[] a = s.substring(i + 1).toCharArray();
+                    Arrays.sort(a);
+                    String ss = s.substring(0, i + 1) + new String(a);
+                    return Integer.parseInt(ss);
+                }
+            }
         }
-    }
-
-    public boolean isBalanced(TreeNode root) {
-        return solve(root).first;
-    }
-
-    private Pair solve(TreeNode root) {
-        if (root == null) return new Pair(true, 1);
-
-        Pair l = solve(root.left);
-        Pair r = solve(root.right);
-
-        return new Pair(l.first && r.first && Math.abs(l.second - r.second) <= 1, Math.max(l.second, r.second) + 1);
+        return -1;
     }
 
 }
