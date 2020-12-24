@@ -2,7 +2,7 @@ package app.zollet.leetcode.dsalgo.util;
 
 public class ListNodeUtil {
 
-    ListNode head; // head of list
+    public ListNode head; // head of list
 
     /* Linked list Node*/
 

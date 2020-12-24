@@ -1,43 +1,42 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.Arrays;
+import app.zollet.leetcode.dsalgo.util.ListNode;
+import app.zollet.leetcode.dsalgo.util.ListNodeUtil;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = nextGreaterElement(12443322);
+        ListNodeUtil u = new ListNodeUtil();
+        u.push(4);
+        u.push(3);
+        u.push(2);
+        u.push(1);
+        ListNode a = swapPairs(u.head);
     }
 
-    public int nextGreaterElement(int n) {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode cur = head;
 
-        StringBuilder s = new StringBuilder(String.valueOf(n));
+        ListNode listNode = cur.next;
 
-        for (int i = s.length() - 2; i >= 0; i--) {
+        ListNode last = null;
+        while (cur != null && cur.next != null) {
 
-            if ((s.charAt(i) - '0') < (s.charAt(i + 1) - '0')) {
-                char c = s.charAt(i + 1);
+            ListNode nextnext = cur.next.next;
 
-                char cc = s.charAt(i);
-                int idx = i + 1;
-                for (int j = i + 1; j < s.length(); j++) {
-                    if (s.charAt(j) > cc && s.charAt(j) < c) {
-                        c = s.charAt(j);
-                        idx = j;
-                    }
-                }
-                s.setCharAt(i, c);
-                s.setCharAt(idx, cc);
+            ListNode next = cur.next;
 
-                if (Long.parseLong(s.toString()) > Integer.MAX_VALUE) return -1;
-                else {
-                    char[] a = s.substring(i + 1).toCharArray();
-                    Arrays.sort(a);
-                    String ss = s.substring(0, i + 1) + new String(a);
-                    return Integer.parseInt(ss);
-                }
+            cur.next = nextnext;
+            next.next = cur;
+            if (last != null) {
+                last.next = next;
             }
+            last = cur;
+            cur = cur.next;
+
         }
-        return -1;
+        return listNode;
     }
 
 }
