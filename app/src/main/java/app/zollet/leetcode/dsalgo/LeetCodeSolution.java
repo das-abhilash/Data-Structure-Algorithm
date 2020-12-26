@@ -1,43 +1,39 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 public class LeetCodeSolution {
 
     public void execute() {
-
+        int a = countStudents(new int[]{1, 1, 1, 0, 0, 1}, new int[]{1, 0, 0, 0, 1, 1});
     }
 
+    public int countStudents(int[] students, int[] sandwiches) {
 
-    public int numDecodings(String s) {
-        Map<Integer, Integer> map = new HashMap<>();
-        return solve(s, 0, map);
-    }
+        int size = students.length;
 
-    private int solve(String s, int i, Map<Integer, Integer> map) {
-        if (i == s.length()) {
-            return 1;
-        } else if (i > s.length()) {
-            return 0;
+        Stack<Integer> stack = new Stack<>();
+        Queue<Integer> queue = new LinkedList<>();
+
+        for (int i = 0; i < size; i++) {
+            stack.push(sandwiches[size - i - 1]);
+            queue.add(students[i]);
         }
 
-        if (map.containsKey(i)) return map.get(i);
-
-        int a = 0;
-        char c = s.charAt(i);
-        if (c >= '3' && c <= '9') {
-            a += solve(s, i + 1, map);
-        } else if (c == '2') {
-            a += solve(s, i + 1, map);
-            if (i < s.length() - 1 && s.charAt(i + 1) >= '0' && s.charAt(i + 1) <= '6')
-                a += solve(s, i + 2, map);
-        } else if (c == '1') {
-            a += solve(s, i + 1, map);
-            if (i < s.length() - 1 && s.charAt(i + 1) >= '0' && s.charAt(i + 1) <= '9')
-                a += solve(s, i + 2, map);
+        int s = 0;
+        while (s != stack.size()) {
+            if (queue.peek().equals(stack.peek())) {
+                s = 0;
+                queue.poll();
+                stack.pop();
+            } else {
+                s++;
+                int p = queue.poll();
+                queue.add(p);
+            }
         }
-        map.put(i, a);
-        return a;
+        return stack.size();
     }
 }
