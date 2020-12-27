@@ -1,39 +1,58 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = countStudents(new int[]{1, 1, 1, 0, 0, 1}, new int[]{1, 0, 0, 0, 1, 1});
+        int a = minJumps(new int[]{100, -23, -23, 404, 100, 23, 23, 23, 3, 404});
     }
 
-    public int countStudents(int[] students, int[] sandwiches) {
-
-        int size = students.length;
-
-        Stack<Integer> stack = new Stack<>();
-        Queue<Integer> queue = new LinkedList<>();
-
-        for (int i = 0; i < size; i++) {
-            stack.push(sandwiches[size - i - 1]);
-            queue.add(students[i]);
+    public int minJumps(int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        Map<Integer, List<Integer>> map2 = new HashMap<>();
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < arr.length; i++) {
+            List<Integer> l = map2.getOrDefault(arr[i], new ArrayList<>());
+            l.add(i);
+            map2.put(arr[i], l);
         }
 
-        int s = 0;
-        while (s != stack.size()) {
-            if (queue.peek().equals(stack.peek())) {
-                s = 0;
-                queue.poll();
-                stack.pop();
-            } else {
-                s++;
-                int p = queue.poll();
-                queue.add(p);
+        return solve(arr, 0, map, 0, set, map2);
+    }
+
+    private int solve(int[] arr, int i, Map<Integer, Integer> map, int c, Set<Integer> set, Map<Integer, List<Integer>> map2) {
+        if (i == arr.length - 1) {
+            Log.d("mehbla", "reached");
+            return c;
+        }
+        if (i < 0 || i >= arr.length || set.contains(i)) return Integer.MAX_VALUE;
+
+//        if (map.containsKey(i)) return map.get(i);
+
+        set.add(i);
+        Log.d("mehbla", arr[i] + "");
+        int a = Math.min(solve(arr, i + 1, map, c + 1, set, map2), solve(arr, i - 1, map, c + 1, set, map2));
+
+        List<Integer> l = map2.getOrDefault(arr[i], new ArrayList<>());
+        if (l.size() > 1) {
+            for (int j = 0; j < l.size(); j++) {
+                if (l.get(j) != i) {
+                    a = Math.min(solve(arr, l.get(j), map, c + 1, set, map2), a);
+                }
             }
         }
-        return stack.size();
+
+        set.remove(i);
+        map.put(i, a);
+        return a;
     }
+
 }
