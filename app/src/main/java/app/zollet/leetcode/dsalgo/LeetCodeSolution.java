@@ -1,46 +1,112 @@
 package app.zollet.leetcode.dsalgo;
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-import app.zollet.leetcode.dsalgo.util.TreeNodeUtill;
-
 public class LeetCodeSolution {
 
     public void execute() {
-        TreeNode root = TreeNodeUtill.insertLevelOrder(new int[]{2,3,1,3,1,-1,1}, new TreeNode(2), 0);
-
-        int aa = pseudoPalindromicPaths(root);
-
+        gameOfLife(new int[][]{{0, 0}});
     }
 
-    int a = 0;
-
-    public int pseudoPalindromicPaths(TreeNode root) {
-        int[] c = new int[9];
-        solve(root, c);
-        return a;
-    }
-
-    private void solve(TreeNode node, int[] c) {
-        c[node.val - 1]++;
-        if (node.right == null && node.left == null) {
-            boolean isOdd = false;
-            for (int i = 0; i < 9; i++) {
-                if (c[i] % 2 != 0) {
-                    if (isOdd) {
-                        c[node.val - 1]--;
-                        return;
-                    } else
-                        isOdd = true;
-                }
+    public void gameOfLife(int[][] board) {
+        if (board.length == 0) return;
+        int[][] a = new int[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                a[i][j] = -1;
             }
-            a++;
-        } else {
-            if (node.left != null)
-                solve(node.left, c);
-            if (node.right != null)
-                solve(node.right, c);
         }
-        c[node.val - 1]--;
+        solve(a, board, 0, 0);
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                board[i][j] = a[i][j];
+            }
+        }
+    }
+
+    private void solve(int[][] a, int[][] board, int x, int y) {
+
+        if (x < 0 || y < 0 || x >= board.length || y >= board[0].length || a[x][y] > -1) return;
+        int one = 0;
+        int zero = 0;
+
+
+        try {
+            if (board[x][y - 1] == 1) one++;
+            else zero++;
+        } catch (Exception e) {
+
+        }
+
+        try {
+            if (board[x - 1][y - 1] == 1) one++;
+            else zero++;
+        } catch (Exception e) {
+
+        }
+
+        try {
+            if (board[x + 1][y - 1] == 1) one++;
+            else zero++;
+        } catch (Exception e) {
+
+        }
+        try {
+            if (board[x - 1][y] == 1) one++;
+            else zero++;
+        } catch (Exception e) {
+
+        }
+        try {
+            if (board[x + 1][y] == 1) one++;
+            else zero++;
+        } catch (Exception e) {
+
+        }
+        try {
+            if (board[x - 1][y + 1] == 1) one++;
+            else zero++;
+        } catch (Exception e) {
+
+        }
+        try {
+            if (board[x][y + 1] == 1) one++;
+            else zero++;
+        } catch (Exception e) {
+
+        }
+
+        try {
+            if (board[x + 1][y + 1] == 1) one++;
+            else zero++;
+        } catch (Exception e) {
+
+        }
+
+        if (board[x][y] == 1) {
+            if (one < 2) {
+                a[x][y] = 0;
+            } else if (one == 2 || one == 3) {
+                a[x][y] = 1;
+            } else {
+                a[x][y] = 0;
+            }
+        } else {
+            if (one == 3) {
+                a[x][y] = 1;
+            } else {
+                a[x][y] = 0;
+            }
+        }
+
+        solve(a, board, x - 1, y - 1);
+        solve(a, board, x - 1, y);
+        solve(a, board, x - 1, y + 1);
+
+        solve(a, board, x, y - 1);
+        solve(a, board, x, y + 1);
+
+        solve(a, board, x + 1, y - 1);
+        solve(a, board, x + 1, y);
+        solve(a, board, x + 1, y + 1);
     }
 
 }
