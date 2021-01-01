@@ -1,31 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class LeetCodeSolution {
 
     public void execute() {
+        List<String> w = new ArrayList<>();
+        w.add("apple");
+        w.add("pen");
+        boolean a = wordBreak("applepenapple", w);
     }
 
+    public boolean wordBreak(String s, List<String> wordDict) {
 
-    public boolean canFormArray(int[] arr, int[][] pieces) {
+        Set<String> invalid = new HashSet<>();
+        Set<String> set = new HashSet<>(wordDict);
+        if (set.contains(s)) return true;
 
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < pieces.length; i++) {
-            map.put(pieces[i][0], i);
-        }
+        return solve(s, 0, set, invalid);
 
+    }
 
-        for (int i = 0; i < arr.length; ) {
-            if (!map.containsKey(arr[i])) return false;
-            int[] a = pieces[map.get(arr[i])];
+    private boolean solve(String s, int i, Set<String> wordDict, Set<String> set) {
 
-            for (int j = 0; j < a.length; j++, i++) {
-                if (a[j] != arr[i]) return false;
+        if (set.contains(s)) return false;
+        if (wordDict.contains(s)) return true;
+        for (int k = i + 1; k < s.length(); k++) {
+            String ss = s.substring(i, k);
+            if (wordDict.contains(ss)) {
+                if (solve(s.substring(k), 0, wordDict, set)) return true;
             }
         }
-
-        return true;
+        set.add(s);
+        return false;
     }
 }
