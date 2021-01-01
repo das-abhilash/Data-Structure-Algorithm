@@ -1,5 +1,9 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 public class LeetCodeSolution {
@@ -7,28 +11,47 @@ public class LeetCodeSolution {
     public void execute() {
     }
 
-    public int largestRectangleArea(int[] heights) {
 
-        if (heights.length == 0) return 0;
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
         Stack<Integer> stack = new Stack<>();
 
-        int a = 0;
-        for (int i = 0; i <= heights.length; i++) {
-            if (stack.isEmpty()) {
-                stack.push(i);
-                continue;
-            }
-            while (i == heights.length || heights[stack.peek()] <= heights[i]) {
-                int p = stack.pop();
-                if (stack.isEmpty()) {
-                    a = Math.max(a, heights[p] * i);
-                    break;
-                } else
-                    a = Math.max(a, heights[p] * (i - stack.peek() +1));
-            }
-            stack.push(i);
+        List<List<Integer>> adj = new ArrayList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
         }
-        return a;
+
+        for (int i = 0; i < prerequisites.length; i++) {
+            adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
+        }
+
+        Set<Integer> visited = new HashSet<>();
+        Set<Integer> visiting = new HashSet<>();
+
+
+        for (int i = 0; i < numCourses; i++) {
+            if (!dfs(visiting, adj, visited, i, stack)) return new int[0];
+        }
+
+        int[] out = new int[stack.size()];
+        for (int i = 0; i < out.length; i++) {
+            out[i] = stack.pop();
+        }
+        return out;
     }
 
+    private boolean dfs(Set<Integer> visiting, List<List<Integer>> adj, Set<Integer> visited, int i, Stack<Integer> stack) {
+        if (visited.contains(i)) return true;
+        if (visiting.contains(i)) return false;
+
+        visited.add(i);
+        visiting.add(i);
+        List<Integer> l = adj.get(i);
+        for (int j = 0; j < l.size(); j++) {
+            if (!dfs(visiting, adj, visited, l.get(j), stack)) return false;
+        }
+        visiting.remove(i);
+        stack.push(i);
+        return true;
+    }
 }
