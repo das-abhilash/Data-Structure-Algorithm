@@ -1,10 +1,7 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeetCodeSolution {
 
@@ -12,46 +9,23 @@ public class LeetCodeSolution {
     }
 
 
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        Stack<Integer> stack = new Stack<>();
+    public boolean canFormArray(int[] arr, int[][] pieces) {
 
-        List<List<Integer>> adj = new ArrayList<>();
-
-        for (int i = 0; i < numCourses; i++) {
-            adj.add(new ArrayList<>());
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < pieces.length; i++) {
+            map.put(pieces[i][0], i);
         }
 
-        for (int i = 0; i < prerequisites.length; i++) {
-            adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
+
+        for (int i = 0; i < arr.length; ) {
+            if (!map.containsKey(arr[i])) return false;
+            int[] a = pieces[map.get(arr[i])];
+
+            for (int j = 0; j < a.length; j++, i++) {
+                if (a[j] != arr[i]) return false;
+            }
         }
 
-        Set<Integer> visited = new HashSet<>();
-        Set<Integer> visiting = new HashSet<>();
-
-
-        for (int i = 0; i < numCourses; i++) {
-            if (!dfs(visiting, adj, visited, i, stack)) return new int[0];
-        }
-
-        int[] out = new int[stack.size()];
-        for (int i = 0; i < out.length; i++) {
-            out[i] = stack.pop();
-        }
-        return out;
-    }
-
-    private boolean dfs(Set<Integer> visiting, List<List<Integer>> adj, Set<Integer> visited, int i, Stack<Integer> stack) {
-        if (visited.contains(i)) return true;
-        if (visiting.contains(i)) return false;
-
-        visited.add(i);
-        visiting.add(i);
-        List<Integer> l = adj.get(i);
-        for (int j = 0; j < l.size(); j++) {
-            if (!dfs(visiting, adj, visited, l.get(j), stack)) return false;
-        }
-        visiting.remove(i);
-        stack.push(i);
         return true;
     }
 }
