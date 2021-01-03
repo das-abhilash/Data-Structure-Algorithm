@@ -1,36 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LeetCodeSolution {
 
     public void execute() {
+        int aa = countArrangement(3);
     }
 
-    public int maximumUnits(int[][] boxTypes, int truckSize) {
+    int a = 0;
 
-        Arrays.sort(boxTypes, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return -1* Integer.compare(o1[1], o2[1]);
-            }
-        });
+    public int countArrangement(int n) {
 
-        int a = 0;
-        int b = 0;
-        for (int i = 0; i < boxTypes.length; i++) {
+        Set<Integer> set = new HashSet<>();
 
-            b += boxTypes[i][0];
-            a += boxTypes[i][0] * boxTypes[i][1];
-            if (b > truckSize) {
+        solve(n, 1, set);
 
-                a = a - (b - truckSize) * boxTypes[i][1];
 
-                break;
-            }
-        }
         return a;
+    }
+
+    private void solve(int n, int i, Set<Integer> set) {
+        if (i == n) {
+            a++;
+            return;
+        }
+
+        for (int j = 1; j <= n; j++) {
+            if (!set.contains(j) && (j % i == 0 || i % j == 0)) {
+                set.add(j);
+                solve(n, i + 1, set);
+                set.remove(j);
+            }
+
+        }
     }
 
 }
