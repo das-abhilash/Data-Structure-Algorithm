@@ -1,25 +1,36 @@
 package app.zollet.leetcode.dsalgo;
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
-    public final TreeNode getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
-        if (original.val == target.val) return cloned;
+    public int maximumUnits(int[][] boxTypes, int truckSize) {
 
+        Arrays.sort(boxTypes, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return -1* Integer.compare(o1[1], o2[1]);
+            }
+        });
 
-        if (original.left != null) {
-            TreeNode left = getTargetCopy(original.left, cloned.left, target);
-            if (left != null) return left;
+        int a = 0;
+        int b = 0;
+        for (int i = 0; i < boxTypes.length; i++) {
+
+            b += boxTypes[i][0];
+            a += boxTypes[i][0] * boxTypes[i][1];
+            if (b > truckSize) {
+
+                a = a - (b - truckSize) * boxTypes[i][1];
+
+                break;
+            }
         }
-
-        if(original.right != null) {
-            TreeNode right = getTargetCopy(original.right, cloned.right, target);
-            if (right != null) return right;
-        }
-        return null;
+        return a;
     }
+
 }
