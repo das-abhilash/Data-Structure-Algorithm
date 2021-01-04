@@ -1,40 +1,42 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.HashSet;
-import java.util.Set;
+import app.zollet.leetcode.dsalgo.util.ListNode;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int aa = countArrangement(3);
+
     }
 
-    int a = 0;
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 
-    public int countArrangement(int n) {
+        ListNode dummy = new ListNode();
 
-        Set<Integer> set = new HashSet<>();
+        ListNode r = l2;
 
-        solve(n, 1, set);
+        dummy.next = l1;
+        ListNode cur = l1;
+        ListNode prev = dummy;
 
-
-        return a;
-    }
-
-    private void solve(int n, int i, Set<Integer> set) {
-        if (i == n) {
-            a++;
-            return;
-        }
-
-        for (int j = 1; j <= n; j++) {
-            if (!set.contains(j) && (j % i == 0 || i % j == 0)) {
-                set.add(j);
-                solve(n, i + 1, set);
-                set.remove(j);
+        while (cur != null && r != null) {
+            if (cur.val < r.val) {
+                ListNode temp = cur;
+                cur = cur.next;
+                prev = temp;
+            } else {
+                ListNode temp = r.next;
+                prev.next = r;
+                prev = prev.next;
+                r.next = cur;
+                r = temp;
             }
-
         }
+
+        if (r!=null){
+            prev.next = r;
+        }
+
+        return dummy.next;
     }
 
 }
