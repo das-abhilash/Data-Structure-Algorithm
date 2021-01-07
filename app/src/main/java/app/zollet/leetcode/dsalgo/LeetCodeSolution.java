@@ -1,49 +1,36 @@
 package app.zollet.leetcode.dsalgo;
 
-import app.zollet.leetcode.dsalgo.util.ListNode;
-import app.zollet.leetcode.dsalgo.util.ListNodeUtil;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeetCodeSolution {
 
     public void execute() {
-
-        ListNodeUtil U = new ListNodeUtil();
-        U.push(5);
-        U.push(4);
-        U.push(4);
-        U.push(3);
-        U.push(3);
-        U.push(2);
-        U.push(1);
-
-        ListNode node = deleteDuplicates(U.head);
+        int a = lengthOfLongestSubstring("aab");
     }
 
-    public ListNode deleteDuplicates(ListNode head) {
-        if (head == null) return head;
-        ListNode dummy = new ListNode();
-        dummy.next = head;
-        ListNode prev = dummy;
-        ListNode cur = head;
+    public int lengthOfLongestSubstring(String s) {
 
-        while (cur != null) {
-            int val = cur.val;
-            int c = 1;
-            ListNode pr = cur;
-            cur = cur.next;
-            while (cur != null && cur.val == val) {
-                c++;
-                cur = cur.next;
-            }
+        if (s.length() == 0) return 0;
 
-            if (c > 1) {
-                prev.next = cur;
-            } else {
-                prev = pr;
+        Map<Character, Integer> map = new HashMap<>();
+        int a = -1;
+        int in = 0;
+        map.put(s.charAt(0), 0);
+
+        for (int i = 1; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (map.containsKey(c)) {
+                int ind = map.get(c);
+                if (ind >= in) {
+                    a = Math.max(a, i - in);
+                    in = ind + 1;
+                }
             }
-            int ii = 0;
+            map.put(c, i);
         }
-        return dummy.next;
+        a = Math.max(a, s.length() -1 - in);
+        return a;
     }
-
 }
