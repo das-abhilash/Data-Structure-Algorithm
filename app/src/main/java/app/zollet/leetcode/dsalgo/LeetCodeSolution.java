@@ -1,45 +1,46 @@
 package app.zollet.leetcode.dsalgo;
 
+import app.zollet.leetcode.dsalgo.util.ListNode;
+
 public class LeetCodeSolution {
 
     public void execute() {
-        merge(new int[]{2, 5, 6, 0, 0, 0}, 3, new int[]{1, 2, 3}, 3);
     }
 
-    public void merge(int[] nums1, int m, int[] nums2, int n) {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
-        int l = 0;
-        int r = 0;
+        ListNode dummy = new ListNode();
 
-        while (m <= nums1.length && l<m && r < n) {
+        ListNode cur = dummy;
+        int c = 0;
 
-            int f = nums1[l];
-            int s = nums2[r];
-
-            if (f <= s) {
-                l++;
-            } else {
-                shift(nums1, l + 1, m);
-                nums1[l] = nums2[r];
-                r++;
-                l++;
-                m++;
-            }
-            int ssfd = 0;
+        while (l1 != null && l2 != null) {
+            int s = l1.val + l2.val + c;
+            c = s / 10;
+            cur.next = new ListNode(s % 10);
+            cur = cur.next;
+            l1 = l1.next;
+            l2 = l2.next;
         }
 
-        while (r < n) {
-            nums1[l++] = nums2[r++];
-        }
-        int aa = 0;
-    }
-
-    private void shift(int[] a, int i, int m) {
-
-        for (int j = a.length - 1; j >= i; j--) {
-            a[j] = a[j - 1];
+        while (l1 != null) {
+            int s = l1.val + c;
+            c = s / 10;
+            cur.next = new ListNode(s % 10);
+            l1 = l1.next;
         }
 
+        while (l2 != null) {
+            int s = l2.val + c;
+            c = s / 10;
+            cur.next = new ListNode(s % 10);
+            l2 = l2.next;
+        }
+
+        if (c != 0) {
+            cur.next = new ListNode(c);
+        }
+        return dummy.next;
     }
 
 }

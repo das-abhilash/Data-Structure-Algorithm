@@ -18,7 +18,7 @@ public class ListNode {
   public ListNode() {
   }
 
-  ListNode(int d) {
+  public ListNode(int d) {
     val = d;
     next = null;
     prev = null;
