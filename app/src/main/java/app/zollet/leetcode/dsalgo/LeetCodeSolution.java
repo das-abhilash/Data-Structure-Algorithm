@@ -1,34 +1,33 @@
 package app.zollet.leetcode.dsalgo;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import app.zollet.leetcode.dsalgo.util.ListNode;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int aa = countVowelStrings(5);
+        int a = maxOperations(new int[]{2, 5, 4, 4, 1, 3, 4, 4, 1, 4, 4, 1, 2, 1, 2, 2, 3, 2, 4, 2}, 3);
     }
 
-    public int countVowelStrings(int n) {
+    public int maxOperations(int[] nums, int k) {
 
-        if (n == 1) return 5;
-        int[] a = new int[5];
-        Arrays.fill(a, 1);
+        Map<Integer, Integer> set = new HashMap<>();
+        int a = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > k) continue;
 
-        for (int i = 2; i <= n; i++) {
-            for (int j = 0; j < 5; j++) {
-                int m = 0;
-                for (int k = j; k < 5; k++) {
-                    m += a[k];
-                }
-                a[j] = m;
+            if (set.getOrDefault(nums[i], 0) > 0) {
+                a++;
+                set.put(nums[i], set.get(nums[i]) - 1);
+            } else {
+                set.put(k - nums[i], set.getOrDefault(k - nums[i], 0) + 1);
             }
         }
-        int aa = 0;
-        for (int i = 0; i < 5; i++) {
-            aa += a[i];
-        }
-        return aa;
+        return a;
     }
 }
