@@ -5,29 +5,38 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import app.zollet.leetcode.dsalgo.util.ListNode;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = maxOperations(new int[]{2, 5, 4, 4, 1, 3, 4, 4, 1, 4, 4, 1, 2, 1, 2, 2, 3, 2, 4, 2}, 3);
     }
 
-    public int maxOperations(int[] nums, int k) {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
 
-        Map<Integer, Integer> set = new HashMap<>();
-        int a = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] > k) continue;
+        Set<Character> ss = new HashSet<>();
+        ss.add(']');
+        ss.add(')');
+        ss.add('}');
 
-            if (set.getOrDefault(nums[i], 0) > 0) {
-                a++;
-                set.put(nums[i], set.get(nums[i]) - 1);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (ss.contains(c)) {
+                if (stack.isEmpty()) return false;
+                if (c == ')' && stack.peek() != '(') return false;
+                if (c == '}' && stack.peek() != '{') return false;
+                if (c == ']' && stack.peek() != '[') return false;
+                stack.pop();
             } else {
-                set.put(k - nums[i], set.getOrDefault(k - nums[i], 0) + 1);
+                stack.push(c);
             }
+
         }
-        return a;
+        return stack.isEmpty();
     }
+
 }
