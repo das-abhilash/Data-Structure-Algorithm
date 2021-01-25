@@ -1,19 +1,27 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-
-import app.zollet.leetcode.dsalgo.util.ListNode;
-
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
+    public boolean kLengthApart(int[] nums, int k) {
 
+        int p = -1;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) continue;
+            if (p == -1) {
+                p = i;
+                continue;
+            }
+
+            if (i - p +1 <= k) return false;
+            p = i;
+
+
+        }
+        return true;
+    }
 
 }
