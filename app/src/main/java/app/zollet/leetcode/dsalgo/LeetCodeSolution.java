@@ -3,19 +3,28 @@ package app.zollet.leetcode.dsalgo;
 public class LeetCodeSolution {
 
     public void execute() {
-        int s = concatenatedBinary(13);
+        String sdf = getSmallestString(5, 73);
     }
 
+    public String getSmallestString(int n, int k) {
 
-    public int concatenatedBinary(int n) {
+        StringBuilder s = new StringBuilder();
 
-        int m = 1000000007;
-        long a = 0;
-        for (int i = 1; i <= n; i++) {
-            int l = ((int) (Math.log(i) / Math.log(2)) + 1) % m;
-            a = (a<<l)% m + i % m;
+        for (int i = 0; i < n; i++) {
+            s.append('a');
+            k--;
         }
-        return (int) a % m;
+
+        while (k >= 26) {
+            s.setCharAt(n - 1, 'z');
+            k = k - 25;
+            n--;
+        }
+
+        if (k > 0) {
+            s.setCharAt(n - 1, (char) ('a' + (k + 1)));
+        }
+        return s.toString();
     }
 
 
