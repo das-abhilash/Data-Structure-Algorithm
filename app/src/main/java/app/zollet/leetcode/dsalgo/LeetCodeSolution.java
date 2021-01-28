@@ -22,7 +22,7 @@ public class LeetCodeSolution {
         }
 
         if (k > 0) {
-            s.setCharAt(n - 1, (char) ('a' + (k + 1)));
+            s.setCharAt(n - 1, (char) ('a' + (k)));
         }
         return s.toString();
     }
