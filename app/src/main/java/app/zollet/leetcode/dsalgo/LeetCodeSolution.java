@@ -1,38 +1,38 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.TreeSet;
+
 public class LeetCodeSolution {
 
+
     public void execute() {
-        boolean a = check(new int[]{2, 1, 3, 4});
+        int[] a = shortestToChar("loveleetcode", 'e');
     }
 
-    public boolean check(int[] nums) {
+    public int[] shortestToChar(String s, char c) {
 
-        int i = 0;
-        int max = nums[0];
-        int min = nums[0];
-
-        while (i < nums.length - 1 && nums[i] <= nums[i + 1]) {
-            max = nums[i + 1];
-            min = Math.min(min,nums[i]);
-            i++;
+        TreeSet<Integer> set = new TreeSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == c)
+                set.add(i);
         }
 
-        if (i == nums.length - 1) return true;
-        i++;
-        while (i < nums.length - 1 && nums[i] <= nums[i + 1]) {
-            if (nums[i + 1] > max) return false;
-            if (nums[i] > min) return false;
-            i++;
-        }
-        if (i == nums.length - 1) return true;
-        if (i == 0) {
-            while (i < nums.length - 1 && nums[i] >= nums[i + 1]) {
-                i++;
+        int[] a = new int[s.length()];
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == c)
+                a[i] = 0;
+            else {
+                if (set.ceiling(i) == null) {
+                    a[i] = Math.abs(i - set.floor(i));
+                } else if (set.floor(i) == null) {
+                    a[i] = Math.abs(i - set.ceiling(i));
+                } else {
+                    a[i] = Math.min(Math.abs(i - set.ceiling(i)), Math.abs(i - set.floor(i)));
+                }
             }
         }
-        return i == nums.length - 1;
-
+        return a;
     }
 
 }
