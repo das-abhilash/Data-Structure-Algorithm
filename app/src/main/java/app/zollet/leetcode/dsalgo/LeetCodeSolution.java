@@ -7,9 +7,20 @@ public class LeetCodeSolution {
 
     public void execute() {
         int[] a = shortestToChar("loveleetcode", 'e');
+
+
     }
 
-    public int[] shortestToChar(String s, char c) {
+    public enum EnumSingleton {
+
+        INSTANCE;
+
+        public static void doSomething(){
+            //do something
+        }
+    }
+
+            public int[] shortestToChar(String s, char c) {
 
         TreeSet<Integer> set = new TreeSet<>();
         for (int i = 0; i < s.length(); i++) {
