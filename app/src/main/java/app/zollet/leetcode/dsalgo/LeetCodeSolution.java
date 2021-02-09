@@ -1,49 +1,34 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.TreeSet;
+import app.zollet.leetcode.dsalgo.util.TreeNode;
 
 public class LeetCodeSolution {
 
 
     public void execute() {
-        int[] a = shortestToChar("loveleetcode", 'e');
-
-
     }
 
-    public enum EnumSingleton {
+    public TreeNode convertBST(TreeNode root) {
 
-        INSTANCE;
-
-        public static void doSomething(){
-            //do something
-        }
+        solve(root, 0);
+        return root;
     }
 
-            public int[] shortestToChar(String s, char c) {
+    private int solve(TreeNode node, int sum) {
+        if (node == null) return 0;
 
-        TreeSet<Integer> set = new TreeSet<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == c)
-                set.add(i);
+
+        if (node.left == null && node.right == null) {
+            node.val = sum + node.val;
+            return node.val;
         }
+        int val = node.val;
+        int right = solve(node.right, sum);
+        node.val = right == 0 ? val + sum : right + val;
 
-        int[] a = new int[s.length()];
+        int left = solve(node.left, node.val);
 
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == c)
-                a[i] = 0;
-            else {
-                if (set.ceiling(i) == null) {
-                    a[i] = Math.abs(i - set.floor(i));
-                } else if (set.floor(i) == null) {
-                    a[i] = Math.abs(i - set.ceiling(i));
-                } else {
-                    a[i] = Math.min(Math.abs(i - set.ceiling(i)), Math.abs(i - set.floor(i)));
-                }
-            }
-        }
-        return a;
+        return left == 0 ? node.val : left;
     }
 
 }
