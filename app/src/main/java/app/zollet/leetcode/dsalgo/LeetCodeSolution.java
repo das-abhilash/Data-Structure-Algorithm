@@ -1,34 +1,56 @@
 package app.zollet.leetcode.dsalgo;
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-
 public class LeetCodeSolution {
 
 
     public void execute() {
     }
 
-    public TreeNode convertBST(TreeNode root) {
+    public Node copyRandomList(Node head) {
 
-        solve(root, 0);
-        return root;
+        Node cur = head;
+
+        while (cur != null) {
+            Node temp = cur.next;
+            Node node = new Node(cur.val);
+            cur.next = node;
+            node.next = temp;
+            cur = temp;
+        }
+
+
+        cur = head;
+        while (cur != null) {
+            Node next = cur.next;
+            Node random = cur.random;
+            if (random != null)
+                next.random = random.next;
+            cur = cur.next.next;
+        }
+        cur = head;
+        Node dummy = new Node(-1);
+        Node curr = dummy;
+        while (cur != null) {
+            Node temp = cur.next.next;
+
+            curr.next = cur.next;
+            curr = curr.next;
+            cur.next = temp;
+            cur = temp;
+        }
+        return dummy.next;
     }
 
-    private int solve(TreeNode node, int sum) {
-        if (node == null) return 0;
+    class Node {
+        int val;
+        Node next;
+        Node random;
 
-
-        if (node.left == null && node.right == null) {
-            node.val = sum + node.val;
-            return node.val;
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
         }
-        int val = node.val;
-        int right = solve(node.right, sum);
-        node.val = right == 0 ? val + sum : right + val;
-
-        int left = solve(node.left, node.val);
-
-        return left == 0 ? node.val : left;
     }
 
 }
