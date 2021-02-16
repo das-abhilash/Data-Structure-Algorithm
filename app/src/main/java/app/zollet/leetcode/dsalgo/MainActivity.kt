@@ -16,9 +16,10 @@ class MainActivity : AppCompatActivity() {
         val bundle = Bundle()
         val df = 5
 
-        val solution = LeetCodeSolution()
+        val solution = DS()
+        solution.run()
 //        val solution = CodeForcesSolution()
-        solution.execute()
+//        solution.execute()
         val anim = "${Random.nextInt(6)}.json"
         animation.setAnimation(anim)
         animation.repeatCount = LottieDrawable.INFINITE
