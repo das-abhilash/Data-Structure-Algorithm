@@ -1,29 +1,43 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.Stack;
+
 public class LeetCodeSolution {
 
     public void execute() {
+        String s = minRemoveToMakeValid("))((");
     }
 
-    public int maxArea(int[] height) {
-        if (height.length < 2) return 0;
+    public String minRemoveToMakeValid(String s) {
 
-        int l = 0;
-        int r = height.length - 1;
-        int a = 0;
+        StringBuilder a = new StringBuilder(s);
 
-        while (l < r) {
+        Stack<Integer> index = new Stack<>();
+        Stack<Character> bracket = new Stack<>();
 
-            int area = (r - l) * Math.min(height[l], height[r]);
-            a = Math.max(a, area);
-            if (height[l] < height[r]) {
-                l++;
-            } else {
-                r--;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) >= 'a' && s.charAt(i) <= 'z') {
+                continue;
             }
 
-        }
-        return a;
-    }
+            char c = s.charAt(i);
 
+            if (bracket.isEmpty() && c == ')') {
+                a.setCharAt(i, '$');
+            } else if (c == ')' && bracket.peek() == '(') {
+                index.pop();
+                bracket.pop();
+            } else {
+                index.push(i);
+                bracket.push(c);
+            }
+        }
+
+        while (!index.isEmpty()) {
+            a.setCharAt(index.pop(), '$');
+        }
+        String o = a.toString().replace("$", "");
+
+        return o;
+    }
 }
