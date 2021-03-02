@@ -1,34 +1,22 @@
 package app.zollet.leetcode.dsalgo;
 
+import java.util.TreeMap;
+
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
-    public int[] minOperations(String boxes) {
+    public int distributeCandies(int[] candyType) {
 
-        int[] a = new int[boxes.length()];
+        TreeMap<Integer, Integer> map = new TreeMap<>();
 
-        for (int i = 0; i < boxes.length(); i++) {
-            int c = 0;
-            int s = 0;
-            for (int j = i - 1; j > 0; j--) {
-                s++;
-                if (boxes.charAt(j) == '1') {
-                    c += s;
-                }
-            }
-
-            s = 0;
-            for (int j = i + 1; j < boxes.length(); j++) {
-                s++;
-                if (boxes.charAt(j) == '1') {
-                    c += s;
-                }
-            }
-            a[i] = c;
+        for (int i = 0; i < candyType.length; i++) {
+            map.put(candyType[i], map.getOrDefault(candyType[i], 0) + 1);
         }
-        return a;
+
+        return Math.min(map.size(), candyType.length / 2);
+
     }
 
 }
