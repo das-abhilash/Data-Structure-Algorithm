@@ -20,12 +20,12 @@ public class UnionFindUtil {
         int toRank = rank[toRoot];
 
         if (fromRank > toRank) {
-            root[fromRoot] = toRoot;
-        } else if (toRank > fromRank) {
             root[toRoot] = fromRoot;
+        } else if (toRank > fromRank) {
+            root[fromRoot] = toRoot;
         } else {
             root[fromRoot] = toRoot;
-            rank[fromRoot] = rank[fromRoot] + 1;
+            rank[toRoot] = rank[toRoot] + 1;
         }
         return false;
     }
