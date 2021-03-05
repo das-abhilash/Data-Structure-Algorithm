@@ -1,54 +1,48 @@
 package app.zollet.leetcode.dsalgo;
 
-import java.util.List;
 
-import app.zollet.leetcode.dsalgo.util.ListNode;
+import java.util.Arrays;
 
 public class LeetCodeSolution {
 
     public void execute() {
-
+//        int[] a = solve(new int[]{5, 20, 3, 1, 26, 2, 50, 4, 19});
+        int[] a = solve(new int[]{5, 3, 1, 2, 4});
+        int[] a1 = solve(new int[]{1,2,5,6,8,9});
+        int[] a2 = solve(new int[]{1,1,1,1,1});
     }
 
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    private int[] solve(int[] a) {
+        if (a.length < 2) return a;
+        Arrays.sort(a);
 
-        int a = 0;
-        ListNode cur = headA;
-        while (cur != null) {
-            a++;
-            cur = cur.next;
-        }
+        int si = 0;
+        int ei = 0;
+        int ll = 1;
+        int i = 1;
 
-        int b = 0;
-        cur = headB;
-        while (cur != null) {
-            b++;
-            cur = cur.next;
-        }
-
-        ListNode curA = headA;
-        ListNode curB = headB;
-        if (a > b) {
-            int aa = a - b;
-            while (aa > 0) {
-                aa--;
-                curA = curA.next;
+        while (i < a.length) {
+            int l = 1;
+            int s = i -1;
+            while (i < a.length && a[i] == a[i - 1]+1) {
+                i++;
+                l++;
             }
-        } else if (a < b) {
-            int aa = b - a;
-            while (aa > 0) {
-                aa--;
-                curB = curB.next;
+
+            if (l > ll) {
+                si = s;
+                ei = i - 1;
+                ll = l;
             }
+            i++;
         }
 
-        if (curA == null || curB == null) return null;
-
-        while (curA != null) {
-            if (curA == curB) return curA;
-            curA = curA.next;
-            curB = curB.next;
+        int[] aa = new int[ll];
+        int k = 0;
+        for (int j = si; j <= ei; j++) {
+            aa[k++] = a[j];
         }
-        return null;
+        return aa;
     }
+
 }
