@@ -1,48 +1,41 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import app.zollet.leetcode.dsalgo.util.TreeNode;
 
 public class LeetCodeSolution {
 
     public void execute() {
-//        int[] a = solve(new int[]{5, 20, 3, 1, 26, 2, 50, 4, 19});
-        int[] a = solve(new int[]{5, 3, 1, 2, 4});
-        int[] a1 = solve(new int[]{1,2,5,6,8,9});
-        int[] a2 = solve(new int[]{1,1,1,1,1});
     }
 
-    private int[] solve(int[] a) {
-        if (a.length < 2) return a;
-        Arrays.sort(a);
+    public List<Double> averageOfLevels(TreeNode root) {
+        if (root == null) return Collections.emptyList();
 
-        int si = 0;
-        int ei = 0;
-        int ll = 1;
-        int i = 1;
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<Double> a = new ArrayList<>();
+        queue.add(root);
 
-        while (i < a.length) {
-            int l = 1;
-            int s = i -1;
-            while (i < a.length && a[i] == a[i - 1]+1) {
-                i++;
-                l++;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            long sum = 0;
+
+            for (int i = 0; i < size; i++) {
+                TreeNode n = queue.poll();
+                sum = sum + n.val;
+                if (n.left != null)
+                    queue.add(n.left);
+                if (n.right != null)
+                    queue.add(n.right);
             }
-
-            if (l > ll) {
-                si = s;
-                ei = i - 1;
-                ll = l;
-            }
-            i++;
+            double avg = (double) sum / size;
+            a.add(avg);
         }
-
-        int[] aa = new int[ll];
-        int k = 0;
-        for (int j = si; j <= ei; j++) {
-            aa[k++] = a[j];
-        }
-        return aa;
+        return a;
     }
-
 }
