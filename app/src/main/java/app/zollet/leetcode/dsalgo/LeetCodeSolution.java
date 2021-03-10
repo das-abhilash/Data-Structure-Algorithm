@@ -1,56 +1,90 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
+import java.util.TreeMap;
 
 import app.zollet.leetcode.dsalgo.util.TreeNode;
 
 public class LeetCodeSolution {
 
     public void execute() {
+        String s = intToRoman(58);
     }
 
-    public TreeNode addOneRow(TreeNode root, int v, int d) {
+    public String intToRoman(int num) {
+        StringBuilder s = new StringBuilder();
 
-        if (d == 1) {
-            TreeNode treeNode = new TreeNode(v);
-            treeNode.left = root;
-            return treeNode;
+        while (num >= 1000) {
+            s.append("M");
+            num = num - 1000;
         }
 
-        TreeNode cur = root;
-
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        int de = 0;
-        while (!q.isEmpty()) {
-
-            de++;
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode node = q.poll();
-
-                if (d == de - 1) {
-
-                    TreeNode left = node.left;
-                    TreeNode right = node.right;
-                    node.left = new TreeNode(v);
-                    node.right = new TreeNode(v);
-
-                    node.left.left = left;
-                    node.right.right = right;
-
-                } else {
-                    if (node.left != null)
-                        q.add(node.left);
-                    if (node.right != null)
-                        q.add(node.right);
-                }
-            }
-            if (d == de - 1) break;
+        while (num >= 900) {
+            s.append("CM");
+            num = num - 900;
         }
-        return cur;
+
+        while (num >= 500) {
+            s.append("D");
+            num = num - 500;
+        }
+
+        while (num >= 400) {
+            s.append("CD");
+            num = num - 400;
+        }
+
+        while (num >= 100) {
+            s.append("C");
+            num = num - 100;
+        }
+
+        while (num >= 90) {
+            s.append("XC");
+            num = num - 90;
+        }
+
+        while (num >= 50) {
+            s.append("L");
+            num = num - 50;
+        }
+
+        while (num >= 40) {
+            s.append("XL");
+            num = num - 40;
+        }
+
+        while (num >= 10) {
+            s.append("X");
+            num = num - 10;
+        }
+
+        while (num >= 9) {
+            s.append("IX");
+            num = num - 9;
+        }
+
+        while (num >= 5) {
+            s.append("V");
+            num = num - 5;
+        }
+
+        while (num >= 4) {
+            s.append("IV");
+            num = num - 4;
+        }
+
+        while (num >= 1) {
+            s.append("I");
+            num = num - 1;
+        }
+
+
+        return s.toString();
     }
 
 }
