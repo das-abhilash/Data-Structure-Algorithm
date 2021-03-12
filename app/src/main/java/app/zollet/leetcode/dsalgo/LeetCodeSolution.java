@@ -1,39 +1,35 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.TreeMap;
-
-import app.zollet.leetcode.dsalgo.util.TreeNode;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LeetCodeSolution {
 
 
     public void execute() {
+        boolean a  = hasAllCodes("00110",2);
     }
 
-    public int coinChange(int[] coins, int amount) {
+    public boolean hasAllCodes(String s, int k) {
 
-        if (amount == 0) return 0;
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(amount);
+        Set<String> set = new HashSet<>();
 
-        int a = 0;
-        while (!queue.isEmpty()) {
-            a++;
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                int c = queue.poll();
-                for (int coin : coins) {
-                    if (c - coin == 0) return a;
-                    if (c - coin > 0)
-                        queue.add(c - coin);
-                }
-            }
+        for (int i = 0; i <= s.length() - k; i++) {
+            set.add(s.substring(i, i + k));
         }
-        return -1;
+
+        for (int i = 0; i < Math.pow(2, k); i++) {
+            StringBuilder b = new StringBuilder();
+            String binary = Integer.toBinaryString(i);
+            for (int j = 0; j < k - binary.length(); j++) {
+                b.append("0");
+            }
+            b.append(binary);
+            if (!set.contains(b.toString())) return false;
+        }
+
+        return true;
     }
+
 }
