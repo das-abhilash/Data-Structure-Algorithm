@@ -1,35 +1,37 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
+import app.zollet.leetcode.dsalgo.util.ListNode;
 
 public class LeetCodeSolution {
 
 
     public void execute() {
-        boolean a  = hasAllCodes("00110",2);
     }
 
-    public boolean hasAllCodes(String s, int k) {
-
-        Set<String> set = new HashSet<>();
-
-        for (int i = 0; i <= s.length() - k; i++) {
-            set.add(s.substring(i, i + k));
+    public ListNode swapNodes(ListNode head, int k) {
+        List<Integer> list = new ArrayList<>();
+        ListNode cur = head;
+        while (cur != null) {
+            list.add(cur.val);
+            cur = cur.next;
         }
 
-        for (int i = 0; i < Math.pow(2, k); i++) {
-            StringBuilder b = new StringBuilder();
-            String binary = Integer.toBinaryString(i);
-            for (int j = 0; j < k - binary.length(); j++) {
-                b.append("0");
-            }
-            b.append(binary);
-            if (!set.contains(b.toString())) return false;
-        }
+        int temp = list.get(k-1);
+        list.set(k-1, list.get(list.size() - k));
+        list.set(list.size() - k, temp);
 
-        return true;
+        ListNode dummy = new ListNode();
+        ListNode cu = dummy;
+
+        for (int i = 0; i < list.size(); i++) {
+            cu.next = new ListNode(list.get(i));
+            cu = cu.next;
+        }
+        return dummy.next;
     }
 
 }
