@@ -1,48 +1,69 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeetCodeSolution {
 
 
     public void execute() {
-        List<Integer> q = new ArrayList<>();
-        q.add(1);
-        List<Integer> q1 = new ArrayList<>();
-        q1.add(2);
-        List<Integer> q2 = new ArrayList<>();
-        q2.add(3);
-        List<Integer> q4 = new ArrayList<>();
-        List<List<Integer>> list = new ArrayList<>();
-        list.add(q);
-        list.add(q1);
-        list.add(q2);
-        list.add(q4);
-        boolean s = canVisitAllRooms(list);
+
+        String[] c = spellchecker(new String[]{"KiTe", "kite", "hare", "Hare"}, new String[]{"kite", "Kite", "KiTe", "Hare", "HARE", "Hear", "hear", "keti", "keet", "keto"});
     }
 
-    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    public String[] spellchecker(String[] wordlist, String[] queries) {
 
-        Set<Integer> visited = new HashSet<>();
+        Map<String, String> dict = new HashMap<>();
 
-        solve(rooms, visited, 0);
+        for (String w :
+                wordlist) {
+            if (!dict.containsKey(w.toLowerCase() + '$'))
+                dict.put(w.toLowerCase() + '$', w);
+            dict.put(w, w);
+            char[] chars = w.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                char c = chars[i];
+                if (isVowel(c)) {
+                    chars[i] = '#';
+                }
+            }
+            String wo = new String(chars);
+            if (!dict.containsKey(wo.toLowerCase() + '$'))
+                dict.put(wo.toLowerCase() + '$', w);
 
-        return visited.size() == rooms.size();
-    }
+        }
 
-    private void solve(List<List<Integer>> rooms, Set<Integer> visited, int room) {
-        if (visited.contains(room)) return;
+        String[] a = new String[queries.length];
 
-        visited.add(room);
-
-        for (int r : rooms.get(room)) {
-            if (!visited.contains(r)) {
-                solve(rooms, visited, r);
+        for (int i = 0; i < queries.length; i++) {
+            if (dict.containsKey(queries[i])) {
+                a[i] = dict.get(queries[i]);
+            } else if (dict.containsKey(queries[i].toLowerCase() + '$'))
+                a[i] = dict.get(queries[i].toLowerCase() + '$');
+            else {
+                char[] chars = queries[i].toCharArray();
+                for (int j = 0; j < chars.length; j++) {
+                    char c = chars[j];
+                    if (isVowel(c)) {
+                        chars[j] = '#';
+                    }
+                    String wo = new String(chars);
+                    if (dict.containsKey(wo))
+                        a[i] = dict.get(wo);
+                    else if (dict.containsKey(wo.toLowerCase() + '$')) {
+                        a[i] = dict.get(wo.toLowerCase() + '$');
+                    } else {
+                        a[i] = "";
+                    }
+                }
             }
         }
+        return a;
     }
+
+    public boolean isVowel(char c) {
+        return "AEIOUaeiou".indexOf(c) != -1;
+    }
+
 }
