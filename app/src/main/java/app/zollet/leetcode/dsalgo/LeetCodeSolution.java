@@ -8,62 +8,30 @@ public class LeetCodeSolution {
 
 
     public void execute() {
-
-        String[] c = spellchecker(new String[]{"KiTe", "kite", "hare", "Hare"}, new String[]{"kite", "Kite", "KiTe", "Hare", "HARE", "Hear", "hear", "keti", "keet", "keto"});
+        int a = threeSumMulti(new int[]{1,1,2,2,3,3,4,4,5,5},8);
     }
 
-    public String[] spellchecker(String[] wordlist, String[] queries) {
+    public int threeSumMulti(int[] arr, int target) {
 
-        Map<String, String> dict = new HashMap<>();
+        int mod = 1000000007;
+        int a = 0;
+        for (int i = 0; i < arr.length; i++) {
+            Map<Integer, Integer> map = new HashMap<>();
+            int t = target - arr[i];
+            for (int j = i + 1; j < arr.length; j++) {
 
-        for (String w :
-                wordlist) {
-            if (!dict.containsKey(w.toLowerCase() + '$'))
-                dict.put(w.toLowerCase() + '$', w);
-            dict.put(w, w);
-            char[] chars = w.toCharArray();
-            for (int i = 0; i < chars.length; i++) {
-                char c = chars[i];
-                if (isVowel(c)) {
-                    chars[i] = '#';
+                if (map.containsKey(t - arr[j])) {
+                    a = (a + map.get(t - arr[j]) % mod) % mod;
                 }
-            }
-            String wo = new String(chars);
-            if (!dict.containsKey(wo.toLowerCase() + '$'))
-                dict.put(wo.toLowerCase() + '$', w);
+                map.put(arr[j], map.getOrDefault(arr[j], 0) + 1);
 
-        }
-
-        String[] a = new String[queries.length];
-
-        for (int i = 0; i < queries.length; i++) {
-            if (dict.containsKey(queries[i])) {
-                a[i] = dict.get(queries[i]);
-            } else if (dict.containsKey(queries[i].toLowerCase() + '$'))
-                a[i] = dict.get(queries[i].toLowerCase() + '$');
-            else {
-                char[] chars = queries[i].toCharArray();
-                for (int j = 0; j < chars.length; j++) {
-                    char c = chars[j];
-                    if (isVowel(c)) {
-                        chars[j] = '#';
-                    }
-                    String wo = new String(chars);
-                    if (dict.containsKey(wo))
-                        a[i] = dict.get(wo);
-                    else if (dict.containsKey(wo.toLowerCase() + '$')) {
-                        a[i] = dict.get(wo.toLowerCase() + '$');
-                    } else {
-                        a[i] = "";
-                    }
-                }
+                /*for (int k = j + 1; k < arr.length; k++) {
+                    if (arr[i] + arr[j] + arr[k] == target)
+                        a++;
+                }*/
             }
         }
         return a;
-    }
-
-    public boolean isVowel(char c) {
-        return "AEIOUaeiou".indexOf(c) != -1;
     }
 
 }
