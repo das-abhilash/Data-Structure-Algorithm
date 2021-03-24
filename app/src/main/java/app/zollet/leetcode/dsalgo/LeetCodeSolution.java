@@ -1,34 +1,47 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.TreeMap;
 
 public class LeetCodeSolution {
 
 
     public void execute() {
-        int a = threeSumMulti(new int[]{1,1,2,2,3,3,4,4,5,5},8);
+
     }
 
-    public int threeSumMulti(int[] arr, int target) {
+    public int[] advantageCount(int[] A, int[] B) {
 
-        int mod = 1000000007;
-        int a = 0;
-        for (int i = 0; i < arr.length; i++) {
-            Map<Integer, Integer> map = new HashMap<>();
-            int t = target - arr[i];
-            for (int j = i + 1; j < arr.length; j++) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
 
-                if (map.containsKey(t - arr[j])) {
-                    a = (a + map.get(t - arr[j]) % mod) % mod;
-                }
-                map.put(arr[j], map.getOrDefault(arr[j], 0) + 1);
+        for (int i = 0; i < A.length; i++) {
+            map.put(A[i], map.getOrDefault(A[i], 0) + 1);
+        }
 
-                /*for (int k = j + 1; k < arr.length; k++) {
-                    if (arr[i] + arr[j] + arr[k] == target)
-                        a++;
-                }*/
+        int[] a = new int[A.length];
+
+        for (int i = 0; i < B.length; i++) {
+            if (map.higherKey(B[i]) != null) {
+                int k = map.higherKey(B[i]);
+                a[i] = k;
+                if (map.get(k) == 1)
+                    map.remove(k);
+                else
+                    map.put(k, map.get(k) - 1);
+            } else {
+                a[i] = -1;
+            }
+        }
+
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] == -1) {
+                int k = map.firstKey();
+                a[i] = k;
+                if (map.get(k) == 1)
+                    map.remove(k);
+                else
+                    map.put(k, map.get(k) - 1);
+
             }
         }
         return a;
