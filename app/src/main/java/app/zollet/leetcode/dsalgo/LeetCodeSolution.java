@@ -1,8 +1,8 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LeetCodeSolution {
 
@@ -12,25 +12,31 @@ public class LeetCodeSolution {
     }
 
 
-//    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-//
-//    }
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
 
-    public int climbStairs(int n) {
+        List<List<Integer>> answer = new ArrayList<>();
 
-        return solve(n,new HashMap<>());
-
+        List<Integer> list  =new ArrayList<>();
+        list.add(0);
+        solve(graph, graph.length - 1, 0, answer, list);
+        return answer;
     }
 
-    private int solve(int n, Map<Integer, Integer> map) {
+    private void solve(int[][] graph, int end, int index, List<List<Integer>> answer, List<Integer> list) {
 
-        if (map.containsKey(n)) return map.get(n);
-        if (n < 0) return 0;
-        if (n == 0) return 1;
+        if (index == end) {
+            answer.add(new ArrayList<>(list));
+            return;
+        }
 
-        int v = climbStairs(n - 1) + climbStairs(n - 2);
-        map.put(n, v);
-        return v;
+
+        int[] g = graph[index];
+
+        for (int i = 0; i < g.length; i++) {
+            list.add(g[i]);
+            solve(graph, end, g[i], answer, list);
+            list.remove(list.size() - 1);
+        }
     }
 
 }
