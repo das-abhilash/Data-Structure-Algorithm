@@ -1,8 +1,8 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import app.zollet.leetcode.dsalgo.util.ListNode;
+import app.zollet.leetcode.dsalgo.util.TreeNode;
 
 public class LeetCodeSolution {
 
@@ -12,31 +12,17 @@ public class LeetCodeSolution {
     }
 
 
-    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+    public int maxDepth(Node root) {
+        if (root == null) return 0;
 
-        List<List<Integer>> answer = new ArrayList<>();
-
-        List<Integer> list  =new ArrayList<>();
-        list.add(0);
-        solve(graph, graph.length - 1, 0, answer, list);
-        return answer;
-    }
-
-    private void solve(int[][] graph, int end, int index, List<List<Integer>> answer, List<Integer> list) {
-
-        if (index == end) {
-            answer.add(new ArrayList<>(list));
-            return;
+        List<Node> nodes = root.children;
+        int d = 0;
+        for (int i = 0; i < nodes.size(); i++) {
+            Node n = nodes.get(i);
+            int cd = maxDepth(nodes);
+            d = Math.max(d,cd);
         }
-
-
-        int[] g = graph[index];
-
-        for (int i = 0; i < g.length; i++) {
-            list.add(g[i]);
-            solve(graph, end, g[i], answer, list);
-            list.remove(list.size() - 1);
-        }
+        return d + 1;
     }
 
 }
