@@ -1,8 +1,10 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import app.zollet.leetcode.dsalgo.util.ListNode;
-import app.zollet.leetcode.dsalgo.util.TreeNode;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class LeetCodeSolution {
 
@@ -11,18 +13,22 @@ public class LeetCodeSolution {
 
     }
 
+    public int[] twoSum(int[] nums, int target) {
 
-    public int maxDepth(Node root) {
-        if (root == null) return 0;
+        int[] a = new int[2];
 
-        List<Node> nodes = root.children;
-        int d = 0;
-        for (int i = 0; i < nodes.size(); i++) {
-            Node n = nodes.get(i);
-            int cd = maxDepth(nodes);
-            d = Math.max(d,cd);
+        Map<Integer, Integer> map = new HashMap<>();
+
+        Set<Integer> set = new HashSet<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (set.contains(target - nums[i])) {
+                return new int[]{map.get(target - nums[i]), i};
+            } else {
+                map.put(nums[i], i);
+                set.add(nums[i]);
+            }
         }
-        return d + 1;
+        return new int[2];
     }
-
 }
