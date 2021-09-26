@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         val solution = LeetCodeSolution()
         solution.execute()
 
+
 //        val solution = CodeForcesSolution()
 //        solution.execute()
         val anim = "${Random.nextInt(6)}.json"
