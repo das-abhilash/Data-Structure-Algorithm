@@ -2,10 +2,11 @@ package app.zollet.leetcode.dsalgo;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import app.zollet.leetcode.dsalgo.util.TreeNode;
+
+import static app.zollet.leetcode.dsalgo.util.TreeNodeUtill.insertLevelOrder;
 
 public class LeetCodeSolution {
 
@@ -13,29 +14,38 @@ public class LeetCodeSolution {
     public void execute() {
 
 
-        subsetsWithDup(new int[]{1, 2, 2});
+        TreeNode root = insertLevelOrder(new int[]{5, 4, 8, 11, -1, 13, 4, 7, 2, -1, -1, 5, 1}, new TreeNode(5), 0);
+        pathSum(root,22);
     }
 
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
 
-        Set<List<Integer>> answer = new HashSet<>();
+        List<List<Integer>> answer = new ArrayList<>();
+
         List<Integer> list = new ArrayList<>();
-
-        Arrays.sort(nums);
-        solve(answer, list, nums, 0);
-
-
-        return new ArrayList<>(answer);
+        solve(root, targetSum, answer, list);
+        return answer;
     }
 
-    private void solve(Set<List<Integer>> answer, List<Integer> list, int[] nums, int i) {
-        List<Integer> l = new ArrayList<>(list);
-        answer.add(l);
-        for (int j = i; j < nums.length; j++) {
-            list.add(nums[j]);
-            solve(answer, list, nums, j + 1);
-            list.remove(list.size() - 1);
+    private void solve(TreeNode node, int targetSum, List<List<Integer>> answer, List<Integer> list) {
+
+        if(node == null) return;
+        if (node.left == null && node.right == null) {
+            if (targetSum - node.val== 0) {
+                list.add(node.val);
+                answer.add(new ArrayList<>(list));
+                list.remove(list.size() - 1);
+            }
+            return;
         }
+        list.add(node.val);
+        if (node.left != null) {
+            solve(node.left, targetSum - node.val, answer, list);
+        }
+        if (node.right != null) {
+            solve(node.right, targetSum - node.val, answer, list);
+        }
+        list.remove(list.size() - 1);
     }
 
 }
