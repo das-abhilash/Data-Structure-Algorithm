@@ -1,6 +1,13 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import app.zollet.leetcode.dsalgo.util.Node;
+
 public class LeetCodeSolution {
 
 
@@ -8,23 +15,26 @@ public class LeetCodeSolution {
 
     }
 
-    public boolean stoneGame(int[] piles) {
+    public List<List<Integer>> levelOrder(Node root) {
 
+        if (root == null) return new ArrayList<>();
+        List<List<Integer>> answer = new ArrayList<>();
+        Queue<Node> queue = new LinkedList<>();
 
-        return solve(piles, true, 0, 0, 0, piles.length-1);
+        queue.add(root);
 
-    }
+        while (!queue.isEmpty()) {
 
-    private boolean solve(int[] piles, boolean isAlice, int alice, int bob, int start, int end) {
+            int size = queue.size();
+            List<Integer> list = new ArrayList<>();
 
-        if (start > end || start >= piles.length || end < 0) {
-            return alice > bob;
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+                list.add(node.val);
+                queue.addAll(node.children);
+            }
+            answer.add(list);
         }
-
-        if (isAlice) {
-            return solve(piles, !isAlice, alice + piles[start], bob, start + 1, end) || solve(piles, !isAlice, alice + piles[end], bob, start, end - 1);
-        } else {
-            return solve(piles, !isAlice, alice, bob + piles[start], start + 1, end) || solve(piles, !isAlice, alice, bob + piles[end], start, end - 1);
-        }
+        return answer;
     }
 }
