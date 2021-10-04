@@ -1,44 +1,44 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LeetCodeSolution {
 
 
     public void execute() {
 
+        int[][] grid = new int[][]{
+                {0, 1, 0, 0}, {1, 1, 1, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}
+        };
+        int a = islandPerimeter(grid);
     }
 
-    public boolean stoneGame(int[] piles) {
+    public int islandPerimeter(int[][] grid) {
 
-        Map<String, Integer> dp = new HashMap<>();
-        int total = 0;
-        for (int i = 0; i < piles.length; i++) {
-            total += piles[i];
+        int answer = 0;
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+
+                if (grid[i][j] == 1) {
+
+                    if (i - 1 < 0 || grid[i - 1][j] == 0) {
+                        answer++;
+                    }
+                    if (j - 1 < 0 || grid[i][j - 1] == 0) {
+                        answer++;
+                    }
+                    if (i + 1 >= grid.length || grid[i + 1][j] == 0) {
+                        answer++;
+                    }
+                    if (j + 1 >= grid[0].length || grid[i][j + 1] == 0) {
+                        answer++;
+                    }
+                }
+            }
         }
-
-        int val = solve(piles, true, 0, piles.length - 1, dp);
-        return val > total - val;
-    }
-
-    private int solve(int[] piles, boolean isAlice, int start, int end, Map<String, Integer> dp) {
-
-        if (start > end || start >= piles.length || end < 0) {
-            return 0;
-        }
-
-        String key = start + "-" + end;
-        if (dp.containsKey(key)) return dp.get(key);
-
-        int val;
-        if (isAlice) {
-            val = Math.max(solve(piles, !isAlice, start + 1, end, dp) + piles[start], solve(piles, !isAlice, start, end - 1, dp) + piles[end]);
-        } else {
-            val = Math.min(solve(piles, !isAlice, start + 1, end, dp) + piles[start], solve(piles, !isAlice, start, end - 1, dp) + piles[end]);
-        }
-        dp.put(key, val);
-        return val;
+        return answer;
     }
 }
