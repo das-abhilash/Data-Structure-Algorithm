@@ -1,44 +1,53 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeetCodeSolution {
 
 
     public void execute() {
 
-        int[][] grid = new int[][]{
-                {0, 1, 0, 0}, {1, 1, 1, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}
-        };
-        int a = islandPerimeter(grid);
+
+        int s = minCut("aab");
     }
 
-    public int islandPerimeter(int[][] grid) {
+    public int minCut(String s) {
+        Map<String, Integer> dp = new HashMap<>();
+        Map<String, Boolean> pall = new HashMap<>();
+        int sf = solve(s, 0, s.length() - 1, dp, pall);
 
-        int answer = 0;
+        return sf;
+    }
 
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
+    private int solve(String s, int start, int end, Map<String, Integer> dp, Map<String, Boolean> pall) {
+        if (start == end || isPalindrome(s, start, end, pall)) return 0;
 
-                if (grid[i][j] == 1) {
+        String key = start + "_" + end;
+        if (dp.containsKey(key)) return dp.get(key);
 
-                    if (i - 1 < 0 || grid[i - 1][j] == 0) {
-                        answer++;
-                    }
-                    if (j - 1 < 0 || grid[i][j - 1] == 0) {
-                        answer++;
-                    }
-                    if (i + 1 >= grid.length || grid[i + 1][j] == 0) {
-                        answer++;
-                    }
-                    if (j + 1 >= grid[0].length || grid[i][j + 1] == 0) {
-                        answer++;
-                    }
-                }
-            }
+        int min = s.length() - 1;
+
+        for (int i = start; i <= end; i++) {
+            if (isPalindrome(s, start, i, pall))
+                min = Math.min(min, 1 + solve(s, i + 1, end, dp, pall));
         }
-        return answer;
+
+        dp.put(key, min);
+        return min;
+
+    }
+
+
+    private boolean isPalindrome(String value, int start, int end, Map<String, Boolean> pall) {
+        if (start >= end) return true;
+        String key = start + "_" + end;
+        if (pall.containsKey(key)) return pall.get(key);
+        String pal = value.substring(start, end + 1);
+        String reverse = (new StringBuilder(pal)).reverse().toString();
+        boolean iss = pal.equals(reverse);
+        pall.put(key, iss);
+        return iss;
     }
 }
