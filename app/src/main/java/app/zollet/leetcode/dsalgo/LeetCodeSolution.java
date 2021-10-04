@@ -1,12 +1,8 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-import app.zollet.leetcode.dsalgo.util.Node;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeetCodeSolution {
 
@@ -15,26 +11,34 @@ public class LeetCodeSolution {
 
     }
 
-    public List<List<Integer>> levelOrder(Node root) {
+    public boolean stoneGame(int[] piles) {
 
-        if (root == null) return new ArrayList<>();
-        List<List<Integer>> answer = new ArrayList<>();
-        Queue<Node> queue = new LinkedList<>();
-
-        queue.add(root);
-
-        while (!queue.isEmpty()) {
-
-            int size = queue.size();
-            List<Integer> list = new ArrayList<>();
-
-            for (int i = 0; i < size; i++) {
-                Node node = queue.poll();
-                list.add(node.val);
-                queue.addAll(node.children);
-            }
-            answer.add(list);
+        Map<String, Integer> dp = new HashMap<>();
+        int total = 0;
+        for (int i = 0; i < piles.length; i++) {
+            total += piles[i];
         }
-        return answer;
+
+        int val = solve(piles, true, 0, piles.length - 1, dp);
+        return val > total - val;
+    }
+
+    private int solve(int[] piles, boolean isAlice, int start, int end, Map<String, Integer> dp) {
+
+        if (start > end || start >= piles.length || end < 0) {
+            return 0;
+        }
+
+        String key = start + "-" + end;
+        if (dp.containsKey(key)) return dp.get(key);
+
+        int val;
+        if (isAlice) {
+            val = Math.max(solve(piles, !isAlice, start + 1, end, dp) + piles[start], solve(piles, !isAlice, start, end - 1, dp) + piles[end]);
+        } else {
+            val = Math.min(solve(piles, !isAlice, start + 1, end, dp) + piles[start], solve(piles, !isAlice, start, end - 1, dp) + piles[end]);
+        }
+        dp.put(key, val);
+        return val;
     }
 }
