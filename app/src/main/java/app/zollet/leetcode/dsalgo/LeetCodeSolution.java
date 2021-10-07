@@ -1,28 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class LeetCodeSolution {
 
 
     public void execute() {
 
-        findDuplicates(new int[]{4,3,2,7,8,2,3,1});
     }
 
-    public List<Integer> findDuplicates(int[] nums) {
+    public boolean exist(char[][] board, String word) {
 
-
-        List<Integer> answer = new ArrayList<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[Math.abs(nums[i]) -1] < 0) {
-                answer.add(Math.abs(nums[i]));
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == word.charAt(0)) {
+                    if (solve(board, word, 0, i, j)) return true;
+                }
             }
-            nums[Math.abs(nums[i])-1] = nums[Math.abs(nums[i])-1] * -1;
         }
-        return answer;
+        return false;
     }
+
+    private boolean solve(char[][] board, String word, int index, int i, int j) {
+        if (index >= word.length()) return true;
+        if (i < 0 || j < 0 || i >= board.length || j >= board[0].length || board[i][j] == '$')
+            return false;
+        if (word.charAt(index) != board[i][j]) return false;
+        char c = board[i][j];
+        board[i][j] = '$';
+        boolean a = solve(board, word, index + 1, i + 1, j)
+                || solve(board, word, index + 1, i - 1, j)
+                || solve(board, word, index + 1, i, j + 1)
+                || solve(board, word, index + 1, i, j - 1);
+
+        board[i][j] = c;
+        return a;
+    }
+
+
 }
