@@ -1,23 +1,34 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LeetCodeSolution {
 
 
     public void execute() {
-
     }
 
-    public boolean exist(char[][] board, String word) {
+    public List<String> findWords(char[][] board, String[] words) {
 
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] == word.charAt(0)) {
-                    if (solve(board, word, 0, i, j)) return true;
+        List<String> answer = new ArrayList<>();
+        for (int k = 0; k < words.length; k++) {
+            boolean found = false;
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[0].length; j++) {
+                    if (board[i][j] == words[k].charAt(0)) {
+                        if (solve(board, words[k], 0, i, j)) {
+                            found = true;
+                            break;
+                        }
+                    }
                 }
+                if (found) break;
             }
+            if (found) answer.add(words[k]);
         }
-        return false;
+        return answer;
     }
 
     private boolean solve(char[][] board, String word, int index, int i, int j) {
