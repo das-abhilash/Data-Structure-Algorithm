@@ -1,38 +1,28 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.Arrays;
-
 public class LeetCodeSolution {
 
 
     public void execute() {
 
+        int s = maxProfit(new int[]{1, 2, 4});
     }
 
-    public int numSquares(int n) {
+    public int maxProfit(int[] prices) {
 
-        int[] dp = new int[n + 1];
+        int buy = -prices[0];
+        int sell = 0;
+        int prevBuy = 0;
+        int prevSell = 0;
 
-        dp[0] = 0;
-
-        Arrays.fill(dp,Integer.MAX_VALUE);
-        for (int i = 1; i <= n; i++) {
-            int s = (int) Math.sqrt(i);
-
-            if (s * s == i) {
-                dp[i] = 1;
-                continue;
-            }
-
-
-            for (int j = 1; j <= s; j++) {
-                int diff = i - j * j;
-                dp[i] = Math.min(dp[i], dp[diff] + 1);
-            }
-
+        for (int i = 0; i < prices.length; i++) {
+            prevBuy = buy;
+            buy = Math.max(prevSell - prices[i], buy);
+            prevSell = sell;
+            sell = Math.max(prevBuy + prices[i], sell);
         }
-        return dp[n];
+        return sell;
     }
 
 }
