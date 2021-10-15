@@ -1,6 +1,8 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.Arrays;
+
 public class LeetCodeSolution {
 
 
@@ -8,27 +10,29 @@ public class LeetCodeSolution {
 
     }
 
-    public int guessNumber(int n) {
+    public int numSquares(int n) {
 
-        int l = 1;
-        int r = n;
-        while (l < r) {
-            int mid = (r - l) / 2;
+        int[] dp = new int[n + 1];
 
-            if (guess(mid) == 0) return mid;
+        dp[0] = 0;
 
-            if (guess(mid) == -1) {
-                r = mid - 1;
+        Arrays.fill(dp,Integer.MAX_VALUE);
+        for (int i = 1; i <= n; i++) {
+            int s = (int) Math.sqrt(i);
+
+            if (s * s == i) {
+                dp[i] = 1;
+                continue;
             }
-            if (guess(mid) == 1) {
-                l = mid + 1;
+
+
+            for (int j = 1; j <= s; j++) {
+                int diff = i - j * j;
+                dp[i] = Math.min(dp[i], dp[diff] + 1);
             }
+
         }
-        return -1;
-    }
-
-    int guess(int num) {
-        return 1;
+        return dp[n];
     }
 
 }
