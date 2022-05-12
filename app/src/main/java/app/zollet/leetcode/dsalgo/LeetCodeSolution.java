@@ -7,29 +7,39 @@ public class LeetCodeSolution {
     public void execute() {
 
 
-        boolean h = validPalindrome("aba");
+        boolean h = validPalindrome("abc");
+        int f = 0;
         h = validPalindrome("abad");
-        h = validPalindrome("abcd");
+        f = 0;
+        h = validPalindrome("abca");
+        f = 0;
     }
 
     public boolean validPalindrome(String s) {
-        if (isPalindrome(s)) return true;
+        int start = 0;
+        int end = s.length();
 
-        StringBuilder sb = new StringBuilder(s);
-        for (int i = 0; i < s.length(); i++) {
-
-            char c = sb.charAt(i);
-            sb.deleteCharAt(i);
-
-            if (isPalindrome(sb.toString())) {
-                return true;
+        while (start < end) {
+            if (isPalindrome(s, start, end)) return true;
+            if (s.charAt(start) != s.charAt(end - 1)) {
+                return (isPalindrome(s, start, end - 1) || isPalindrome(s, start + 1, end));
             }
-            sb.insert(i, c);
+            start++;
+            end--;
         }
         return false;
     }
 
-    private boolean isPalindrome(String s) {
-        return s.equals(new StringBuilder(s).reverse().toString());
+    private boolean isPalindrome(String s, int i, int j) {
+        while (i < j) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+
+            i++;
+            j--;
+        }
+
+        return true;
     }
 }
