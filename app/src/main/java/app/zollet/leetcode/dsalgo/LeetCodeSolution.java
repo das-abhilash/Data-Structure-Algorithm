@@ -6,18 +6,30 @@ public class LeetCodeSolution {
 
     public void execute() {
 
-        reverseString(new char[]{'a', 'b', 'c'});
-        reverseString(new char[]{'a', 'b', 'c', 'd'});
-        reverseString(new char[]{});
+
+        boolean h = validPalindrome("aba");
+        h = validPalindrome("abad");
+        h = validPalindrome("abcd");
     }
 
-    public void reverseString(char[] s) {
-        int l = s.length;
+    public boolean validPalindrome(String s) {
+        if (isPalindrome(s)) return true;
 
-        for (int i = 0; i < l / 2; i++) {
-            char c = s[i];
-            s[i] = s[l - i - 1];
-            s[l - i - 1] = c;
+        StringBuilder sb = new StringBuilder(s);
+        for (int i = 0; i < s.length(); i++) {
+
+            char c = sb.charAt(i);
+            sb.deleteCharAt(i);
+
+            if (isPalindrome(sb.toString())) {
+                return true;
+            }
+            sb.insert(i, c);
         }
+        return false;
+    }
+
+    private boolean isPalindrome(String s) {
+        return s.equals(new StringBuilder(s).reverse().toString());
     }
 }
