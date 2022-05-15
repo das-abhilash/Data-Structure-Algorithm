@@ -5,41 +5,35 @@ public class LeetCodeSolution {
 
 
     public void execute() {
-
-
-        boolean h = validPalindrome("abc");
-        int f = 0;
-        h = validPalindrome("abad");
-        f = 0;
-        h = validPalindrome("abca");
-        f = 0;
+        nextPermutation(new int[]{1,5,1});
     }
 
-    public boolean validPalindrome(String s) {
-        int start = 0;
-        int end = s.length();
+    public void nextPermutation(int[] nums) {
+        int i = nums.length - 2;
+        while (i >= 0 && nums[i] >= nums[i + 1])
+            i--;
 
-        while (start < end) {
-            if (isPalindrome(s, start, end)) return true;
-            if (s.charAt(start) != s.charAt(end - 1)) {
-                return (isPalindrome(s, start, end - 1) || isPalindrome(s, start + 1, end));
+        int j = nums.length - 1;
+        if (i >= 0) {
+            while (nums[j] <= nums[i]) {
+                j-- ;
             }
-            start++;
-            end--;
+            swap(nums, i, j);
         }
-        return false;
-    }
 
-    private boolean isPalindrome(String s, int i, int j) {
-        while (i < j) {
-            if (s.charAt(i) != s.charAt(j)) {
-                return false;
-            }
-
+        i++;
+        j = nums.length - 1;
+        while (i < nums.length && i < j) {
+            swap(nums, i, j);
             i++;
             j--;
         }
+        return;
+    }
 
-        return true;
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
