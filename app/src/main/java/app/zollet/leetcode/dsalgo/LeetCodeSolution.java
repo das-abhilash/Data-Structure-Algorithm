@@ -3,37 +3,24 @@ package app.zollet.leetcode.dsalgo;
 
 public class LeetCodeSolution {
 
-
     public void execute() {
-        nextPermutation(new int[]{1,5,1});
+
+        int a = maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7});
     }
 
-    public void nextPermutation(int[] nums) {
-        int i = nums.length - 2;
-        while (i >= 0 && nums[i] >= nums[i + 1])
-            i--;
+    public int maxArea(int[] height) {
 
-        int j = nums.length - 1;
-        if (i >= 0) {
-            while (nums[j] <= nums[i]) {
-                j-- ;
-            }
-            swap(nums, i, j);
+        int i = 0;
+        int j = height.length - 1;
+        int a = 0;
+        while (i < j) {
+            a = Math.max(a, (j - i) * Math.min(height[i], height[j]));
+
+            if (height[i] < height[j]) {
+                i++;
+            } else
+                j--;
         }
-
-        i++;
-        j = nums.length - 1;
-        while (i < nums.length && i < j) {
-            swap(nums, i, j);
-            i++;
-            j--;
-        }
-        return;
-    }
-
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
+        return a;
     }
 }
