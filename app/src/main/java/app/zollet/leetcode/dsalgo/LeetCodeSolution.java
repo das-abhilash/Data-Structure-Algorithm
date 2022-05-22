@@ -1,26 +1,30 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.Collections;
+import java.util.PriorityQueue;
+
 public class LeetCodeSolution {
 
     public void execute() {
 
-        int a = maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7});
+        int a = lastStoneWeight(new int[]{2, 7, 4, 1, 8, 1});
     }
 
-    public int maxArea(int[] height) {
+    public int lastStoneWeight(int[] stones) {
 
-        int i = 0;
-        int j = height.length - 1;
-        int a = 0;
-        while (i < j) {
-            a = Math.max(a, (j - i) * Math.min(height[i], height[j]));
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
 
-            if (height[i] < height[j]) {
-                i++;
-            } else
-                j--;
+        for (int stone : stones) {
+            queue.offer(stone);
         }
-        return a;
+
+        while (queue.size() > 1) {
+            int x = queue.poll();
+            int y = queue.poll();
+            queue.offer(x - y);
+        }
+        return queue.peek();
     }
+
 }
