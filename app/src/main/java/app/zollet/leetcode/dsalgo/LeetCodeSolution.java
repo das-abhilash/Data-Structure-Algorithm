@@ -7,14 +7,17 @@ public class LeetCodeSolution {
 
     }
 
-    public int[] runningSum(int[] nums) {
-        int[] a = new int[nums.length];
-        int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            sum = sum + nums[i];
-            a[i] = sum;
+    public int lengthOfLastWord(String s) {
+        String input = s.trim();
+        int answer = 0;
+        for (int i = input.length() -1; i >=0; i--) {
+            if(input.charAt(i)  == ' ') {
+                break;
+            } else {
+                answer++;
+            }
         }
-        return a;
+        return answer;
     }
 
 }
