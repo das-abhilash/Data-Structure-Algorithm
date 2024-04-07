@@ -1,56 +1,43 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.Stack;
-
 public class LeetCodeSolution {
 
     public void execute() {
-        minRemoveToMakeValid("(a(b(c)d)");
-// (a(b(c)d)
     }
+// [1,5,10,3]
+    public int longestMonotonicSubarray(int[] nums) {
 
-    // a -> ( a ( b  c ) d )
-    // b ->
-    public String minRemoveToMakeValid(String s) {
+        if (nums.length == 1) return 1;
+        if (nums.length == 2) return nums[1] != nums[0] ? 2 : 1;
 
-        Stack<Character> actual = new Stack<>();
-        Stack<Character> bracket = new Stack<>();
 
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == '(') {
+        int count = nums[1] !=  nums[0] ? 2 : 1;
 
-                bracket.push(c);
-                actual.push(c);
+        int ans = count;
 
-            } else if (c == ')') {
-
-                if (!bracket.isEmpty() && bracket.peek() == '(') {
-                    bracket.pop();
-                    actual.push(c);
-                }
-
-            } else {
-                actual.push(c);
-            }
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        while (!actual.isEmpty()) {
-
-            if (actual.peek() == ')' || actual.peek() != '(') {
-                sb.insert(0, actual.pop());
-            } else {
-                if (bracket.isEmpty()) {
-                    sb.insert(0, actual.pop());
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i] == nums[i - 1]) {
+                ans = Math.max(count, ans);
+                count = 1;
+            } else if (nums[i] > nums[i - 1]) {
+                if (nums[i-1] > nums [i-2]) {
+                    count++;
                 } else {
-                    actual.pop();
-                    bracket.pop();
+                    ans = Math.max(count , ans);
+                    count = 2;
+                }
+            } else {
+                if (nums[i-1] < nums [i-2]) {
+                    count++;
+                } else {
+                    ans = Math.max(count, ans);
+                    count = 2;
                 }
             }
         }
-        return sb.toString();
+
+        ans = Math.max(ans,count);
+        return ans;
     }
 }
