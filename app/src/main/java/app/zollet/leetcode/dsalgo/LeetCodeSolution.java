@@ -1,43 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class LeetCodeSolution {
 
     public void execute() {
+        int[] students = { 1,1,0,0 };
+        int[] sandwiches = { 0,1,0,1 };
+        countStudents(students,sandwiches);
     }
-// [1,5,10,3]
-    public int longestMonotonicSubarray(int[] nums) {
 
-        if (nums.length == 1) return 1;
-        if (nums.length == 2) return nums[1] != nums[0] ? 2 : 1;
+    public int countStudents(int[] students, int[] sandwiches) {
 
+        if (students.length == 0) return 0;
+        int index = 0;
+        Queue<Integer> queue = new LinkedList<>();
 
-        int count = nums[1] !=  nums[0] ? 2 : 1;
-
-        int ans = count;
-
-        for (int i = 2; i < nums.length; i++) {
-            if (nums[i] == nums[i - 1]) {
-                ans = Math.max(count, ans);
-                count = 1;
-            } else if (nums[i] > nums[i - 1]) {
-                if (nums[i-1] > nums [i-2]) {
-                    count++;
-                } else {
-                    ans = Math.max(count , ans);
-                    count = 2;
-                }
-            } else {
-                if (nums[i-1] < nums [i-2]) {
-                    count++;
-                } else {
-                    ans = Math.max(count, ans);
-                    count = 2;
-                }
-            }
+        for (int i = 0; i < students.length; i++) {
+            queue.add(students[i]);
         }
 
-        ans = Math.max(ans,count);
-        return ans;
+        int notAte = 0;
+        while (!queue.isEmpty()) {
+            int student = queue.poll();
+            if (sandwiches[index] == student) {
+                index++;
+                notAte = 0;
+            } else {
+                queue.add(student);
+                notAte++;
+            }
+            if(notAte == students.length) return students.length - index;
+        }
+        return 0;
     }
 }
