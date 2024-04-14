@@ -4,42 +4,38 @@ package app.zollet.leetcode.dsalgo;
 public class LeetCodeSolution {
 
     public void execute() {
-        String df = findLatestTime("1?:?4");
+
+
     }
 
-    public String findLatestTime(String s) {
-        return fixHour(s.charAt(0), s.charAt(1)) + ":" + fixMin(s.charAt(3), s.charAt(4));
-    }
+    public int maximumPrimeDifference(int[] nums) {
+        int index = -1;
+        int ans = 0;
 
-    public String fixHour(char i, char j) {
+        for (int i = 0; i < nums.length; i++) {
 
-        if (i == '?' && j == '?') {
-            return "11";
-        } else if (i == '?') {
-            if ( j == 49 || j == 48) {
-                return "1" + j;
-            } else {
-                return "0" + j;
-            }
-        } else if (j == '?') {
-            if ( i == 49 ) {
-                return "11";
-            } else {
-                return "09";
+            if (isPrime(nums[i])) {
+                if (index > -1) {
+                    ans = i - index;
+                } else
+                    index = i;
             }
         }
-        return String.valueOf(i) + j;
+        return ans;
     }
 
-    public String fixMin(char i, char j) {
-        if (i == '?' && j == '?') {
-            return "59";
-        } else if (i == '?') {
-            return "5" + j;
-        } else if (j == '?') {
-            return i + "9";
-        }
-        return String.valueOf(i) + j;
+    private boolean isPrime(int n) {
+        // Corner case
+        if (n <= 1)
+            return false;
+
+        // Check from 2 to n-1
+        for (int i = 2; i < n; i++)
+            if (n % i == 0)
+                return false;
+
+        return true;
     }
+
 
 }
