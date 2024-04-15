@@ -10,22 +10,32 @@ public class LeetCodeSolution {
 
     }
 
-    int ans = 0;
+    int sum = 0;
 
-    public int sumOfLeftLeaves(TreeNode root) {
-        sum(root.left, true);
-        sum(root.right, false);
-        return ans;
+    public int sumNumbers(TreeNode root) {
+
+        if (root.left == null && root.right == null) {
+            return root.val;
+        }
+        if (root.left != null)
+            solve(root.left, root.val);
+        if (root.right != null)
+            solve(root.right, root.val);
+        return sum;
     }
 
-    private void sum(TreeNode node, boolean isLeft) {
-        if (node == null) return;
-        if (node.left == null && node.right == null && isLeft) {
-            ans += node.val;
+    private void solve(TreeNode node, int value) {
+        if (node.left == null && node.right == null) {
+            sum = (value * 10 + node.val) + sum;
             return;
         }
 
-        sum(node.left, true);
-        sum(node.right, false);
+        if (node.left != null)
+            solve(node.left, value * 10 + node.val);
+        if (node.right != null)
+            solve(node.right, value * 10 + node.val);
+
+
     }
+
 }
