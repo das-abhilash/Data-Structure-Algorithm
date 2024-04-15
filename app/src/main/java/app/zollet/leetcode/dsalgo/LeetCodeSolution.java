@@ -1,6 +1,8 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import app.zollet.leetcode.dsalgo.util.TreeNode;
+
 public class LeetCodeSolution {
 
     public void execute() {
@@ -8,34 +10,22 @@ public class LeetCodeSolution {
 
     }
 
-    public int maximumPrimeDifference(int[] nums) {
-        int index = -1;
-        int ans = 0;
+    int ans = 0;
 
-        for (int i = 0; i < nums.length; i++) {
-
-            if (isPrime(nums[i])) {
-                if (index > -1) {
-                    ans = i - index;
-                } else
-                    index = i;
-            }
-        }
+    public int sumOfLeftLeaves(TreeNode root) {
+        sum(root.left, true);
+        sum(root.right, false);
         return ans;
     }
 
-    private boolean isPrime(int n) {
-        // Corner case
-        if (n <= 1)
-            return false;
+    private void sum(TreeNode node, boolean isLeft) {
+        if (node == null) return;
+        if (node.left == null && node.right == null && isLeft) {
+            ans += node.val;
+            return;
+        }
 
-        // Check from 2 to n-1
-        for (int i = 2; i < n; i++)
-            if (n % i == 0)
-                return false;
-
-        return true;
+        sum(node.left, true);
+        sum(node.right, false);
     }
-
-
 }
