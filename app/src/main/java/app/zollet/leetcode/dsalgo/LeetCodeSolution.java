@@ -2,40 +2,40 @@ package app.zollet.leetcode.dsalgo;
 
 
 import app.zollet.leetcode.dsalgo.util.TreeNode;
+import app.zollet.leetcode.dsalgo.util.TreeNodeUtill;
 
 public class LeetCodeSolution {
 
     public void execute() {
 
+        TreeNode root = TreeNodeUtill.insertLevelOrder(new int[]{25, 1, -1, 0, 0, 1, -1, -1, -1, 0}, new TreeNode(1), 0);
 
+        String h = smallestFromLeaf(root);
     }
 
-    int sum = 0;
 
-    public int sumNumbers(TreeNode root) {
+    public String smallestFromLeaf(TreeNode root) {
 
-        if (root.left == null && root.right == null) {
-            return root.val;
+        return solve(root, "");
+    }
+
+    private String solve(TreeNode node, String value) {
+
+        value = (char) ('a' + node.val) + value;
+
+        if (node.left == null && node.right == null) return value;
+
+        if (node.left == null || node.right == null){
+            if(node.left != null)
+            return solve(node.left, value);
+            else
+                return solve(node.right, value);
         }
-        if (root.left != null)
-            solve(root.left, root.val);
-        if (root.right != null)
-            solve(root.right, root.val);
-        return sum;
-    }
 
-    private void solve(TreeNode node, int value) {
-        if (node.left == null && node.right == null) {
-            sum = (value * 10 + node.val) + sum;
-            return;
-        }
-
-        if (node.left != null)
-            solve(node.left, value * 10 + node.val);
-        if (node.right != null)
-            solve(node.right, value * 10 + node.val);
-
+        String left = solve(node.left, value);
+        String right = solve(node.right, value);
+        if (left.compareTo(right) <= 0) return left;
+        else return right;
 
     }
-
 }
