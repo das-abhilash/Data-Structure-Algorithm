@@ -1,41 +1,58 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import app.zollet.leetcode.dsalgo.util.TreeNode;
-import app.zollet.leetcode.dsalgo.util.TreeNodeUtill;
 
 public class LeetCodeSolution {
 
     public void execute() {
 
-        TreeNode root = TreeNodeUtill.insertLevelOrder(new int[]{25, 1, -1, 0, 0, 1, -1, -1, -1, 0}, new TreeNode(1), 0);
-
-        String h = smallestFromLeaf(root);
     }
 
 
-    public String smallestFromLeaf(TreeNode root) {
+    public TreeNode addOneRow(TreeNode root, int val, int depth) {
 
-        return solve(root, "");
-    }
-
-    private String solve(TreeNode node, String value) {
-
-        value = (char) ('a' + node.val) + value;
-
-        if (node.left == null && node.right == null) return value;
-
-        if (node.left == null || node.right == null){
-            if(node.left != null)
-            return solve(node.left, value);
-            else
-                return solve(node.right, value);
+        if (depth == 1) {
+            TreeNode node = new TreeNode(val);
+            node.left = root;
+            return node;
         }
 
-        String left = solve(node.left, value);
-        String right = solve(node.right, value);
-        if (left.compareTo(right) <= 0) return left;
-        else return right;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
 
+        int d = 1;
+        while (!queue.isEmpty() && d < depth - 1) {
+            d++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left != null)
+                    queue.add(node.left);
+                if (node.right != null)
+                    queue.add(node.right);
+            }
+        }
+
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+
+            TreeNode left = node.left;
+            TreeNode right = node.right;
+
+            node.left = new TreeNode(val);
+            node.right = new TreeNode(val);
+
+            node.left.left = left;
+            node.right.right = right;
+        }
+
+
+        return root;
     }
+
 }
