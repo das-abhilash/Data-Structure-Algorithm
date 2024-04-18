@@ -1,58 +1,62 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.LinkedList;
-import java.util.Queue;
-
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-
 public class LeetCodeSolution {
 
     public void execute() {
 
+        int df = islandPerimeter(new int[][]{{1, 1}});
     }
 
 
-    public TreeNode addOneRow(TreeNode root, int val, int depth) {
+    public int islandPerimeter(int[][] grid) {
 
-        if (depth == 1) {
-            TreeNode node = new TreeNode(val);
-            node.left = root;
-            return node;
+        int p = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    p += getPerimeter(grid, i, j);
+                }
+            }
         }
+        return p;
+    }
 
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
 
-        int d = 1;
-        while (!queue.isEmpty() && d < depth - 1) {
-            d++;
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                if (node.left != null)
-                    queue.add(node.left);
-                if (node.right != null)
-                    queue.add(node.right);
+    private int getPerimeter(int[][] grid, int x, int y) {
+        int perimeter = 0;
+        if (x - 1 < 0) {
+            perimeter++;
+        } else {
+            if (grid[x - 1][y] == 0) {
+                perimeter++;
+            }
+        }
+        if (y - 1 < 0) {
+            perimeter++;
+        } else {
+            if (grid[x][y - 1] == 0) {
+                perimeter++;
+            }
+        }
+        if (x + 1 >= grid.length) {
+            perimeter++;
+        } else {
+            if (grid[x + 1][y] == 0) {
+                perimeter++;
+            }
+        }
+        if (y + 1 >= grid[0].length) {
+            perimeter++;
+        } else {
+            if (grid[x][y + 1] == 0) {
+                perimeter++;
             }
         }
 
 
-        while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-
-            TreeNode left = node.left;
-            TreeNode right = node.right;
-
-            node.left = new TreeNode(val);
-            node.right = new TreeNode(val);
-
-            node.left.left = left;
-            node.right.right = right;
-        }
-
-
-        return root;
+        return perimeter;
     }
+
 
 }
