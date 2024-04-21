@@ -1,31 +1,54 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LeetCodeSolution {
 
     public void execute() {
 
-        int sdf = minRectanglesToCoverPoints(new int[][]{{0, 0}, {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}}, 2);
     }
 
-    public int minRectanglesToCoverPoints(int[][] points, int w) {
+    int minI = Integer.MAX_VALUE;
+    int minJ = Integer.MAX_VALUE;
+    int maxI = Integer.MIN_VALUE;
+    int maxJ = Integer.MIN_VALUE;
 
+    public int[][] findFarmland(int[][] land) {
 
-        Arrays.sort(points, Comparator.comparingInt(a -> a[0]));
+        List<int[]> a = new ArrayList<>();
 
-        int ans = 1;
-        int last = points[0][0];
-        for (int i = 1; i < points.length - 1; i++) {
-            if (points[i][0] - last > w) {
-                last = points[i + 1][0];
-                ans++;
+        boolean[][] dp = new boolean[land.length][land[0].length];
+        for (int i = 0; i < land.length; i++) {
+            for (int j = 0; j < land[0].length; j++) {
+                if (land[i][j] == 1 && !dp[i][j]) {
+                    minI = Integer.MAX_VALUE;
+                    minJ = Integer.MAX_VALUE;
+                    maxI = Integer.MIN_VALUE;
+                    maxJ = Integer.MIN_VALUE;
+                    dfs(land, dp, i, j);
+                    a.add(new int[]{minI, minJ, maxI, maxJ});
+                }
             }
         }
 
-        return ans;
+        return a.toArray(new int[0][]);
+    }
+
+    private void dfs(int[][] land, boolean[][] dp, int i, int j) {
+        if (i < 0 || j < 0 || i >= land.length || j >= land[0].length || dp[i][j] || land[i][j] == 0)
+            return;
+
+        minI = Math.min(i, minI);
+        minJ = Math.min(j, minJ);
+        maxI = Math.max(i, maxI);
+        maxJ = Math.max(j, maxJ);
+        dp[i][j] = true;
+        dfs(land, dp, i + 1, j);
+        dfs(land, dp, i - 1, j);
+        dfs(land, dp, i, j + 1);
+        dfs(land, dp, i, j - 1);
 
     }
 
