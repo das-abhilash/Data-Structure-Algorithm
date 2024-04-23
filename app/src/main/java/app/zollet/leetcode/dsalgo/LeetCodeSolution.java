@@ -55,8 +55,8 @@ public class LeetCodeSolution {
         int count = 0;
 
         while (!combinations.isEmpty()) {
-
             int ite = combinations.size();
+
             for (int i = 0; i < ite; i++) {
                 String c = combinations.poll();
 
@@ -81,8 +81,8 @@ public class LeetCodeSolution {
                         combinations.add(prev.toString());
                     }
                 }
-                count++;
             }
+            count++;
         }
 
         return -1;
