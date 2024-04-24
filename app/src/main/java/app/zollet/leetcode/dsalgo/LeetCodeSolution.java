@@ -1,9 +1,12 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -11,80 +14,55 @@ import java.util.Set;
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = openLock(new String[]{"0201", "0101", "0102", "1212", "2002"}, "0202");
+        List<Integer> a = findMinHeightTrees(1, new int[][]{{1, 0}, {1, 2}, {1, 3}});
     }
 
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 
-    public int openLock(String[] deadends, String target) {
-        // Map the next slot digit for each current slot digit.
-        Map<Character, Character> nextSlot = Map.of(
-                '0', '1',
-                '1', '2',
-                '2', '3',
-                '3', '4',
-                '4', '5',
-                '5', '6',
-                '6', '7',
-                '7', '8',
-                '8', '9',
-                '9', '0'
-        );
-        // Map the previous slot digit for each current slot digit.
-        Map<Character, Character> prevSlot = Map.of(
-                '0', '9',
-                '1', '0',
-                '2', '1',
-                '3', '2',
-                '4', '3',
-                '5', '4',
-                '6', '5',
-                '7', '6',
-                '8', '7',
-                '9', '8'
-        );
+        if(n == 1) return new ArrayList<>(Arrays.asList(0));
 
-        Set<String> visited = new HashSet<>(Arrays.asList(deadends));
+        Map<Integer, Set<Integer>> edgeMap = new HashMap<>();
 
-        Queue<String> combinations = new LinkedList<>();
+        for (int i = 0; i < edges.length; i++) {
+            Set<Integer> list1 = edgeMap.getOrDefault(edges[i][0], new HashSet<>());
+            list1.add(edges[i][1]);
+            edgeMap.put(edges[i][0], list1);
 
-        if (visited.contains("0000"))
-            return -1;
-
-        combinations.add("0000");
-        visited.add("0000");
-        int count = 0;
-
-        while (!combinations.isEmpty()) {
-            int ite = combinations.size();
-
-            for (int i = 0; i < ite; i++) {
-                String c = combinations.poll();
-
-                if (c.equals(target)) {
-                    return count;
-                }
-
-
-                for (int j = 0; j < 4; j++) {
-
-                    StringBuilder next = new StringBuilder(c);
-                    next.setCharAt(j, nextSlot.get(next.charAt(j)));
-                    if (!visited.contains(next.toString())) {
-                        visited.add(next.toString());
-                        combinations.add(next.toString());
-                    }
-
-                    StringBuilder prev = new StringBuilder(c);
-                    prev.setCharAt(j, prevSlot.get(prev.charAt(j)));
-                    if (!visited.contains(prev.toString())) {
-                        visited.add(prev.toString());
-                        combinations.add(prev.toString());
-                    }
-                }
-            }
-            count++;
+            Set<Integer> list2 = edgeMap.getOrDefault(edges[i][1], new HashSet<>());
+            list2.add(edges[i][0]);
+            edgeMap.put(edges[i][1], list2);
         }
 
-        return -1;
+        Queue<Integer> queue = new LinkedList<>();
+
+        for (int key : edgeMap.keySet()) {
+            if (edgeMap.get(key).size() == 1) {
+                queue.add(key);
+            }
+        }
+
+        while (n > 2) {
+
+            int size = queue.size();
+            n = n - size;
+
+            for (int i = 0; i < size; i++) {
+                int node = queue.poll();
+
+                int neighbour = edgeMap.get(node).iterator().next();
+
+                edgeMap.get(neighbour).remove((Integer) node);
+
+                if (edgeMap.get(neighbour).size() == 1) {
+                    queue.add(neighbour);
+                }
+            }
+        }
+
+
+        return new ArrayList<>(queue);
+
     }
+
+
 }
