@@ -1,37 +1,104 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.Arrays;
-
 public class LeetCodeSolution {
 
     public void execute() {
-        tribonacci(4);
     }
 
-    public int tribonacci(int n) {
-        if (n == 0) return 0;
-        if (n == 1) return 1;
-        if (n == 2) return 1;
+    public boolean canMakeSquare(char[][] grid) {
 
-        int[] dp = new int[n+1];
-        Arrays.fill(dp, -1);
-        dp[0] = 0;
-        dp[1] = 1;
-        dp[2] = 1;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
 
-        int df=  solve(n, dp);
-        return df;
+                if (leftTop(grid, i, j)) return true;
+                if (leftBottom(grid, i, j)) return true;
+                if (rightTop(grid, i, j)) return true;
+                if (rightBottom(grid, i, j)) return true;
+            }
+        }
+        return false;
+    }
+    private boolean leftTop(char[][] grid, int i, int j) {
+
+        int w = 0;
+        int b = 0;
+
+        if (grid[i][j] == 'B') b++;
+        else w++;
+
+        if (i - 1 >= 0 && j-1 >= 0)
+            if (grid[i - 1][j - 1] == 'B') b++;
+            else w++;
+        if (j - 1 >= 0)
+            if (grid[i][j - 1] == 'B') b++;
+            else w++;
+        if (i - 1 >= 0)
+            if (grid[i - 1][j] == 'B') b++;
+            else w++;
+
+        return w >= 3 || b >= 3;
+
     }
 
-    private int solve(int n, int[] dp) {
-        if (n < 0) return 0;
+    private boolean leftBottom(char[][] grid, int i, int j) {
+        int w = 0;
+        int b = 0;
+        if (grid[i][j] == 'B') b++;
+        else w++;
+        if (j - 1 >= 0)
+            if (grid[i][j - 1] == 'B') b++;
+            else w++;
+        if (i + 1 < 3)
+            if (grid[i + 1][j] == 'B') b++;
+            else w++;
+        if (i + 1 < 3 && j - 1 >= 0)
+            if (grid[i + 1][j - 1] == 'B') b++;
+            else w++;
 
-        if (dp[n] >= 0) return dp[n];
+        return w >= 3 || b >= 3;
 
-        int d= solve(n - 1, dp) + solve(n - 2, dp) + solve(n - 3, dp);
-        dp[n] = d;
-        return d;
+
+    }
+
+    private boolean rightTop(char[][] grid, int i, int j) {
+
+        int w = 0;
+        int b = 0;
+        if (grid[i][j] == 'B') b++;
+        else w++;
+        if (i - 1 >= 0)
+            if (grid[i - 1][j] == 'B') b++;
+            else w++;
+        if (j + 1 < 3)
+            if (grid[i][j + 1] == 'B') b++;
+            else w++;
+        if (i - 1 >= 0 && j + 1 < 3)
+            if (grid[i - 1][j + 1] == 'B') b++;
+            else w++;
+
+        return w >= 3 || b >= 3;
+
+
+    }
+
+    private boolean rightBottom(char[][] grid, int i, int j) {
+
+        int w = 0;
+        int b = 0;
+        if (grid[i][j] == 'B') b++;
+        else w++;
+        if (i + 1 < 3)
+            if (grid[i + 1][j] == 'B') b++;
+            else w++;
+        if (j + 1 < 3)
+            if (grid[i][j + 1] == 'B') b++;
+            else w++;
+        if (i + 1 < 3 && j + 1 < 3)
+            if (grid[i + 1][j + 1] == 'B') b++;
+            else w++;
+
+        return w >= 3 || b >= 3;
     }
 
 
