@@ -7,6 +7,7 @@ import java.util.Map;
 public class LeetCodeSolution {
 
     public void execute() {
+        long a = numberOfRightTriangles(new int[][]{{1,1,1},{1,0,1}});
     }
 
     public long numberOfRightTriangles(int[][] grid) {
@@ -35,7 +36,7 @@ public class LeetCodeSolution {
                 if (cc < 2) continue;
 
 
-                ans = ans + (rr - 1) * (cc - 1);
+                ans = ans + (cc-1) * nCr(rr,2);
 
             }
         }
@@ -43,5 +44,18 @@ public class LeetCodeSolution {
 
     }
 
+
+    private int nCr(int n, int r)
+    {
+        return fact(n) / (fact(r) *
+                fact(n - r));
+    }
+    private int fact(int n)
+    {
+        int res = 1;
+        for (int i = 2; i <= n; i++)
+            res = res * i;
+        return res;
+    }
 
 }
