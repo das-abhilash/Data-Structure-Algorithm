@@ -1,38 +1,65 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        int a = longestIdealString("acfgbd", 2);
     }
 
-    public int longestIdealString(String s, int k) {
-        int[][] dp = new int[s.length()][27];
-        for (int i = 0; i < dp.length; i++) {
-            Arrays.fill(dp[i], -1);
+    private Map<Integer, List<Integer>> graph;
+
+    private int[] count;
+    private int[] res;
+
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        graph = new HashMap<>();
+        count = new int[n];
+        Arrays.fill(count, 1);
+        res = new int[n];
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new ArrayList<>());
         }
-        return solve(0, '{', s, k, dp);
+
+        for (int[] edge : edges) {
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]);
+        }
+
+
+        solve1(0, -1);
+        solve2(0, -1);
+
+        return res;
     }
 
+    private void solve2(int node, int parent) {
 
-    private int solve(int i, char last, String s, int k, int[][] dp) {
-        if (i == s.length()) return 0;
-        if (dp[i][last - 'a'] != -1) return dp[i][last - 'a'];
-
-        int take = 0;
-        int notTake = 0;
-
-        if (last == '{' || Math.abs(s.charAt(i) - last) <= k) {
-            take = 1 + solve(i + 1, s.charAt(i), s, k, dp);
+        for (int child : graph.get(node)) {
+            if (child != parent) {
+                res[child] = res[node] - count[child] + (count.length - count[child]);
+                solve2(child, node);
+            }
         }
 
-        notTake = solve(i + 1, last, s, k, dp);
 
-        dp[i][last - 'a'] = Math.max(take, notTake);
-        return dp[i][last - 'a'];
+    }
+
+    private void solve1(int node, int parent) {
+
+        for (int child : graph.get(node)) {
+
+            if (child != parent) {
+                solve1(child, node);
+                count[node] = count[node] + count[child];
+                res[node] = res[node] + res[child] + count[child];
+            }
+        }
     }
 
 }
