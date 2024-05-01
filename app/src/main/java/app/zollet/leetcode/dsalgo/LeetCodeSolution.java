@@ -6,13 +6,24 @@ public class LeetCodeSolution {
     public void execute() {
     }
 
-    public int minOperations(int[] nums, int k) {
-        int finalXor = 0;
-        for (int i = 0; i < nums.length; i++) {
-            finalXor = finalXor ^ nums[i];
-        }
+    public String reversePrefix(String word, char ch) {
+        StringBuilder sb = new StringBuilder();
 
-        return Integer.bitCount(finalXor ^ k);
+        boolean shouldReverse = true;
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            if (shouldReverse) {
+                sb.append(c);
+                if (c == ch) {
+                    result.append(sb.reverse());
+                    shouldReverse = false;
+                }
+            } else {
+                result.append(c);
+            }
+        }
+        return shouldReverse ? sb.toString() : result.toString();
     }
 
 }
