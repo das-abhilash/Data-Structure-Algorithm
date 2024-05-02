@@ -1,38 +1,32 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
-    public String getSmallestString(String s, int k) {
+    public int findMaxK(int[] nums) {
 
-        StringBuilder sb = new StringBuilder();
+        Set<Integer> set = new HashSet<>();
 
-        int index = 0;
-        for (; index < s.length(); index++) {
-            char c = s.charAt(index);
-            int left = c - 'a';
-            int right = 'z' - c + 1;
+        for (int n : nums) {
+            set.add(n);
+        }
 
-            int dis = Math.min(left, right);
-
-            if (k >= dis) {
-                sb.append('a');
-                k = k - dis;
-            } else {
-                sb.append((char) (c - k));
-                break;
+        int ans = Integer.MIN_VALUE;
+        for (int num : nums) {
+            if (num > 0 && set.contains(num * -1)) {
+                ans = Math.max(ans, num);
             }
-
         }
 
-        for (int i = index+1; i <s.length() ; i++) {
-            sb.append(s.charAt(i));
-        }
-
-        return sb.toString();
+        return ans == Integer.MIN_VALUE ? -1 : ans;
     }
 
 }
