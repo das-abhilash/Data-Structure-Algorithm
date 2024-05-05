@@ -1,45 +1,33 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LeetCodeSolution {
 
     public void execute() {
-
-        boolean df = isValid("UuE6");
+        int df= minimumOperationsToMakeKPeriodic("leetcodeleet", 4);
     }
 
-    public boolean isValid(String word) {
+    public int minimumOperationsToMakeKPeriodic(String word, int k) {
 
-        int charcount = 0;
+        Map<String, Integer> map = new HashMap<>();
 
-        boolean vc = false;
-        boolean cc = false;
-
-        if (word.length() < 3) return false;
-
-        for (int i = 0; i < word.length(); i++) {
-            char c = word.charAt(i);
-            if (c == '@' || c == '#' || c == '$') {
-                return false;
+        int max = Integer.MIN_VALUE;
+        for (int i = k; i <= word.length(); i = i + k) {
+            String sub = word.substring( i - k, i);
+            if (map.containsKey(sub)) {
+                int c = map.get(sub) + 1;
+                map.put(sub, c);
+                max = Math.max(max, c);
+            } else {
+                map.put(sub, 1);
+                max = Math.max(max, 1);
             }
-
-
-            if (c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') {
-                continue;
-            }
-
-            charcount++;
-
-            if (c == 'A' || c == 'a' || c == 'e' || c == 'E' || c == 'i' || c == 'I' || c == 'o' || c == 'O' || c == 'u' || c == 'U') {
-                vc = true;
-                continue;
-            }
-
-            cc = true;
-
         }
 
-        return vc && cc;
+        return word.length() / k - max;
     }
 
 }
