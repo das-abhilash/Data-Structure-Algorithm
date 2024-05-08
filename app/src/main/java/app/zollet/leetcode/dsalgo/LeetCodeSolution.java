@@ -1,62 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LeetCodeSolution {
 
     public void execute() {
+        String[] hjg = findRelativeRanks(new int[]{5, 4, 3, 2, 1});
     }
 
-    public int minAnagramLength(String s) {
+    public String[] findRelativeRanks(int[] score) {
 
-        List<Integer> divisors = new ArrayList<>();
 
-        int n = s.length();
-        for (int i = 1; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) {
-                int k = n / i;
-                if (k == i) {
-                    divisors.add(k);
-                } else {
-                    divisors.add(k);
-                    divisors.add(i);
-                }
-            }
+        Map<Integer, Integer> map = new HashMap<>();
+        String[] result = new String[score.length];
+        for (int i = 0; i < score.length; i++) {
+            map.put(score[i], i);
         }
 
-        Collections.sort(divisors);
+        Arrays.sort(score);
 
-
-        for (int i = 0; i < divisors.size(); i++) {
-            int ans = divisors.get(i);
-            Map<Character, Integer> pre = new HashMap<>();
-            for (int j = 0; j < ans; j++) {
-                pre.put(s.charAt(j), pre.getOrDefault(s.charAt(j), 0) + 1);
-            }
-
-            boolean isMatched = true;
-
-            for (int j = ans; j < n; j = j + ans) {
-                Map<Character, Integer> post = new HashMap<>();
-                for (int k = j; k < j + ans; k++) {
-                    post.put(s.charAt(k), post.getOrDefault(s.charAt(k), 0) + 1);
-                }
-
-                if(!pre.equals(post)){
-                    isMatched = false;
-                    break;
-                }
-            }
-
-            if(isMatched) return ans;
-
+        for (int i = 0; i < score.length; i++) {
+            int index = map.get(score[i]);
+            result[index] = String.valueOf(score.length - i);
         }
-        return n;
+
+        result[map.get(score[score.length - 1])] = "Gold Medal";
+        if (score.length > 1)
+            result[map.get(score[score.length - 2])] = "Silver Medal";
+        if (score.length > 2)
+            result[map.get(score[score.length - 3])] = "Bronze Medal";
+
+        return result;
+
     }
 
 }
