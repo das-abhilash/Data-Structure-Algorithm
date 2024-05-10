@@ -1,43 +1,43 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
+
+import app.zollet.leetcode.dsalgo.util.ListNode;
 
 public class LeetCodeSolution {
 
     public void execute() {
     }
 
-    class Fraction {
-        int nom;
-        int dem;
-        float val;
 
-        Fraction(int nom, int dem, float val) {
-            this.nom = nom;
-            this.dem = dem;
-            this.val = val;
-        }
+    public ListNode removeNodes(ListNode head) {
 
-    }
+        Stack<Integer> stack = new Stack<>();
+        stack.add(head.val);
+        head = head.next;
 
-    public int[] kthSmallestPrimeFraction(int[] arr, int k) {
-
-        List<Fraction> list = new ArrayList<>();
-
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = i + 1; j < arr.length; j++) {
-                list.add(new Fraction(arr[i], arr[j], (float) arr[i] / arr[j]));
+        while (head != null) {
+            while (!stack.isEmpty() && stack.peek() < head.val) {
+                stack.pop();
             }
+
+            stack.add(head.val);
+            head = head.next;
         }
 
-        list.sort((o1, o2) -> o1.val < o2.val ? -1 : (o1 == o2 ? 0 : 1));
+        ListNode dummy = new ListNode();
 
-        Fraction fraction = list.get(k-1);
+        while (!stack.isEmpty()) {
 
-        return new int[]{fraction.nom, fraction.dem};
+            ListNode node = new ListNode(stack.pop());
 
+            ListNode temp = dummy.next;
+
+            dummy.next = node;
+            node.next = temp;
+        }
+        return dummy.next;
     }
 
 
