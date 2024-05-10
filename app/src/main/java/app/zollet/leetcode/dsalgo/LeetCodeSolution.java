@@ -1,35 +1,43 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.Collections;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        long sdf = maximumHappinessSum(new int[]{12, 1, 42}, 3);
     }
 
+    class Fraction {
+        int nom;
+        int dem;
+        float val;
 
-    public long maximumHappinessSum(int[] happiness, int k) {
-
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(Collections.reverseOrder());
-
-        for (int h : happiness) {
-            priorityQueue.add(h);
+        Fraction(int nom, int dem, float val) {
+            this.nom = nom;
+            this.dem = dem;
+            this.val = val;
         }
 
-        long ans = 0;
-        long minus = 0;
-        while (!priorityQueue.isEmpty() && k > 0) {
-            int a = priorityQueue.poll();
-            if (a - minus > 0) {
-                ans = ans + a - minus;
-                minus++;
+    }
+
+    public int[] kthSmallestPrimeFraction(int[] arr, int k) {
+
+        List<Fraction> list = new ArrayList<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                list.add(new Fraction(arr[i], arr[j], (float) arr[i] / arr[j]));
             }
-            k--;
         }
-        return ans;
+
+        list.sort((o1, o2) -> o1.val < o2.val ? -1 : (o1 == o2 ? 0 : 1));
+
+        Fraction fraction = list.get(k-1);
+
+        return new int[]{fraction.nom, fraction.dem};
+
     }
 
 
