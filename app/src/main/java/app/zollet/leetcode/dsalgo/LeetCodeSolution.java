@@ -1,56 +1,37 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import app.zollet.leetcode.dsalgo.util.ListNode;
-
 public class LeetCodeSolution {
 
     public void execute() {
+        int[][] a = largestLocal(new int[][] {{9,9,8,1},{5,6,2,6},{8,2,6,4},{6,2,2,2}});
     }
 
-    private ListNode reverseList(ListNode head) {
-        ListNode prev = null;
-        ListNode current = head;
-        ListNode nextTemp = null;
+    public int[][] largestLocal(int[][] grid) {
 
-        // Set each node's next pointer to the previous node
-        while (current != null) {
-            nextTemp = current.next;
-            current.next = prev;
-            prev = current;
-            current = nextTemp;
-        }
-
-        return prev;
-    }
+        int[][] ans = new int[grid.length - 2][grid.length - 2];
 
 
-    public ListNode removeNodes(ListNode head) {
-
-        head = reverseList(head);
-
-        int max = 0;
-        ListNode current = head;
-        ListNode next = null;
-        ListNode temp = null;
-        while (current != null) {
-
-
-            if (current.val < max) {
-                current = current.next;
-            } else {
-                max = current.val;
-
-                next = current.next;
-                current.next = temp;
-                temp = current;
-                current = next;
+        for (int i = 0; i < grid.length - 2; i++) {
+            for (int j = 0; j < grid.length - 2; j++) {
+                ans[i][j] = calculate(grid, i, j);
             }
         }
 
-        return temp;
+
+        return ans;
     }
 
+    private int calculate(int[][] grid, int x, int y) {
+        int max = 0;
+
+        for (int i = x; i < x + 3; i++) {
+            for (int j = y; j < y + 3; j++) {
+                max = Math.max(max, grid[i][j]);
+            }
+        }
+        return max;
+    }
 
 
 }
