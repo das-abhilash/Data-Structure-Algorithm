@@ -7,15 +7,37 @@ public class LeetCodeSolution {
 
     }
 
-    public int maximumEnergy(int[] energy, int k) {
+    public int matrixScore(int[][] grid) {
 
-        int[] dp = new int[energy.length];
+        for (int i = 0; i < grid.length; i++) {
+            if (grid[i][0] == 0) {
+                for (int j = 0; j < grid[0].length; j++) {
+                    grid[i][j] = 1 - grid[i][j];
+                }
+            }
+        }
 
-        int ans = Integer.MIN_VALUE;
+        for (int j = 1; j < grid[0].length; j++) {
+            int count = 0;
+            for (int[] ints : grid) {
+                if (ints[j] == 0) {
+                    count++;
+                }
+            }
 
-        for (int i = energy.length -1; i >= 0; i--) {
-            dp[i] = energy[i] + ((i + k) < energy.length ? dp[i + k] : 0);
-            ans = Math.max(ans, dp[i]);
+            if (count > grid.length - count) {
+                for (int i = 0; i < grid.length; i++) {
+                    grid[i][j] = 1 - grid[i][j];
+                }
+            }
+        }
+
+        int ans = 0;
+
+        for (int[] ints : grid) {
+            for (int j = 0; j < grid[0].length; j++) {
+                ans = ans + (ints[j] << (grid[0].length - j - 1));
+            }
         }
         return ans;
     }
