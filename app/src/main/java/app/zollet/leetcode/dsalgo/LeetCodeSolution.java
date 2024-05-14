@@ -7,39 +7,33 @@ public class LeetCodeSolution {
 
     }
 
-    public int matrixScore(int[][] grid) {
+    public int getMaximumGold(int[][] grid) {
 
+        int max = 0;
         for (int i = 0; i < grid.length; i++) {
-            if (grid[i][0] == 0) {
-                for (int j = 0; j < grid[0].length; j++) {
-                    grid[i][j] = 1 - grid[i][j];
-                }
-            }
-        }
-
-        for (int j = 1; j < grid[0].length; j++) {
-            int count = 0;
-            for (int[] ints : grid) {
-                if (ints[j] == 0) {
-                    count++;
-                }
-            }
-
-            if (count > grid.length - count) {
-                for (int i = 0; i < grid.length; i++) {
-                    grid[i][j] = 1 - grid[i][j];
-                }
-            }
-        }
-
-        int ans = 0;
-
-        for (int[] ints : grid) {
             for (int j = 0; j < grid[0].length; j++) {
-                ans = ans + (ints[j] << (grid[0].length - j - 1));
+                if (grid[i][j] > 0) {
+                    max = Math.max(max, max(grid, new boolean[grid.length][grid[0].length], i, j));
+                }
             }
         }
-        return ans;
+        return max;
+    }
+
+    private int max(int[][] grid, boolean[][] dp, int x, int y) {
+
+        if (x < 0 || y < 0 || x >= grid.length || y >= grid[0].length || dp[x][y] || grid[x][y] == 0) {
+            return 0;
+        }
+
+        dp[x][y] = true;
+        int left = max(grid, dp, x - 1, y);
+        int right = max(grid, dp, x + 1, y);
+        int top = max(grid, dp, x, y - 1);
+        int bottom = max(grid, dp, x, y + 1);
+        dp[x][y] = false;
+
+        return grid[x][y] + Math.max(Math.max(left, right), Math.max(top, bottom));
     }
 
 }
