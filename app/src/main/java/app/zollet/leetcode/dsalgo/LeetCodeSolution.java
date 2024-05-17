@@ -9,17 +9,23 @@ public class LeetCodeSolution {
 
     }
 
-    public boolean evaluateTree(TreeNode root) {
-        if (root.left == null && root.right == null) {
-            return root.val == 1;
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        if (root == null) return null;
+
+        TreeNode left = removeLeafNodes(root.left, target);
+        TreeNode right = removeLeafNodes(root.right, target);
+
+        if (left == null && right == null) {
+            if (root.val == target) {
+
+                return null;
+            }
+        } else if (left == null) {
+            root.left = null;
+        } else if (right == null) {
+            root.right = null;
         }
-
-        boolean left = evaluateTree(root.left);
-        boolean right = evaluateTree(root.right);
-
-        if (root.val == 2) return left || right;
-        else return left && right;
-
+        return root;
     }
 }
 
