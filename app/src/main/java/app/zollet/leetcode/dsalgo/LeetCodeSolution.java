@@ -1,33 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import app.zollet.leetcode.dsalgo.util.TreeNode;
-
 public class LeetCodeSolution {
 
     public void execute() {
 
+        int sdf = compareVersion("1.2", "1.10");
+
     }
 
-    int moves = 0;
+    public int compareVersion(String version1, String version2) {
 
-    public int distributeCoins(TreeNode root) {
-        moves = 0;
-        solve(root);
-        return moves;
-    }
+        String[] v1 = version1.split("\\.");
+        String[] v2 = version2.split("\\.");
 
+        int index = 0;
+        for (; index < Math.min(v1.length, v2.length); index++) {
 
-    int solve(TreeNode node) {
+            int compare = Integer.compare(Integer.valueOf(v1[index]), Integer.valueOf(v2[index]));
 
-        if (node == null) return 0;
+            if (compare == 0) continue;
+            return compare;
+        }
 
-        int left = solve(node.left);
-        int right = solve(node.right);
+        for (; index < v1.length; index++) {
+            if (Integer.valueOf(v1[index]) == 0) continue;
+            return 1;
+        }
 
-        moves = moves + Math.abs(left) + Math.abs(right);
+        for (; index < v2.length; index++) {
+            if (Integer.valueOf(v2[index]) == 0) continue;
+            return -1;
+        }
 
-        return node.val - 1 + left + right;
+        return 0;
+
     }
 
 }
