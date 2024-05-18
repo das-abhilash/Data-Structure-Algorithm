@@ -1,40 +1,40 @@
 package app.zollet.leetcode.dsalgo;
 
 
+import java.util.Arrays;
+
 public class LeetCodeSolution {
 
     public void execute() {
-
-        int sdf = compareVersion("1.2", "1.10");
-
+        int a = numRescueBoats(new int[]{3, 2, 2, 1}, 3);
     }
 
-    public int compareVersion(String version1, String version2) {
+    // 3
+    public int numRescueBoats(int[] people, int limit) {
 
-        String[] v1 = version1.split("\\.");
-        String[] v2 = version2.split("\\.");
+        Arrays.sort(people);
 
-        int index = 0;
-        for (; index < Math.min(v1.length, v2.length); index++) {
+        int left = 0;
+        int right = people.length - 1;
 
-            int compare = Integer.compare(Integer.valueOf(v1[index]), Integer.valueOf(v2[index]));
+        int boats = 0;
 
-            if (compare == 0) continue;
-            return compare;
+
+        while (left <= right) {
+
+            if ((people[left] + people[right]) <= limit) {
+                boats++;
+                left++;
+                right--;
+            } else {
+                boats++;
+                right--;
+            }
+
         }
 
-        for (; index < v1.length; index++) {
-            if (Integer.valueOf(v1[index]) == 0) continue;
-            return 1;
-        }
 
-        for (; index < v2.length; index++) {
-            if (Integer.valueOf(v2[index]) == 0) continue;
-            return -1;
-        }
-
-        return 0;
-
+        return boats;
     }
 
 }
