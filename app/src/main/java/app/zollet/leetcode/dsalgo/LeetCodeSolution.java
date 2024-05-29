@@ -1,63 +1,32 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
-
 public class LeetCodeSolution {
 
     public void execute() {
+
+
     }
 
+    public int numSteps(String s) {
 
-    public class Pair {
-        double first;
-        int second;
+        int ans = 0;
+        int carry = 0;
 
-        public Pair(double first, int second) {
-            this.first = first;
-            this.second = second;
-        }
-    }
+        for (int i = s.length() - 1; i > 0; i--) {
 
-    public double mincostToHireWorkers(int[] quality, int[] wage, int k) {
+            int digit = (s.charAt(i) - '0') + carry;
 
-        List<Pair> list = new ArrayList<>();
-
-        for (int i = 0; i < quality.length; i++) {
-            list.add(new Pair((1.0 * (wage[i]) / quality[i]), quality[i]));
-        }
-
-        Collections.sort(list, Comparator.comparingDouble(o -> o.first));
-
-        PriorityQueue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
-
-        double ans = Double.MAX_VALUE;
-        int sum = 0;
-        for (int i = 0; i < list.size(); i++) {
-
-            double ratio = list.get(i).first;
-            int q = list.get(i).second;
-
-            queue.add(q);
-            sum = sum + q;
-
-            if (queue.size() > k) {
-                sum = sum - queue.poll();
+            if (digit % 2 == 1) {
+                ans = ans + 2;
+                carry = 1;
+            } else {
+                ans = ans + 1;
             }
-
-            if (queue.size() == k) {
-                ans = Math.min(ans, sum * ratio);
-            }
-
-
         }
-
-        return ans;
+        return ans + carry;
     }
+
 
 }
 
