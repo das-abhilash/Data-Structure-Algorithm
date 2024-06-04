@@ -4,37 +4,45 @@ package app.zollet.leetcode.dsalgo;
 public class LeetCodeSolution {
 
     public void execute() {
-        int s = appendCharacters("z", "abcde");
+        int a = longestPalindrome("civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth");
     }
 
-    public int appendCharacters(String s, String t) {
+    public int longestPalindrome(String s) {
 
-        int i = 0;
-        int j = 0;
+        int[] lower = new int[26];
+        int[] upper = new int[26];
 
-        while (i < s.length() && j < t.length()) {
-
-            if (s.charAt(i) == t.charAt(j)) {
-                i++;
-                j++;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isUpperCase(c)) {
+                upper[c - 'A']++;
             } else {
-                i++;
+                lower[c - 'a']++;
             }
         }
 
-        return t.length() - j;
-    }
-
-    private int solve(int start, String s, String t) {
-        int i = 0;
-
-        for (; i < s.length() && i < t.length(); i++) {
-            if (s.charAt(start + i) != t.charAt(i)) {
-                break;
+        int ans = 0;
+        boolean odd = false;
+        for (int i = 0; i < 26; i++) {
+            if (lower[i] % 2 == 0) {
+                ans = ans + lower[i];
+            } else {
+                odd = true;
+                ans = ans + lower[i] - 1;
             }
-        }
 
-        return t.length() - i;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (upper[i] % 2 == 0) {
+                ans = ans + upper[i];
+            } else {
+                odd = true;
+                ans = ans + upper[i] - 1;
+            }
+
+        }
+        return ans + (odd ? 1 : 0);
+
     }
 
 
