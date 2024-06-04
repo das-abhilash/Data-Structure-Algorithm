@@ -4,27 +4,37 @@ package app.zollet.leetcode.dsalgo;
 public class LeetCodeSolution {
 
     public void execute() {
-
-
+        int s = appendCharacters("z", "abcde");
     }
 
-    public int numSteps(String s) {
+    public int appendCharacters(String s, String t) {
 
-        int ans = 0;
-        int carry = 0;
+        int i = 0;
+        int j = 0;
 
-        for (int i = s.length() - 1; i > 0; i--) {
+        while (i < s.length() && j < t.length()) {
 
-            int digit = (s.charAt(i) - '0') + carry;
-
-            if (digit % 2 == 1) {
-                ans = ans + 2;
-                carry = 1;
+            if (s.charAt(i) == t.charAt(j)) {
+                i++;
+                j++;
             } else {
-                ans = ans + 1;
+                i++;
             }
         }
-        return ans + carry;
+
+        return t.length() - j;
+    }
+
+    private int solve(int start, String s, String t) {
+        int i = 0;
+
+        for (; i < s.length() && i < t.length(); i++) {
+            if (s.charAt(start + i) != t.charAt(i)) {
+                break;
+            }
+        }
+
+        return t.length() - i;
     }
 
 
