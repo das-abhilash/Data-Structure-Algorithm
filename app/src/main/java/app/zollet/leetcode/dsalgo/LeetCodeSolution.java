@@ -1,54 +1,43 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeetCodeSolution {
 
     public void execute() {
-        List<String> a = commonChars(new String[]{"bella", "label", "roller"});
     }
 
+    public boolean isNStraightHand(int[] hand, int groupSize) {
 
-    public List<String> commonChars(String[] words) {
+        if (hand.length != groupSize * groupSize) return false;
 
+        Map<Integer, Integer> map = new HashMap<>();
 
-        int[] common = new int[26];
-        Arrays.fill(common, 0);
-
-        for (int i = 0; i < words[0].length(); i++) {
-            char c = words[0].charAt(i);
-            common[c - 'a']++;
+        for (int i = 0; i < hand.length; i++) {
+            map.put(hand[i], map.getOrDefault(hand[i], 0) + 1);
         }
 
-        int[] current = new int[26];
+        Arrays.sort(hand);
 
-        for (int i = 1; i < words.length; i++) {
 
-            Arrays.fill(current, 0);
-            String word = words[i];
-
-            for (int j = 0; j < word.length(); j++) {
-                char c = word.charAt(j);
-                current[c - 'a']++;
-            }
-
-            for (int j = 0; j < 26; j++) {
-                common[j] = Math.min(current[j], common[j]);
-            }
-        }
-
-        List<String> ans = new ArrayList<>();
-
-        for (int i = 0; i < 26; i++) {
-            while (common[i] > 0) {
-                ans.add(String.valueOf((char) ('a' + i)));
-                common[i]--;
+        for (int i = 0; i < hand.length; i++) {
+            int count = 0;
+            int start = hand[i];
+            if (map.getOrDefault(start, 0) == 0) continue;
+            while (count < groupSize) {
+                if (map.getOrDefault(start, 0) > 0) {
+                    map.put(start, map.get(start) - 1);
+                } else {
+                    return false;
+                }
+                count++;
+                start++;
             }
         }
-        return ans;
+        return true;
     }
 
 
