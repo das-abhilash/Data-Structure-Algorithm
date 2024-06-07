@@ -1,43 +1,48 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class LeetCodeSolution {
 
-    public void execute() {
-    }
+    public String replaceWords(List<String> dictionary, String sentence) {
 
-    public boolean isNStraightHand(int[] hand, int groupSize) {
+        Set<String> set = new HashSet<>(dictionary);
 
-        if (hand.length != groupSize * groupSize) return false;
-
-        Map<Integer, Integer> map = new HashMap<>();
-
-        for (int i = 0; i < hand.length; i++) {
-            map.put(hand[i], map.getOrDefault(hand[i], 0) + 1);
-        }
-
-        Arrays.sort(hand);
+        String[] s = sentence.split(" ");
 
 
-        for (int i = 0; i < hand.length; i++) {
-            int count = 0;
-            int start = hand[i];
-            if (map.getOrDefault(start, 0) == 0) continue;
-            while (count < groupSize) {
-                if (map.getOrDefault(start, 0) > 0) {
-                    map.put(start, map.get(start) - 1);
-                } else {
-                    return false;
+        for (int i = 0; i < s.length; i++) {
+
+            String word = s[i];
+
+            StringBuilder sb = new StringBuilder();
+
+            String replace = "";
+
+            for (int j = 0; j < word.length(); j++) {
+                sb.append(word.charAt(j));
+                if (set.contains(sb.toString())) {
+                    if (replace.isEmpty() || replace.length() > sb.length()) {
+                        replace = sb.toString();
+                    }
                 }
-                count++;
-                start++;
+            }
+
+            if (!replace.isEmpty()) {
+                s[i] = replace;
             }
         }
-        return true;
+
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < s.length - 1; i++) {
+            ans.append(s[i]);
+            ans.append(" ");
+        }
+        ans.append(s[s.length - 1]);
+        return ans.toString();
     }
 
 
