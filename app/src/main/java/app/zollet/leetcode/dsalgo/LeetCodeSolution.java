@@ -1,50 +1,30 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Arrays;
 
 public class LeetCodeSolution {
 
-    public String replaceWords(List<String> dictionary, String sentence) {
 
-        Set<String> set = new HashSet<>(dictionary);
+    public void execute() {
 
-        String[] s = sentence.split(" ");
-
-
-        for (int i = 0; i < s.length; i++) {
-
-            String word = s[i];
-
-            StringBuilder sb = new StringBuilder();
-
-            String replace = "";
-
-            for (int j = 0; j < word.length(); j++) {
-                sb.append(word.charAt(j));
-                if (set.contains(sb.toString())) {
-                    if (replace.isEmpty() || replace.length() > sb.length()) {
-                        replace = sb.toString();
-                    }
-                }
-            }
-
-            if (!replace.isEmpty()) {
-                s[i] = replace;
-            }
-        }
-
-        StringBuilder ans = new StringBuilder();
-        for (int i = 0; i < s.length - 1; i++) {
-            ans.append(s[i]);
-            ans.append(" ");
-        }
-        ans.append(s[s.length - 1]);
-        return ans.toString();
     }
 
+    public int heightChecker(int[] heights) {
+
+        int[] copy = Arrays.copyOf(heights,heights.length);
+        Arrays.sort(copy);
+
+
+
+        int ans = 0;
+        for (int i = 0; i < heights.length; i++) {
+            if(heights[i]!= copy[i]){
+                ans++;
+            }
+        }
+        return ans;
+    }
 
 }
 
