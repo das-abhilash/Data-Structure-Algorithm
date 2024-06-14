@@ -10,17 +10,24 @@ public class LeetCodeSolution {
 
     }
 
-    public int minMovesToSeat(int[] seats, int[] students) {
-        int n = seats.length;
+    public int minIncrementForUnique(int[] nums) {
+
+        Arrays.sort(nums);
+
+        int max = nums[0] + 1;
+
         int ans = 0;
 
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] <= max) {
+                ans = ans + max - nums[i];
+                max++;
+            } else {
+                max = nums[i] + 1;
+            }
 
-        Arrays.sort(seats);
-        Arrays.sort(students);
-
-        for (int i = 0; i < n; i++) {
-            ans = ans + Math.abs(seats[i] - students[i]);
         }
+
         return ans;
     }
 
