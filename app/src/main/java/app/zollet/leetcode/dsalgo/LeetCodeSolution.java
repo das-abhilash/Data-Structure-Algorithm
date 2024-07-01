@@ -1,8 +1,6 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.Arrays;
-
 public class LeetCodeSolution {
 
 
@@ -10,25 +8,21 @@ public class LeetCodeSolution {
 
     }
 
-    public int minIncrementForUnique(int[] nums) {
 
-        Arrays.sort(nums);
+    public boolean threeConsecutiveOdds(int[] arr) {
 
-        int max = nums[0] + 1;
+        int count = 0;
 
-        int ans = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 != 0) count++;
+            else count = 0;
 
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] <= max) {
-                ans = ans + max - nums[i];
-                max++;
-            } else {
-                max = nums[i] + 1;
-            }
+            if (count == 3) return true;
 
         }
 
-        return ans;
+        return false;
+
     }
 
 }
