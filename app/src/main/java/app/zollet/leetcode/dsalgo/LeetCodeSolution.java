@@ -1,11 +1,7 @@
 package app.zollet.leetcode.dsalgo;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class LeetCodeSolution {
 
@@ -14,31 +10,20 @@ public class LeetCodeSolution {
 
     }
 
-    public int[] intersect(int[] nums1, int[] nums2) {
+    public int minDifference(int[] nums) {
 
-        Map<Integer, Integer> map = new HashMap<>();
+        Arrays.sort(nums);
 
-        for (int i = 0; i < nums1.length; i++) {
-            map.put(nums1[i], map.getOrDefault(nums1[i], 0) + 1);
-        }
+        int n = nums.length;
 
-        List<Integer> ans = new ArrayList<>();
+        if (n <= 4) return 0;
+        int ans = Integer.MAX_VALUE;
 
-        for (int i = 0; i < nums2.length; i++) {
-            int count = map.getOrDefault(nums2[i], 0);
-            if (count > 0) {
-                ans.add(nums2[i]);
-                map.put(nums2[i], count - 1);
-            }
-        }
-
-        // Convert the list to an array and return
-        int[] intersectionArray = new int[ans.size()];
-        for (int i = 0; i < ans.size(); i++) {
-            intersectionArray[i] = ans.get(i);
-        }
-
-        return intersectionArray;
+        ans = Math.min(ans, nums[n - 1] - nums[4]);
+        ans = Math.min(ans, nums[n - 2] - nums[3]);
+        ans = Math.min(ans, nums[n - 3] - nums[1]);
+        ans = Math.min(ans, nums[n - 4] - nums[0]);
+        return ans;
     }
 
 }
